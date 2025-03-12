@@ -26,6 +26,6 @@
     "vite": "^6.2.1",
     "vite-plugin-vue-devtools": "^7.7.2"
   },
-  "main": "dist/personal-lib.umd.js",
-  "module": "dist/personal-lib.es.js"
+  "main": "dist/erp-frontend-lib.umd.js",
+  "module": "dist/erp-frontend-lib.es.js"
 }
