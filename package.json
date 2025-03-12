@@ -1,6 +1,6 @@
 {
   "name": "erp-frontend-lib",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -26,6 +26,9 @@
     "vite": "^6.2.1",
     "vite-plugin-vue-devtools": "^7.7.2"
   },
+  "files": [
+    "dist"
+  ],
   "main": "dist/erp-frontend-lib.umd.js",
   "module": "dist/erp-frontend-lib.es.js"
 }
