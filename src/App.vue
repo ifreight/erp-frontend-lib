@@ -6,6 +6,7 @@
         <router-link to="/">home</router-link>
         <router-link to="/input">input</router-link>
         <router-link to="/button">button</router-link>
+        <router-link to="/tabs">tabs</router-link>
       </div>
     </div>
     <div class="flex-1 py-5 px-6">
