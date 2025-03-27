@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import InputView from '../views/InputView.vue'
 import ButtonView from '../views/ButtonView.vue'
+import DialogView from '../views/DialogView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +21,11 @@ const router = createRouter({
       path: '/button',
       name: 'button',
       component: ButtonView,
+    },
+    {
+      path: '/dialog',
+      name: 'dialog',
+      component: DialogView,
     },
   ],
 })
