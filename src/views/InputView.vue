@@ -1,6 +1,14 @@
 <template>
   <div>
-    <i-input v-model="input1" />
+    <i-input
+      v-model="input1"
+      input-id="text"
+      name="text"
+      label="Input Text"
+      class="flex-1"
+      clearable
+      :maxlength="3"
+    />
   </div>
 </template>
 
