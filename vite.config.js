@@ -4,11 +4,12 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
-
-import path from 'path'
+import { dirname, resolve } from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const __dirname = dirname(__filename)
+
+const pathSrc = resolve(__dirname, './src')
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -20,7 +21,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/main-lib.js'),
+      entry: resolve(__dirname, 'src/main-lib.js'),
       name: 'ErpFrontendLib',
       fileName: (format) => `erp-frontend-lib.${format}.js`,
     },
@@ -30,6 +31,19 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
+      },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+        // This will export both abstracts and all element plus variables to be accesible on all places
+        // Note that all abstracts will have i namespace
+        additionalData: `
+          @use '${pathSrc}/assets/abstracts/index' as i;
+        `,
+        charset: false,
       },
     },
   },

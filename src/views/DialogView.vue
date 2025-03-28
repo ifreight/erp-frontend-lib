@@ -14,6 +14,9 @@
       destroy-on-close
       :width="'564px'"
     >
+      <template #header>
+        Header
+      </template>
       <div class="text-sm">Text pertama aw awaw</div>
       <div class="text-sm">Text kedua ulalala</div>
       <div class="btn-wrapper">
@@ -67,7 +70,6 @@ export default {
 .i-button {
   @reference "tailwindcss";
   @apply bg-yellow-300;
-  /* background: #f9cf36; */
   padding: 10px 20px;
   color: black;
   font-weight: 600;

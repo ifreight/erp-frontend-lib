@@ -23,12 +23,6 @@
             v-if="showHeader"
             class="i-dialog-header"
           >
-            Header
-            <!-- <ic-logo
-              class="i-dialog-header-logo"
-              width="104"
-              height="28"
-            /> -->
             <slot name="header" />
           </div>
 
@@ -54,7 +48,6 @@
 
 <script>
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
-// import IcLogo from '@/icons/ic-logo.vue';
 import IcTimes from '@/icons/ic-times.vue';
 
 export default {
@@ -202,7 +195,7 @@ export default {
 
 .i-dialog-header {
   @reference "tailwindcss";
-  @apply px-8 py-6 w-full;
+  @apply text-xl font-bold px-8 py-6 w-full;
 }
 
 .i-dialog-body {
