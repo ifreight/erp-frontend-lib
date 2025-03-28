@@ -61,8 +61,9 @@
 </template>
 
 <script>
-// import dayjs from 'dayjs';
-// import 'dayjs/locale/id';
+import { computed, useSlots } from 'vue';
+import dayjs from 'dayjs';
+import 'dayjs/locale/id';
 // import { IMaskComponent } from 'vue-imask';
 // import IcTimesCircle from '@/icons/ic-times-circle.vue';
 
@@ -76,7 +77,7 @@ export default {
     // ImaskInput: IMaskComponent,
   },
   props: {
-    value: {
+    modelValue: {
       type: [String, Number, Date, Object],
       default: undefined,
     },
@@ -156,44 +157,36 @@ export default {
     },
     clearable: Boolean,
   },
-  computed: {
-    inputComponent() {
-      return 'input';
-    },
-    filled() {
-      return this.value != null && this.value !== '';
-    },
-    classes() {
+  setup(props, { slots }) {
+    const filled = computed(() => props.modelValue != null && props.modelValue !== '');
+    const classes = computed(() => {
       return {
-        dark: this.dark,
-        disabled: this.disabled,
-        invalid: this.invalid || !!this.errorMessage,
-        prepend: !!this.$slots.prepend,
-        append: !!this.$slots.append || this.clearable,
-        filled: this.filled,
-        borderless: this.borderless,
-        sm: this.size === 'sm',
-      };
-    },
-    isLabelActive() {
-      return this.filled || !!this.placeholder || !!this.placeholderValue;
-    },
-    displayModelValue() {
-      if (this.value && this.value instanceof Date) {
-        // return dayjs(this.value).locale(this.dateLocale).format(this.dateFormat);
-        return 'abc';
+        dark: props.dark,
+        disabled: props.disabled,
+        invalid: props.invalid || !!props.errorMessage,
+        prepend: !!slots.prepend,
+        append: !!slots.append || props.clearable,
+        filled: props.filled,
+        borderless: props.borderless,
+        sm: props.size === 'sm',
       }
-      if (typeof this.value === 'number') {
-        if (Object.is(this.value, -0)) {
+    });
+    const isLabelActive = computed(() => props.filled || !!props.placeholder || !!props.placeholderValue);
+    const displayModelValue = computed(() => {
+      if (props.modelValue && props.modelValue instanceof Date) {
+        return dayjs(props.modelValue).locale(props.dateLocale).format(props.dateFormat);
+      }
+      if (typeof props.modelValue === 'number') {
+        if (Object.is(props.modelValue, -0)) {
           return '-0';
         }
-        return this.value.toString();
+        return props.modelValue.toString();
       }
 
-      return this.value || '';
-    },
-    maskAttributes() {
-      switch (this.mask) {
+      return props.modelValue || '';
+    });
+    const maskAttributes = computed(() => {
+      switch (props.mask) {
         case 'number':
           return {
             mask: Number,
@@ -203,7 +196,7 @@ export default {
             scale: 0,
             unmask: true,
             lazy: true,
-            ...this.maskOptions,
+            ...props.maskOptions,
           };
         case 'decimal':
           return {
@@ -214,24 +207,108 @@ export default {
             scale: 2,
             unmask: true,
             lazy: true,
-            ...this.maskOptions,
+            ...props.maskOptions,
           };
         case 'npwp':
           return {
             mask: '00.000.000.0-000-000',
             lazy: true,
-            ...this.maskOptions,
+            ...props.maskOptions,
           };
         default:
-          return this.maskOptions;
+          return props.maskOptions;
       }
-    },
-    inputClasses() {
+    });
+    const inputClasses = computed(() => {
       return {
         input: true,
-        'placeholder-value': this.placeholderValue,
+        'placeholder-value': props.placeholderValue,
       };
+    })
+    return {
+      filled,
+      classes,
+      isLabelActive,
+      displayModelValue,
+      maskAttributes,
+      inputClasses,
+    }
+  },
+  computed: {
+    inputComponent() {
+      return 'input';
     },
+    // filled() {
+    //   return this.value != null && this.value !== '';
+    // },
+    // classes() {
+    //   return {
+    //     dark: this.dark,
+    //     disabled: this.disabled,
+    //     invalid: this.invalid || !!this.errorMessage,
+    //     prepend: !!this.$slots.prepend,
+    //     append: !!this.$slots.append || this.clearable,
+    //     filled: this.filled,
+    //     borderless: this.borderless,
+    //     sm: this.size === 'sm',
+    //   };
+    // },
+    // isLabelActive() {
+    //   return this.filled || !!this.placeholder || !!this.placeholderValue;
+    // },
+    // displayModelValue() {
+    //   if (this.value && this.value instanceof Date) {
+    //     return dayjs(this.value).locale(this.dateLocale).format(this.dateFormat);
+    //   }
+    //   if (typeof this.value === 'number') {
+    //     if (Object.is(this.value, -0)) {
+    //       return '-0';
+    //     }
+    //     return this.value.toString();
+    //   }
+
+    //   return this.value || '';
+    // },
+    // maskAttributes() {
+    //   switch (this.mask) {
+    //     case 'number':
+    //       return {
+    //         mask: Number,
+    //         thousandsSeparator: '.',
+    //         radix: ',',
+    //         mapToRadix: ['.'],
+    //         scale: 0,
+    //         unmask: true,
+    //         lazy: true,
+    //         ...this.maskOptions,
+    //       };
+    //     case 'decimal':
+    //       return {
+    //         mask: Number,
+    //         thousandsSeparator: '.',
+    //         radix: ',',
+    //         mapToRadix: ['.'],
+    //         scale: 2,
+    //         unmask: true,
+    //         lazy: true,
+    //         ...this.maskOptions,
+    //       };
+    //     case 'npwp':
+    //       return {
+    //         mask: '00.000.000.0-000-000',
+    //         lazy: true,
+    //         ...this.maskOptions,
+    //       };
+    //     default:
+    //       return this.maskOptions;
+    //   }
+    // },
+    // inputClasses() {
+    //   return {
+    //     input: true,
+    //     'placeholder-value': this.placeholderValue,
+    //   };
+    // },
   },
   watch: {
     displayModelValue: {
@@ -284,24 +361,25 @@ export default {
 </script>
 
 <style>
+@reference "tailwindcss";
+
 .i-input {
   .i-input-container {
-    height: 68px;
+    height: 41px;
     padding: 0 16px;
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
-    border-radius: 10px;
+    border-radius: 2px;
 
-    &.sm {
+    /* &.sm {
       height: 60px;
-    }
+    } */
 
     .input {
       width: 100%;
       height: 100%;
-      padding: 16px 0 0;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 16px;
       color: var(--gray-900);
       text-overflow: ellipsis;
@@ -328,7 +406,7 @@ export default {
       }
 
       &:disabled {
-        color: var(--gray-400);
+        color: var(--gray-600);
         background-color: transparent;
       }
 
@@ -372,7 +450,7 @@ export default {
     }
 
     &.disabled {
-      background-color: var(--gray-50);
+      background-color: var(--gray-500);
     }
 
     &.filled:not(.disabled) {
@@ -382,11 +460,7 @@ export default {
     &.invalid,
     &.invalid.filled,
     &.invalid.dark {
-      border-color: var(--red-400);
-
-      .label {
-        color: var(--red-400);
-      }
+      border-color: var(--red-300);
     }
 
     &.dark {

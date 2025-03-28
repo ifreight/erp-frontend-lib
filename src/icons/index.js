@@ -1,0 +1,6 @@
+export { default as IcChevronDown } from './ic-chevron-down.vue';
+export { default as IcChevronLeft } from './ic-chevron-left.vue';
+export { default as IcChevronRight } from './ic-chevron-right.vue';
+export { default as IcChevronUp } from './ic-chevron-up.vue';
+export { default as IcTimes } from './ic-times.vue';
+export { default as IcTimesCircle } from './ic-times-circle.vue';
