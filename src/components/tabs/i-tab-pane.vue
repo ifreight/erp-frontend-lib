@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { inject } from 'vue'; // computed
+import { inject, computed } from 'vue';
 
 export default {
   name: 'ITabPane',
@@ -18,14 +18,20 @@ export default {
       type: String,
       required: true,
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
-  setup() { // props
+  setup(props) {
     const tab = inject('rootTab');
-    // const isActive = computed(() => tab.activeTab === props.name);
+    const isActive = computed(() => {
+      return tab.value === props.name;
+    });
 
     return {
       tab,
-      // isActive
+      isActive
     }
   },
 }
