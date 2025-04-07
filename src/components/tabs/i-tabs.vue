@@ -26,14 +26,14 @@
         class="i-tabs-header-nav-left"
         v-on:click="clickLeft"
       >
-        L
+        <ic-chevron-left />
       </div>
       <div
         v-if="isNavRightVisible"
         class="i-tabs-header-nav-right"
         v-on:click="clickRight"
       >
-        R
+        <ic-chevron-right />
       </div>
     </div>
 
@@ -42,7 +42,10 @@
 </template>
 
 <script>
-import { ref, provide, watch, computed, onMounted, useSlots, useTemplateRef, watchEffect } from 'vue';
+import { ref, provide, watch, computed, onMounted, useSlots, useTemplateRef, watchEffect, onUpdated } from 'vue';
+
+import IcChevronLeft from '@/icons/ic-chevron-left.vue';
+import IcChevronRight from '@/icons/ic-chevron-right.vue';
 
 export default {
   name: 'ITabs',
@@ -51,6 +54,10 @@ export default {
       type: String,
       default: undefined,
     }
+  },
+  components: {
+    IcChevronLeft,
+    IcChevronRight,
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
@@ -72,21 +79,21 @@ export default {
 
     watch(() => props.modelValue, (value) => {
       if (value !== activeTab.value) {
-        activeTab.value = value
+        activeTab.value = value;
       }
     })
 
-    watchEffect(() => {
+    watchEffect(() => { // so tabHeaderWrapperRef.value is not null
       if (tabHeaderWrapperRef.value) {
         scrollHorizontalPosition.value = tabHeaderWrapperRef.value.scrollLeft;
         tabHeaderWrapperRef.value.addEventListener('scroll', scrollHandler);
-
-        if (scrollHorizontalPosition.value > 0) {
-          const scrollWidth = tabHeaderWrapperRef.value ? tabHeaderWrapperRef.value.scrollWidth : 0;
-          const clientWidth = tabHeaderWrapperRef.value ? tabHeaderWrapperRef.value.clientWidth : 0;
-          scrollMaxHorizontal.value = scrollWidth - clientWidth;
-        }
       }
+    })
+
+    onUpdated(() => {
+      const scrollWidth = tabHeaderWrapperRef.value ? tabHeaderWrapperRef.value.scrollWidth : 0;
+      const clientWidth = tabHeaderWrapperRef.value ? tabHeaderWrapperRef.value.clientWidth : 0;
+      scrollMaxHorizontal.value = scrollWidth - clientWidth;
     })
 
     const loadPanes = () => {
@@ -133,7 +140,8 @@ export default {
 </script>
 
 <style>
-@reference "tailwindcss";
+@reference "../../assets/global.css";
+
 .i-tabs {
   .i-tabs-header {
     @apply relative border-b border-b-gray-500;
@@ -143,6 +151,10 @@ export default {
       scrollbar-width: none;
 
       @apply px-20 flex overflow-x-auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .i-tabs-header-item {
         @apply cursor-pointer w-fit text-center px-8 py-5 whitespace-nowrap;
@@ -155,6 +167,14 @@ export default {
           @apply text-gray-500 cursor-not-allowed;
         }
       }
+    }
+
+    .i-tabs-header-nav-left {
+      @apply cursor-pointer flex justify-start items-center absolute -left-[1px] top-[20px] w-[30px] h-[30px] bg-yellow-800 pl-2.5 rounded-full;
+    }
+
+    .i-tabs-header-nav-right {
+      @apply cursor-pointer flex justify-start items-center absolute -right-[1px] top-[20px] w-[30px] h-[30px] bg-yellow-800 pl-3 rounded-full;
     }
   }
 }
