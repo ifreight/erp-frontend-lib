@@ -291,33 +291,6 @@ export default {
       },
     },
   },
-  computed: {
-    // inputComponent() {
-    //   return this.mask ? 'imask-input' : 'input';
-    // },
-  },
-  methods: {
-    // onChange() {
-    //   this.$emit('change', this.modelValue);
-    // },
-    // onFocus() {
-    //   this.$emit('focus');
-    // },
-    // onBlur() {
-    //   this.$emit('blur');
-    // },
-    // onClear() {
-    //   let clearedValue;
-    //   if (typeof this.modelValue === 'string') {
-    //     clearedValue = '';
-    //   }
-    //   this.$emit('update:modelValue', clearedValue);
-    //   this.$emit('clear');
-    // },
-    // onAcceptUnmasked(unmaskedValue) {
-    //   this.$emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
-    // },
-  },
 };
 </script>
 
