@@ -4,3 +4,5 @@ export { default as IcChevronRight } from './ic-chevron-right.vue';
 export { default as IcChevronUp } from './ic-chevron-up.vue';
 export { default as IcTimes } from './ic-times.vue';
 export { default as IcTimesCircle } from './ic-times-circle.vue';
+export { default as IcCheck } from './ic-check.vue';
+export { default as IcDash } from './ic-dash.vue';

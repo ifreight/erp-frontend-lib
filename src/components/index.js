@@ -1,2 +1,5 @@
 export { default as IButton } from './i-button.vue'
 export { default as IInput } from './i-input.vue'
+export { default as IRadio } from './i-radio.vue'
+export { default as ICheckbox } from './checkbox/i-checkbox.vue'
+export { default as ICheckboxGroup } from './checkbox/i-checkbox-group.vue'

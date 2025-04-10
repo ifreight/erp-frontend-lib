@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import InputView from '../views/InputView.vue'
 import ButtonView from '../views/ButtonView.vue'
+import RadioView from '../views/RadioView.vue'
+import CheckboxView from '../views/CheckboxView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,6 +22,16 @@ const router = createRouter({
       path: '/button',
       name: 'button',
       component: ButtonView,
+    },
+    {
+      path: '/radio',
+      name: 'radio',
+      component: RadioView,
+    },
+    {
+      path: '/checkbox',
+      name: 'checkbox',
+      component: CheckboxView,
     },
   ],
 })
