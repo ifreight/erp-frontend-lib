@@ -1,6 +1,6 @@
 <template>
   <div class="container-input-view">
-    <div>normal + clearable</div>
+    <div>Normal + clearable</div>
     <i-input
       v-model="input1"
       input-id="Text1"
@@ -10,7 +10,7 @@
       clearable
       placeholder="max 3"
     />
-    <div>invalid</div>
+    <div>Invalid</div>
     <i-input
       v-model="input2"
       input-id="Text2"
@@ -20,7 +20,7 @@
       :invalid="true"
       errorMessage="Error Message"
     />
-    <div>disabled</div>
+    <div>Disabled</div>
     <i-input
       v-model="input3"
       input-id="Text3"
@@ -30,7 +30,7 @@
       :disabled="true"
       placeholder="disabled placholder"
     />
-    <div>prepend, append and max length</div>
+    <div>Prepend, append and max length</div>
     <i-input
       v-model="input4"
       input-id="Text4"
@@ -44,7 +44,7 @@
       <template #prepend><ic-calendar /></template>
       <template #append><ic-calendar /></template>
     </i-input>
-    <div>borderless + password type</div>
+    <div>Borderless + password type</div>
     <i-input
       v-model="input5"
       input-id="Text5"
@@ -55,7 +55,7 @@
       type="password"
       borderless
     />
-    <div>number type</div>
+    <div>Decimal type</div>
     <i-input
       v-model="input6"
       input-id="Text6"
@@ -63,7 +63,27 @@
       label="Input Number"
       class="flex-1 mb-2"
       clearable
-      type="number"
+      mask="decimal"
+    />
+    <div>Number type</div>
+    <i-input
+      v-model="input7"
+      input-id="Text7"
+      name="text"
+      label="Input Number"
+      class="flex-1 mb-2"
+      clearable
+      mask="number"
+    />
+    <div>Date type + readonly</div>
+    <i-input
+      v-model="input8"
+      input-id="Text8"
+      name="text"
+      label="Input Number"
+      class="flex-1 mb-2"
+      clearable
+      readOnly
     />
   </div>
 </template>
@@ -84,7 +104,9 @@ export default {
     const input3 = ref('999');
     const input4 = ref('');
     const input5 = ref('password');
-    const input6 = ref(123123);
+    const input6 = ref(Math.round(123.453 * 100) / 100);
+    const input7 = ref(100000);
+    const input8 = ref(new Date());
 
     return {
       input1,
@@ -93,6 +115,8 @@ export default {
       input4,
       input5,
       input6,
+      input7,
+      input8,
     }
   },
 }

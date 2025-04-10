@@ -29,6 +29,7 @@
         @change="onChange"
         @focus="onFocus"
         @blur="onBlur"
+        @accept:unmasked="onAcceptUnmasked"
       />
 
       <div
@@ -62,6 +63,7 @@
 import { computed } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
+import { IMaskComponent } from 'vue-imask';
 
 import IcTimesCircle from '@/icons/ic-times-circle.vue';
 
@@ -69,6 +71,7 @@ export default {
   name: 'IInput',
   components: {
     IcTimesCircle,
+    'imask-input': IMaskComponent,
   },
   props: {
     modelValue: {
@@ -151,13 +154,21 @@ export default {
     },
     clearable: Boolean,
   },
-  emits: ['update:modelValue'],
-  setup(props, { slots }) {
+  emits: [
+    'update:modelValue',
+    'clear',
+    'change',
+    'blur',
+    'focus',
+    'keyup'
+  ],
+  setup(props, { slots, emit }) {
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
     const classes = computed(() => {
       return {
         dark: props.dark,
         disabled: props.disabled,
+        readonly: props.readOnly,
         invalid: props.invalid || !!props.errorMessage,
         prepend: !!slots.prepend,
         append: !!slots.append || props.clearable,
@@ -175,9 +186,8 @@ export default {
         if (Object.is(props.modelValue, -0)) {
           return '-0';
         }
-        return props.modelValue.toString();
+        return props.modelValue.toLocaleString('id-ID');
       }
-
       return props.modelValue || '';
     });
     const maskAttributes = computed(() => {
@@ -219,7 +229,42 @@ export default {
         input: true,
         'placeholder-value': props.placeholderValue,
       };
-    })
+    });
+    const inputComponent = computed(() => {
+      return props.mask ? 'imask-input' : 'input';
+    });
+
+    const onInput = ((event) => {
+      if (!props.mask) {
+        emit('update:modelValue', event.target.value);
+      }
+    });
+
+    const onChange = (() => {
+      emit('change', props.modelValue);
+    });
+
+    const onFocus = (() => {
+      emit('focus');
+    });
+
+    const onBlur = (() => {
+      emit('blur');
+    });
+
+    const onClear = (() => {
+      let clearedValue;
+      if (typeof props.modelValue === 'string') {
+        clearedValue = '';
+      }
+      emit('update:modelValue', clearedValue);
+      emit('clear');
+    });
+
+    const onAcceptUnmasked = ((unmaskedValue) => {
+      emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
+    });
+
     return {
       filled,
       classes,
@@ -227,6 +272,13 @@ export default {
       displayModelValue,
       maskAttributes,
       inputClasses,
+      inputComponent,
+      onInput,
+      onChange,
+      onFocus,
+      onBlur,
+      onClear,
+      onAcceptUnmasked,
     }
   },
   watch: {
@@ -240,47 +292,31 @@ export default {
     },
   },
   computed: {
-    inputComponent() {
-      return this.mask ? 'imask-input' : 'input';
-    },
+    // inputComponent() {
+    //   return this.mask ? 'imask-input' : 'input';
+    // },
   },
   methods: {
-    onInput(event) {
-      let inputValue = event;
-
-      if (this.mask) {
-        switch (this.mask) {
-          case 'number':
-          case 'decimal':
-            inputValue = inputValue != null && inputValue !== '' ? Number(inputValue) : undefined;
-            break;
-          default:
-            break;
-        }
-      } else {
-        inputValue = event.target.value;
-      }
-
-      this.$emit('input', inputValue);
-    },
-    onChange() {
-      this.$emit('change', this.value);
-    },
-    onFocus() {
-      this.$emit('focus');
-    },
-    onBlur() {
-      this.$emit('blur');
-    },
-    onClear() {
-      console.log('a');
-      let clearedValue;
-      if (typeof this.value === 'string') {
-        clearedValue = '';
-      }
-      this.$emit('update:modelValue', clearedValue);
-      this.$emit('clear');
-    },
+    // onChange() {
+    //   this.$emit('change', this.modelValue);
+    // },
+    // onFocus() {
+    //   this.$emit('focus');
+    // },
+    // onBlur() {
+    //   this.$emit('blur');
+    // },
+    // onClear() {
+    //   let clearedValue;
+    //   if (typeof this.modelValue === 'string') {
+    //     clearedValue = '';
+    //   }
+    //   this.$emit('update:modelValue', clearedValue);
+    //   this.$emit('clear');
+    // },
+    // onAcceptUnmasked(unmaskedValue) {
+    //   this.$emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
+    // },
   },
 };
 </script>
@@ -334,7 +370,6 @@ export default {
         color: var(--gray-600);
         background-color: transparent;
       }
-
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         appearance: none;
@@ -378,6 +413,13 @@ export default {
 
     &.disabled {
       background-color: var(--gray-500);
+    }
+
+    &.readonly {
+      background-color: var(--gray-100);
+      input {
+        cursor: default;
+      }
     }
 
     &.filled:not(.disabled) {
