@@ -1,3 +1,4 @@
+export { default as IcCalendar } from './ic-calendar.vue';
 export { default as IcChevronDown } from './ic-chevron-down.vue';
 export { default as IcChevronLeft } from './ic-chevron-left.vue';
 export { default as IcChevronRight } from './ic-chevron-right.vue';

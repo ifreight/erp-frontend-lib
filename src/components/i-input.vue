@@ -32,19 +32,17 @@
       />
 
       <div
-        v-if="clearable"
+        v-if="clearable && (!disabled || !readOnly)"
         v-show="filled"
         class="append-container"
       >
-        <!-- <ic-times-circle
+        <ic-times-circle
           class="icon-clear"
-          @click.native.stop="onClear"
-        /> -->
-        x
+          @click.once="onClear"
+        />
       </div>
       <div
-        v-else
-        v-show="!!$slots.append"
+        v-if="!!$slots.append"
         class="append-container"
       >
         <slot name="append" />
@@ -61,20 +59,16 @@
 </template>
 
 <script>
-import { computed, useSlots } from 'vue';
+import { computed } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
-// import { IMaskComponent } from 'vue-imask';
-// import IcTimesCircle from '@/icons/ic-times-circle.vue';
 
-// import IInputLabel from './i-input-label.vue';
+import IcTimesCircle from '@/icons/ic-times-circle.vue';
 
 export default {
   name: 'IInput',
   components: {
-    // IcTimesCircle,
-    // IInputLabel,
-    // ImaskInput: IMaskComponent,
+    IcTimesCircle,
   },
   props: {
     modelValue: {
@@ -157,6 +151,7 @@ export default {
     },
     clearable: Boolean,
   },
+  emits: ['update:modelValue'],
   setup(props, { slots }) {
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
     const classes = computed(() => {
@@ -234,82 +229,6 @@ export default {
       inputClasses,
     }
   },
-  computed: {
-    inputComponent() {
-      return 'input';
-    },
-    // filled() {
-    //   return this.value != null && this.value !== '';
-    // },
-    // classes() {
-    //   return {
-    //     dark: this.dark,
-    //     disabled: this.disabled,
-    //     invalid: this.invalid || !!this.errorMessage,
-    //     prepend: !!this.$slots.prepend,
-    //     append: !!this.$slots.append || this.clearable,
-    //     filled: this.filled,
-    //     borderless: this.borderless,
-    //     sm: this.size === 'sm',
-    //   };
-    // },
-    // isLabelActive() {
-    //   return this.filled || !!this.placeholder || !!this.placeholderValue;
-    // },
-    // displayModelValue() {
-    //   if (this.value && this.value instanceof Date) {
-    //     return dayjs(this.value).locale(this.dateLocale).format(this.dateFormat);
-    //   }
-    //   if (typeof this.value === 'number') {
-    //     if (Object.is(this.value, -0)) {
-    //       return '-0';
-    //     }
-    //     return this.value.toString();
-    //   }
-
-    //   return this.value || '';
-    // },
-    // maskAttributes() {
-    //   switch (this.mask) {
-    //     case 'number':
-    //       return {
-    //         mask: Number,
-    //         thousandsSeparator: '.',
-    //         radix: ',',
-    //         mapToRadix: ['.'],
-    //         scale: 0,
-    //         unmask: true,
-    //         lazy: true,
-    //         ...this.maskOptions,
-    //       };
-    //     case 'decimal':
-    //       return {
-    //         mask: Number,
-    //         thousandsSeparator: '.',
-    //         radix: ',',
-    //         mapToRadix: ['.'],
-    //         scale: 2,
-    //         unmask: true,
-    //         lazy: true,
-    //         ...this.maskOptions,
-    //       };
-    //     case 'npwp':
-    //       return {
-    //         mask: '00.000.000.0-000-000',
-    //         lazy: true,
-    //         ...this.maskOptions,
-    //       };
-    //     default:
-    //       return this.maskOptions;
-    //   }
-    // },
-    // inputClasses() {
-    //   return {
-    //     input: true,
-    //     'placeholder-value': this.placeholderValue,
-    //   };
-    // },
-  },
   watch: {
     displayModelValue: {
       immediate: true,
@@ -318,6 +237,11 @@ export default {
           this.$refs.inputRef.value = value == null ? '' : value;
         }
       },
+    },
+  },
+  computed: {
+    inputComponent() {
+      return this.mask ? 'imask-input' : 'input';
     },
   },
   methods: {
@@ -349,11 +273,12 @@ export default {
       this.$emit('blur');
     },
     onClear() {
+      console.log('a');
       let clearedValue;
       if (typeof this.value === 'string') {
         clearedValue = '';
       }
-      this.$emit('input', clearedValue);
+      this.$emit('update:modelValue', clearedValue);
       this.$emit('clear');
     },
   },
@@ -372,9 +297,9 @@ export default {
     border: 1px solid var(--gray-500);
     border-radius: 2px;
 
-    /* &.sm {
-      height: 60px;
-    } */
+    &.sm {
+      height: 32px;
+    }
 
     .input {
       width: 100%;
@@ -391,13 +316,13 @@ export default {
       }
 
       &::placeholder {
-        color: var(--gray-400);
+        color: var(--gray-700);
         opacity: 1; /* Firefox */
       }
 
       &.placeholder-value {
         &::placeholder {
-          color: var(--gray-900);
+          color: var(--gray-700);
         }
 
         &:focus:not(:read-only)::placeholder {
@@ -440,8 +365,10 @@ export default {
       margin-left: 12px;
 
       .icon-clear {
-        color: var(--gray-400);
+        color: var(--gray-600);
         cursor: pointer;
+        height: 12px;
+        width: 12px;
       }
     }
 
@@ -475,11 +402,10 @@ export default {
     }
 
     &.borderless {
-      height: 66px;
       border: none;
 
       &.sm {
-        height: 58px;
+        height: 32px;
       }
     }
   }
@@ -488,7 +414,7 @@ export default {
     padding-top: 8px;
     font-size: var(--size-xs);
     line-height: var(--size-sm);
-    color: var(--red-400);
+    color: var(--red-300);
   }
 }
 </style>
