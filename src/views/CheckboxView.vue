@@ -59,7 +59,10 @@
           name="modelCheckAll"
           label="Check all"
         />
-        <i-checkbox-group v-model="checkOptions">
+        <i-checkbox-group
+          v-model="checkedList"
+          @change="changeCheckedHandler"
+        >
           <i-checkbox
             :model-label="'modelCheckA'"
             name="modelCheckA"
@@ -97,10 +100,12 @@ export default {
     const modelInvalid = ref(false)
 
     const modelCheckAll = ref(false)
-    // const modelCheckA = ref(false)
-    // const modelCheckB = ref(false)
     const isIndeterminate = ref(false)
-    const checkOptions = ref(['modelCheckA', 'modelCheckB'])
+    const checkedList = ref(['modelCheckA', 'modelCheckB'])
+
+    const changeCheckedHandler = (array) => {
+
+    }
 
     return {
       modelOne,
@@ -109,10 +114,8 @@ export default {
       modelTwoDisabled,
       modelInvalid,
       modelCheckAll,
-      // modelCheckA,
-      // modelCheckB,
       isIndeterminate,
-      checkOptions
+      checkedList
     }
   }
 }
