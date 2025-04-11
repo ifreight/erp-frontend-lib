@@ -140,7 +140,7 @@ export default {
 </script>
 
 <style>
-@reference "../../assets/global.css";
+@reference "@/assets/global.css";
 
 .i-tabs {
   .i-tabs-header {
