@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import { inject, provide } from 'vue';
-
 import IcCheck from '@/icons/ic-check.vue';
 import IcDash from '@/icons/ic-dash.vue';
 
@@ -54,7 +52,12 @@ export default {
   props: {
     modelValue: {
       type: Boolean,
-      default: false
+      default: false,
+      required: false
+    },
+    modelLabel: {
+      type: String,
+      default: null
     },
     label: {
       type: String,
@@ -92,7 +95,7 @@ export default {
 </script>
 
 <style>
-@reference '../../assets/global.css';
+@reference '@/assets/global.css';
 
 .i-checkbox {
   @apply flex items-center relative cursor-pointer m-0 z-1;

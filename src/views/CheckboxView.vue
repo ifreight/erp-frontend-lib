@@ -53,20 +53,20 @@
     <div class="mt-24">
       <div class="font-bold bg-amber-300 text-xl">Indeterminate Checkbox</div>
       <div class="flex gap-6 mt-6">
-        <i-checkbox-group>
+        <i-checkbox
+          v-model="modelCheckAll"
+          :indeterminate="isIndeterminate"
+          name="modelCheckAll"
+          label="Check all"
+        />
+        <i-checkbox-group v-model="checkOptions">
           <i-checkbox
-            v-model="modelCheckAll"
-            indeterminate
-            name="modelCheckAll"
-            label="Check all"
-          />
-          <i-checkbox
-            v-model="modelCheckA"
+            :model-label="'modelCheckA'"
             name="modelCheckA"
             label="A"
           />
           <i-checkbox
-            v-model="modelCheckB"
+            :model-label="'modelCheckB'"
             name="modelCheckB"
             label="B"
           />
@@ -97,8 +97,10 @@ export default {
     const modelInvalid = ref(false)
 
     const modelCheckAll = ref(false)
-    const modelCheckA = ref(false)
-    const modelCheckB = ref(false)
+    // const modelCheckA = ref(false)
+    // const modelCheckB = ref(false)
+    const isIndeterminate = ref(false)
+    const checkOptions = ref(['modelCheckA', 'modelCheckB'])
 
     return {
       modelOne,
@@ -107,8 +109,10 @@ export default {
       modelTwoDisabled,
       modelInvalid,
       modelCheckAll,
-      modelCheckA,
-      modelCheckB
+      // modelCheckA,
+      // modelCheckB,
+      isIndeterminate,
+      checkOptions
     }
   }
 }
