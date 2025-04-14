@@ -63,7 +63,7 @@ export default {
     ITextArea,
   },
   setup() {
-    const textArea = ref('');
+    const textArea = ref('test error');
     const textAreaTest = ref('test isi text area');
     const valueDisabled = ref('text3 disabled');
 

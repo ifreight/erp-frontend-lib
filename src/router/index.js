@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import InputView from '../views/InputView.vue'
 import ButtonView from '../views/ButtonView.vue'
 import TextAreaView from '../views/TextAreaView.vue'
+import DialogView from '../views/DialogView.vue'
+import TabsView from '../views/TabsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +28,16 @@ const router = createRouter({
       path: '/textarea',
       name: 'textarea',
       component: TextAreaView,
+    },
+    {
+      path: '/dialog',
+      name: 'dialog',
+      component: DialogView,
+    },
+    {
+      path: '/tabs',
+      name: 'tabs',
+      component: TabsView,
     },
   ],
 })

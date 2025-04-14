@@ -225,38 +225,11 @@ export default {
 .invalid.filled,
 .invalid.dark {
   border-color: var(--red-300);
-
-  /* .label {
-    color: var(--red-300);
-  } */
 }
 
 .i-input-error {
   @apply mt-2 text-xs text-red-300;
 }
-
-/* &.dark {
-  color: var(--white);
-  background-color: var(--gray-900);
-  border-color: var(--white);
-
-  .textarea {
-    color: var(--white);
-    background-color: var(--gray-900);
-  }
-} */
-
-/* &.borderless {
-  border: none;
-} */
-
-/* &.lg {
-  height: 180px;
-
-  .textarea {
-    height: 150px;
-  }
-} */
 
 .i-textarea-limit {
   position: absolute;
