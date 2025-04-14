@@ -1,11 +1,31 @@
 <template>
   <div>
-    <button
-      class="i-button"
-      @click="openDialog"
-    >
-      Open Dialog
-    </button>
+    <div class="flex gap-2">
+      <button
+        class="i-button"
+        @click="showDialog = true"
+      >
+        Normal Dialog
+      </button>
+      <button
+        class="i-button"
+        @click="dialogWithoutHeader = true"
+      >
+        Without Header
+      </button>
+      <button
+        class="i-button"
+        @click="dialogWithoutClose = true"
+      >
+        Without Close Btn
+      </button>
+      <button
+        class="i-button"
+        @click="dialogNoOut = true"
+      >
+        Can't close when click outside
+      </button>
+    </div>
     <i-dialog
       v-model:show="showDialog"
       show-close
@@ -24,15 +44,51 @@
           class="i-button mr-3 text-sm"
           @click="showDialog = false"
         >
-          Text
+          Cancel
         </button>
         <button
           class="i-button text-sm"
           @click="save"
         >
-          Text
+          Confirm
         </button>
       </div>
+    </i-dialog>
+    <i-dialog
+      v-model:show="dialogWithoutHeader"
+      show-close
+      append-to-body
+      destroy-on-close
+      :width="'564px'"
+    >
+      <div class="text-sm">Text pertama aw awaw</div>
+      <div class="text-sm">Text kedua ulalala</div>
+    </i-dialog>
+    <i-dialog
+      v-model:show="dialogWithoutClose"
+      show-header
+      append-to-body
+      destroy-on-close
+      :width="'564px'"
+    >
+      <template #header>
+        iFreight
+      </template>
+      <div class="text-sm">Text pertama aw awaw</div>
+      <div class="text-sm">Text kedua ulalala</div>
+    </i-dialog>
+    <i-dialog
+      v-model:show="dialogNoOut"
+      show-close
+      show-header
+      append-to-body
+      destroy-on-close
+      :ignore-click-outside="true"
+    >
+      <template #header>
+        iFreight
+      </template>
+      can't close when click outside
     </i-dialog>
   </div>
 </template>
@@ -48,10 +104,9 @@ export default {
 
   setup() {
     const showDialog = ref(false);
-
-    const openDialog = () => {
-      showDialog.value = true;
-    }
+    const dialogWithoutHeader = ref(false);
+    const dialogWithoutClose = ref(false);
+    const dialogNoOut = ref(false);
 
     const save = () => {
       console.log('save');
@@ -59,7 +114,9 @@ export default {
 
     return {
       showDialog,
-      openDialog,
+      dialogWithoutHeader,
+      dialogWithoutClose,
+      dialogNoOut,
       save,
     }
   }
@@ -67,8 +124,9 @@ export default {
 </script>
 
 <style>
+@reference "tailwindcss";
+
 .i-button {
-  @reference "tailwindcss";
   @apply bg-yellow-300;
   padding: 10px 20px;
   color: black;

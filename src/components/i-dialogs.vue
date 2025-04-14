@@ -51,7 +51,7 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import IcTimes from '@/icons/ic-times.vue';
 
 export default {
-  name: 'IDialog',
+  name: 'i-dialog',
   components: { IcTimes },
   props: {
     show: Boolean,
@@ -195,12 +195,12 @@ export default {
 
 .i-dialog-header {
   @reference "tailwindcss";
-  @apply text-xl font-bold px-8 py-6 w-full;
+  @apply text-xl font-bold px-8 pt-6 pb-0 w-full;
 }
 
 .i-dialog-body {
   @reference "tailwindcss";
-  @apply px-8 pb-6 w-full;
+  @apply p-8 w-full;
 }
 
 .i-dialog-close {
