@@ -2,16 +2,7 @@
   <div>
     <h2 class="text-xl bg-gray-50 mb-4">Text Area</h2>
     <div class="mb-4">
-      <i-text-area
-        v-model="textArea"
-        input-id="TextArea1"
-        name="message"
-        placeholder="Placeholder"
-        class="chat-textarea"
-      />
-    </div>
-
-    <div class="mb-4">
+      <div>Normal</div>
       <i-text-area
         v-model="textAreaTest"
         input-id="TextArea2"
@@ -22,6 +13,7 @@
     </div>
 
     <div class="mb-4">
+      <div>Disabled</div>
       <i-text-area
         v-model="valueDisabled"
         disabled
@@ -32,6 +24,7 @@
     </div>
 
     <div class="mb-4">
+      <div>Error</div>
       <i-text-area
         v-model="textArea"
         input-id="TextArea4"
@@ -39,6 +32,18 @@
         class="chat-textarea"
         :invalid="true"
         error-message="Error Message"
+      />
+    </div>
+
+    <div class="mb-4">
+      <div>Text Limit</div>
+      <i-text-area
+        v-model="textArea"
+        input-id="TextArea4"
+        name="message"
+        class="chat-textarea"
+        :maxlength="5"
+        :show-text-limit="true"
       />
     </div>
   </div>
