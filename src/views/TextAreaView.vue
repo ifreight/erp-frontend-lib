@@ -4,17 +4,7 @@
     <div class="mb-4">
       <i-text-area
         v-model="textArea"
-        input-id="textarea"
-        name="message"
-        label="Input Text Area"
-        class="chat-textarea"
-      />
-    </div>
-
-    <div class="mb-4">
-      <i-text-area
-        v-model="textArea"
-        input-id="textarea"
+        input-id="TextArea1"
         name="message"
         placeholder="Placeholder"
         class="chat-textarea"
@@ -24,7 +14,7 @@
     <div class="mb-4">
       <i-text-area
         v-model="textAreaTest"
-        input-id="textarea"
+        input-id="TextArea2"
         name="message"
         placeholder="Placeholder"
         class="chat-textarea"
@@ -35,7 +25,7 @@
       <i-text-area
         v-model="valueDisabled"
         disabled
-        input-id="textarea"
+        input-id="TextArea3"
         name="message"
         class="chat-textarea"
       />
@@ -44,7 +34,7 @@
     <div class="mb-4">
       <i-text-area
         v-model="textArea"
-        input-id="textarea"
+        input-id="TextArea4"
         name="message"
         class="chat-textarea"
         :invalid="true"
@@ -63,7 +53,7 @@ export default {
     ITextArea,
   },
   setup() {
-    const textArea = ref('test error');
+    const textArea = ref('');
     const textAreaTest = ref('test isi text area');
     const valueDisabled = ref('text3 disabled');
 

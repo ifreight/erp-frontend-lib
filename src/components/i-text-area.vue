@@ -110,7 +110,13 @@ export default {
       default: false,
     },
   },
-
+  emits: [
+    'update:modelValue',
+    'focus',
+    'blur',
+    'pressEnter',
+    'pressEnterShift',
+  ],
   setup(props, { emit }) {
     const attrs = useAttrs();
     const {
@@ -157,7 +163,7 @@ export default {
     const isLabelActive = computed(() => filled.value || !!placeholder.value);
 
     const onInput = (event) => {
-      emit('input', event.target.value);
+      emit('update:modelValue', event.target.value)
     };
 
     const onFocus = () => emit('focus');
@@ -183,7 +189,7 @@ export default {
 </script>
 
 <style>
-@reference "../assets/global.css";
+@reference "@/assets/global.css";
 
 .i-textarea {
   @apply relative h-[120px] bg-white border border-gray-500 rounded-xs px-4 pt-4;
