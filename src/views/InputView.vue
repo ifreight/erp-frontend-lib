@@ -1,76 +1,131 @@
 <template>
   <div class="container-input-view">
-    <div>normal</div>
+    <div>Normal + clearable</div>
     <i-input
       v-model="input1"
-      input-id="text"
+      input-id="Text1"
       name="text"
       label="Input Text"
-      class="flex-1"
+      class="flex-1 mb-2"
       clearable
-      :maxlength="3"
       placeholder="max 3"
     />
-    <div>invalid</div>
+    <div>Invalid</div>
     <i-input
-      v-model="input1"
-      input-id="text"
+      v-model="input2"
+      input-id="Text2"
       name="text"
       label="Input Text"
-      class="flex-1"
-      clearable
+      class="flex-1 mb-2"
       :invalid="true"
-      :maxlength="3"
+      errorMessage="Error Message"
     />
-    <div>disabled</div>
+    <div>Disabled</div>
     <i-input
-      v-model="input1"
-      input-id="text"
+      v-model="input3"
+      input-id="Text3"
       name="text"
       label="Input Text"
-      class="flex-1"
-      clearable
+      class="flex-1 mb-2"
       :disabled="true"
-      :maxlength="3"
       placeholder="disabled placholder"
     />
-    <div>normal</div>
+    <div>Prepend, append and max length</div>
     <i-input
-      v-model="input1"
-      input-id="text"
+      v-model="input4"
+      input-id="Text4"
       name="text"
       label="Input Text"
-      class="flex-1"
+      class="flex-1 mb-2"
       clearable
       :maxlength="3"
-      placeholder="max 3"
+      placeholder="placeholder max 3"
     >
-      <template #prepend>x</template>
+      <template #prepend><ic-calendar /></template>
+      <template #append><ic-calendar /></template>
     </i-input>
+    <div>Borderless + password type</div>
+    <i-input
+      v-model="input5"
+      input-id="Text5"
+      name="text"
+      label="Input Text"
+      class="flex-1 mb-2"
+      clearable
+      type="password"
+      borderless
+    />
+    <div>Decimal type</div>
+    <i-input
+      v-model="input6"
+      input-id="Text6"
+      name="text"
+      label="Input Number"
+      class="flex-1 mb-2"
+      clearable
+      mask="decimal"
+    />
+    <div>Number type</div>
+    <i-input
+      v-model="input7"
+      input-id="Text7"
+      name="text"
+      label="Input Number"
+      class="flex-1 mb-2"
+      clearable
+      mask="number"
+    />
+    <div>Date type + readonly</div>
+    <i-input
+      v-model="input8"
+      input-id="Text8"
+      name="text"
+      label="Input Number"
+      class="flex-1 mb-2"
+      clearable
+      readOnly
+    />
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
 import IInput from '@/components/i-input.vue';
+import IcCalendar from '@/icons/ic-calendar.vue';
 
 export default {
   components: {
     IInput,
+    IcCalendar,
   },
   setup() {
     const input1 = ref('999');
+    const input2 = ref('999');
+    const input3 = ref('999');
+    const input4 = ref('');
+    const input5 = ref('password');
+    const input6 = ref(Math.round(123.453 * 100) / 100);
+    const input7 = ref(100000);
+    const input8 = ref(new Date());
+
     return {
       input1,
+      input2,
+      input3,
+      input4,
+      input5,
+      input6,
+      input7,
+      input8,
     }
   },
 }
 </script>
 
-<style scss>
-@reference "../assets/global.css";
+<style>
+@reference "@/assets/global.css";
 
 .container-input-view {
-  @apply h-full bg-brown-600;
+  @apply h-full;
 }
 </style>
