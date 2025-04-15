@@ -6,7 +6,7 @@
     <span
       class="i-checkbox-input"
       :class="{
-        checked: isChecked || indeterminate,
+        checked: isChecked,
         disabled,
         invalid
       }"
