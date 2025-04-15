@@ -6,6 +6,7 @@
         <router-link to="/">home</router-link>
         <router-link to="/input">input</router-link>
         <router-link to="/button">button</router-link>
+        <router-link to="/textarea">textarea</router-link>
         <router-link to="/dialog">dialog</router-link>
         <router-link to="/tabs">tabs</router-link>
         <router-link to="/dropdown">dropdown</router-link>

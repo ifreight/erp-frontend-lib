@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import InputView from '../views/InputView.vue';
 import ButtonView from '../views/ButtonView.vue';
+import TextAreaView from '../views/TextAreaView.vue';
 import DialogView from '../views/DialogView.vue';
 import TabsView from '../views/TabsView.vue';
 import DropdownView from '../views/DropdownView.vue';
@@ -24,6 +25,11 @@ const router = createRouter({
       path: '/button',
       name: 'button',
       component: ButtonView,
+    },
+    {
+      path: '/textarea',
+      name: 'textarea',
+      component: TextAreaView,
     },
     {
       path: '/dialog',

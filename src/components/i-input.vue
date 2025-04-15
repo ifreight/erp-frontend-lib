@@ -297,7 +297,7 @@ export default {
 </script>
 
 <style>
-@reference "tailwindcss";
+@reference "@/assets/global.css";
 
 .i-input {
   .i-input-container {

@@ -28,6 +28,7 @@ export default {
     },
     badge: Boolean,
   },
+  emits: ['click'],
   computed: {
     buttonClasses() {
       const classes = [];
@@ -66,19 +67,19 @@ export default {
 @reference "@/assets/global.css";
 
 .i-button {
-  @apply tw-w-full tw-rounded-md tw-bg-yellow-300 tw-border tw-border-yellow-300 tw-h-[53px] tw-p-2 tw-cursor-pointer;
-  @apply tw-relative tw-font-semibold tw-text-base tw-text-gray-900 tw-flex tw-justify-center tw-items-center;
+  @apply tw:w-full tw:rounded-md tw:bg-yellow-300 tw:border tw:border-yellow-300 tw:h-[53px] tw:p-2 tw:cursor-pointer;
+  @apply tw:relative tw:font-semibold tw:text-base tw:text-gray-900 tw:flex tw:justify-center tw:items-center;
 
   &.disabled {
-    @apply tw-bg-gray-200 tw-text-gray-400 tw-border-gray-200 tw-pointer-events-none;
+    @apply tw:bg-gray-200 tw:text-gray-400 tw:border-gray-200 tw:pointer-events-none;
   }
 
   &.error {
-    @apply tw-border-2 tw-border-red-400;
+    @apply tw:border-2 tw:border-red-400;
   }
 
   &.plain {
-    @apply tw-bg-white;
+    @apply tw:bg-white;
   }
 
   &.badge::before {
@@ -94,44 +95,44 @@ export default {
 
   &:hover,
   &:active {
-    @apply tw-text-red-700;
+    @apply tw:text-red-700;
   }
 
   &.lg {
-    @apply tw-text-lg;
+    @apply tw:text-lg;
   }
 
   &.sm {
-    @apply tw-text-sm tw-leading-4 tw-h-[41px];
+    @apply tw:text-sm tw:leading-4 tw:h-[41px];
   }
 
   &.xs {
-    @apply tw-text-xs tw-h-[41px];
+    @apply tw:text-xs tw:h-[41px];
   }
 }
 
 .i-button-text {
-  @apply tw-flex tw-justify-center tw-items-center tw-p-0 tw-border-0 tw-text-yellow-700 tw-font-medium tw-bg-transparent tw-cursor-pointer;
+  @apply tw:flex tw:justify-center tw:items-center tw:p-0 tw:border-0 tw:text-yellow-700 tw:font-medium tw:bg-transparent tw:cursor-pointer;
 
   &.disabled {
-    @apply tw-text-gray-400 tw-pointer-events-none;
+    @apply tw:text-gray-400 tw:pointer-events-none;
   }
 
   &.lg {
-    @apply tw-text-lg;
+    @apply tw:text-lg;
   }
 
   &.sm {
-    @apply tw-text-sm;
+    @apply tw:text-sm;
   }
 
   &.xs {
-    @apply tw-text-xs;
+    @apply tw:text-xs;
   }
 
   &:hover,
   &:active {
-    @apply tw-underline;
+    @apply tw:underline;
   }
 }
 </style>

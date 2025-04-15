@@ -125,7 +125,7 @@ export default {
 </script>
 
 <style>
-@reference "tailwindcss";
+@reference "@/assets/global.css";
 
 @keyframes i-dialog-fade-in {
   0% {
@@ -196,14 +196,14 @@ export default {
 }
 
 .i-dialog-header {
-  @apply text-xl font-bold px-8 pt-6 pb-0 w-full;
+  @apply tw:text-xl tw:font-bold tw:px-8 tw:pt-6 tw:pb-0 tw:w-full;
 }
 
 .i-dialog-body {
-  @apply p-8 w-full;
+  @apply tw:p-8 tw:w-full;
 }
 
 .i-dialog-close {
-  @apply absolute top-7 right-7 bg-transparent cursor-pointer;
+  @apply tw:absolute tw:top-7 tw:right-7 tw:bg-transparent tw:cursor-pointer;
 }
 </style>

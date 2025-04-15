@@ -1,9 +1,9 @@
 <template>
   <div class="container-dropdown-view">
-    <div class="relative">
+    <div class="tw:relative">
       <i-button
-        @click="dropdownVisible = !dropdownVisible"
-        class="tw:w-2.5"
+        @click="clickHere"
+        class="tw:w-[200px]"
       >
         Click Here
       </i-button>
@@ -34,9 +34,13 @@ export default {
   },
   setup() {
     const dropdownVisible = ref(false);
-
+    const clickHere = (() => {
+      console.log('woi')
+      dropdownVisible.value = !dropdownVisible.value;
+    })
     return {
-      dropdownVisible
+      dropdownVisible,
+      clickHere,
     }
   }
 }
