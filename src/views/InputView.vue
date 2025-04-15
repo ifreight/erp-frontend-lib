@@ -122,8 +122,8 @@ export default {
 }
 </script>
 
-<style scss>
-@reference "../assets/global.css";
+<style>
+@reference "@/assets/global.css";
 
 .container-input-view {
   @apply h-full;

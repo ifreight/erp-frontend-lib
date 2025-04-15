@@ -4,6 +4,8 @@ import InputView from '../views/InputView.vue'
 import ButtonView from '../views/ButtonView.vue'
 import RadioView from '../views/RadioView.vue'
 import CheckboxView from '../views/CheckboxView.vue'
+import TextAreaView from '../views/TextAreaView.vue'
+import DialogView from '../views/DialogView.vue'
 import TabsView from '../views/TabsView.vue'
 
 const router = createRouter({
@@ -33,6 +35,16 @@ const router = createRouter({
       path: '/checkbox',
       name: 'checkbox',
       component: CheckboxView,
+    },
+    {
+      path: '/textarea',
+      name: 'textarea',
+      component: TextAreaView,
+    },
+    {
+      path: '/dialog',
+      name: 'dialog',
+      component: DialogView,
     },
     {
       path: '/tabs',

@@ -349,7 +349,7 @@ export default {
         margin: 0;
       }
 
-      &[type='number'] {
+      &[type="number"] {
         appearance: textfield;
       }
     }
