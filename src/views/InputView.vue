@@ -6,7 +6,7 @@
       input-id="Text1"
       name="text"
       label="Input Text"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       clearable
       placeholder="max 3"
     />
@@ -16,7 +16,7 @@
       input-id="Text2"
       name="text"
       label="Input Text"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       :invalid="true"
       errorMessage="Error Message"
     />
@@ -26,7 +26,7 @@
       input-id="Text3"
       name="text"
       label="Input Text"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       :disabled="true"
       placeholder="disabled placholder"
     />
@@ -36,7 +36,7 @@
       input-id="Text4"
       name="text"
       label="Input Text"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       clearable
       :maxlength="3"
       placeholder="placeholder max 3"
@@ -50,7 +50,7 @@
       input-id="Text5"
       name="text"
       label="Input Text"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       clearable
       type="password"
       borderless
@@ -61,7 +61,7 @@
       input-id="Text6"
       name="text"
       label="Input Number"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       clearable
       mask="decimal"
     />
@@ -71,7 +71,7 @@
       input-id="Text7"
       name="text"
       label="Input Number"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       clearable
       mask="number"
     />
@@ -81,7 +81,7 @@
       input-id="Text8"
       name="text"
       label="Input Number"
-      class="flex-1 mb-2"
+      class="tw:flex-1 tw:mb-2"
       clearable
       readOnly
     />
@@ -126,6 +126,6 @@ export default {
 @reference "@/assets/global.css";
 
 .container-input-view {
-  @apply h-full;
+  @apply tw:h-full;
 }
 </style>

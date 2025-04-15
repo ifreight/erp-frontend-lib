@@ -1,30 +1,18 @@
 <template>
   <div>
-    <div class="flex gap-2">
-      <button
-        class="i-button"
-        @click="showDialog = true"
-      >
+    <div class="tw:flex tw:gap-2">
+      <i-button @click="showDialog = true">
         Normal Dialog
-      </button>
-      <button
-        class="i-button"
-        @click="dialogWithoutHeader = true"
-      >
+      </i-button>
+      <i-button @click="dialogWithoutHeader = true">
         Without Header
-      </button>
-      <button
-        class="i-button"
-        @click="dialogWithoutClose = true"
-      >
+      </i-button>
+      <i-button @click="dialogWithoutClose = true">
         Without Close Btn
-      </button>
-      <button
-        class="i-button"
-        @click="dialogNoOut = true"
-      >
+      </i-button>
+      <i-button @click="dialogNoOut = true">
         Can't close when click outside
-      </button>
+      </i-button>
     </div>
     <i-dialog
       v-model:show="showDialog"
@@ -37,21 +25,15 @@
       <template #header>
         Header
       </template>
-      <div class="text-sm">Text pertama aw awaw</div>
-      <div class="text-sm">Text kedua ulalala</div>
-      <div class="btn-wrapper">
-        <button
-          class="i-button mr-3 text-sm"
-          @click="showDialog = false"
-        >
+      <div class="tw:text-sm">Text pertama aw awaw</div>
+      <div class="tw:text-sm">Text kedua ulalala</div>
+      <div class="dialog-btn-wrapper">
+        <i-button @click="showDialog = false">
           Cancel
-        </button>
-        <button
-          class="i-button text-sm"
-          @click="save"
-        >
+        </i-button>
+        <i-button @click="save">
           Confirm
-        </button>
+        </i-button>
       </div>
     </i-dialog>
     <i-dialog
@@ -61,8 +43,8 @@
       destroy-on-close
       :width="'564px'"
     >
-      <div class="text-sm">Text pertama aw awaw</div>
-      <div class="text-sm">Text kedua ulalala</div>
+      <div class="tw:text-sm">Text pertama aw awaw</div>
+      <div class="tw:text-sm">Text kedua ulalala</div>
     </i-dialog>
     <i-dialog
       v-model:show="dialogWithoutClose"
@@ -74,8 +56,8 @@
       <template #header>
         iFreight
       </template>
-      <div class="text-sm">Text pertama aw awaw</div>
-      <div class="text-sm">Text kedua ulalala</div>
+      <div class="tw:text-sm">Text pertama aw awaw</div>
+      <div class="tw:text-sm">Text kedua ulalala</div>
     </i-dialog>
     <i-dialog
       v-model:show="dialogNoOut"
@@ -95,10 +77,12 @@
 
 <script>
 import { ref } from 'vue';
+import IButton from '@/components/i-button.vue';
 import IDialog from '@/components/i-dialogs.vue';
 
 export default {
   components: {
+    IButton,
     IDialog,
   },
 
@@ -124,20 +108,9 @@ export default {
 </script>
 
 <style>
-@reference "tailwindcss";
+@reference "@/assets/global.css";
 
-.i-button {
-  @apply bg-yellow-300;
-  padding: 10px 20px;
-  color: black;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-wrapper {
-  @reference "tailwindcss";
-
-  @apply mt-9 flex justify-end;
+.dialog-btn-wrapper {
+  @apply tw:mt-9 tw:flex tw:justify-end;
 }
 </style>

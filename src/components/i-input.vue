@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, watch, ref } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { IMaskComponent } from 'vue-imask';
@@ -163,6 +163,8 @@ export default {
     'keyup'
   ],
   setup(props, { slots, emit }) {
+    const inputRef = ref();
+
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
     const classes = computed(() => {
       return {
@@ -265,6 +267,15 @@ export default {
       emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
     });
 
+    watch(() => displayModelValue, (value) => {
+      if (inputRef.value && !props.mask) {
+        inputRef.value.value = value == null ? '' : value;
+      }
+    },
+      {
+        immediate: true,
+      }
+    )
     return {
       filled,
       classes,
@@ -273,6 +284,7 @@ export default {
       maskAttributes,
       inputClasses,
       inputComponent,
+      inputRef,
       onInput,
       onChange,
       onFocus,
@@ -281,21 +293,11 @@ export default {
       onAcceptUnmasked,
     }
   },
-  watch: {
-    displayModelValue: {
-      immediate: true,
-      handler(value) {
-        if (this.$refs.inputRef && !this.mask) {
-          this.$refs.inputRef.value = value == null ? '' : value;
-        }
-      },
-    },
-  },
 };
 </script>
 
 <style>
-@reference "tailwindcss";
+@reference "@/assets/global.css";
 
 .i-input {
   .i-input-container {
@@ -349,7 +351,7 @@ export default {
         margin: 0;
       }
 
-      &[type="number"] {
+      &[type='number'] {
         appearance: textfield;
       }
     }

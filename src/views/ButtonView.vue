@@ -1,6 +1,6 @@
 <template>
   <div class="container-button-view">
-    <div class="flex gap-2 mb-5">
+    <div class="tw:flex tw:gap-2 tw:mb-5">
       <i-button>
         Default Button
       </i-button>
@@ -14,14 +14,14 @@
         Plain Button
       </i-button>
     </div>
-    <div class="flex gap-2 mb-5">
+    <div class="tw:flex tw:gap-2 tw:mb-5">
       <i-button :error="true">
         Error Button
       </i-button>
     </div>
-    <div class="mb-5">
+    <div class="tw:mb-5">
       By Size
-      <div class="flex gap-2">
+      <div class="tw:flex tw:gap-2">
         <i-button>
           Normal Size
         </i-button>
@@ -38,19 +38,19 @@
     </div>
     <div>
       With Prepend
-      <div class="flex gap-2">
+      <div class="tw:flex tw:gap-2 tw:text-2xl">
         <i-button>
           <template #prepend><ic-calendar /></template>
-          <span class="ml-1">Prepend</span>
+          <span class="tw:ml-1">Prepend</span>
         </i-button>
         <i-button>
           <template #append><ic-calendar /></template>
-          <span class="mr-1">Append</span>
+          <span class="tw:mr-1">Append</span>
         </i-button>
-        <i-button>
+        <i-button @click="haloTest">
           <template #prepend><ic-calendar /></template>
           <template #append><ic-calendar /></template>
-          <span class="mx-1">Pre - Append</span>
+          <span class="tw:mx-1">Pre - Append</span>
         </i-button>
       </div>
     </div>
@@ -67,6 +67,14 @@ export default {
     IButton,
     IcCalendar,
   },
+  setup() {
+    const haloTest = (() => {
+      console.log('halo')
+    })
+    return {
+      haloTest,
+    }
+  }
 }
 </script>
 
@@ -74,6 +82,6 @@ export default {
 @reference "@/assets/global.css";
 
 .container-button-view {
-  @apply h-full;
+  @apply tw:h-full;
 }
 </style>

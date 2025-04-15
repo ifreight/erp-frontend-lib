@@ -192,11 +192,11 @@ export default {
 @reference "@/assets/global.css";
 
 .i-textarea {
-  @apply relative h-[120px] bg-white border border-gray-500 rounded-xs px-4 pt-4;
+  @apply tw:relative tw:h-[120px] tw:bg-white tw:border tw:border-gray-500 tw:rounded-xs tw:px-4 tw:pt-4;
 }
 
 .textarea {
-  @apply w-full h-[90px] p-0 text-sm text-gray-900 text-ellipsis resize-none border-none;
+  @apply tw:w-full tw:h-[90px] tw:p-0 tw:text-sm tw:text-gray-900 tw:text-ellipsis tw:resize-none tw:border-none;
 
   &:focus-visible,
   &:focus {
@@ -204,27 +204,27 @@ export default {
   }
 
   &::placeholder {
-    @apply text-gray-700;
+    @apply tw:text-gray-700;
     opacity: 1; /* Firefox */
   }
 
   &:-webkit-input-placeholder {
     /* Internet Explorer 10-11 */
-    @apply text-gray-700;
+    @apply tw:text-gray-700;
   }
 
   &::-webkit-input-placeholder {
     /* Microsoft Edge */
-    @apply text-gray-700;
+    @apply tw:text-gray-700;
   }
 
   &:disabled {
-    @apply text-gray-600 bg-transparent;
+    @apply tw:text-gray-600 tw:bg-transparent;
   }
 }
 
 .disabled {
-  @apply bg-gray-300 text-gray-600;
+  @apply tw:bg-gray-300 tw:text-gray-600;
 }
 
 .invalid,
@@ -234,7 +234,7 @@ export default {
 }
 
 .i-input-error {
-  @apply mt-2 text-xs text-red-300;
+  @apply tw:mt-2 tw:text-xs tw:text-red-300;
 }
 
 .i-textarea-limit {
