@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2 class="text-xl bg-gray-50 mb-4">Text Area</h2>
-    <div class="mb-4">
+    <h2 class="tw:text-xl tw:bg-gray-50 tw:mb-4">Text Area</h2>
+    <div class="tw:mb-4">
       <div>Normal</div>
       <i-text-area
         v-model="textAreaTest"
@@ -12,7 +12,7 @@
       />
     </div>
 
-    <div class="mb-4">
+    <div class="tw:mb-4">
       <div>Disabled</div>
       <i-text-area
         v-model="valueDisabled"
@@ -23,7 +23,7 @@
       />
     </div>
 
-    <div class="mb-4">
+    <div class="tw:mb-4">
       <div>Error</div>
       <i-text-area
         v-model="textArea"
@@ -35,7 +35,7 @@
       />
     </div>
 
-    <div class="mb-4">
+    <div class="tw:mb-4">
       <div>Text Limit</div>
       <i-text-area
         v-model="textArea"

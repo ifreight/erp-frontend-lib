@@ -143,37 +143,37 @@ export default {
 
 .i-tabs {
   .i-tabs-header {
-    @apply relative border-b border-b-gray-500;
+    @apply tw:relative tw:border-b tw:border-b-gray-500;
 
     .i-tabs-header-wrapper {
       -ms-overflow-style: none;
       scrollbar-width: none;
 
-      @apply px-20 flex overflow-x-auto;
+      @apply tw:px-20 tw:flex tw:overflow-x-auto;
 
       &::-webkit-scrollbar {
         display: none;
       }
 
       .i-tabs-header-item {
-        @apply cursor-pointer w-fit text-center px-8 py-5 whitespace-nowrap;
+        @apply tw:cursor-pointer tw:w-fit tw:text-center tw:px-8 tw:py-5 tw:whitespace-nowrap;
 
         &.active {
-          @apply border-b-yellow-800 border-b-4 font-semibold;
+          @apply tw:border-b-yellow-800 tw:border-b-4 tw:font-semibold;
         }
 
         &.disabled {
-          @apply text-gray-500 cursor-not-allowed;
+          @apply tw:text-gray-500 tw:cursor-not-allowed tw:bg-transparent;
         }
       }
     }
 
     .i-tabs-header-nav-left {
-      @apply cursor-pointer flex justify-start items-center absolute -left-[1px] top-[20px] w-[30px] h-[30px] bg-yellow-800 pl-2.5 rounded-full;
+      @apply tw:cursor-pointer tw:flex tw:justify-start tw:items-center tw:absolute tw:-left-[1px] tw:top-[20px] tw:w-[30px] tw:h-[30px] tw:bg-yellow-800 tw:pl-2.5 tw:rounded-full;
     }
 
     .i-tabs-header-nav-right {
-      @apply cursor-pointer flex justify-start items-center absolute -right-[1px] top-[20px] w-[30px] h-[30px] bg-yellow-800 pl-3 rounded-full;
+      @apply tw:cursor-pointer tw:flex tw:justify-start tw:items-center tw:absolute tw:-right-[1px] tw:top-[20px] tw:w-[30px] tw:h-[30px] tw:bg-yellow-800 tw:pl-3 tw:rounded-full;
     }
   }
 }

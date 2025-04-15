@@ -2,8 +2,8 @@
   <div>
     <!-- Normal Checkbox -->
     <div>
-      <div class="font-bold bg-amber-300 text-xl">Normal Checkbox</div>
-      <div class="flex gap-6 mt-6">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Normal Checkbox</div>
+      <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
           v-model="modelOne"
           name="modelOneNormal"
@@ -18,9 +18,9 @@
     </div>
 
     <!-- Disabled Checkbox -->
-    <div class="mt-24">
-      <div class="font-bold bg-amber-300 text-xl">Disabled Checkbox</div>
-      <div class="flex gap-6 mt-6">
+    <div class="tw:mt-24">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Disabled Checkbox</div>
+      <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
           v-model="modelOneDisabled"
           disabled
@@ -37,9 +37,9 @@
     </div>
 
     <!-- Invalid Checkbox -->
-    <div class="mt-24">
-      <div class="font-bold bg-amber-300 text-xl">Invalid Checkbox</div>
-      <div class="flex gap-6 mt-6">
+    <div class="tw:mt-24">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Invalid Checkbox</div>
+      <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
           v-model="modelInvalid"
           invalid
@@ -50,9 +50,9 @@
     </div>
 
     <!-- Indeterminate Checkbox -->
-    <div class="mt-24">
-      <div class="font-bold bg-amber-300 text-xl">Indeterminate Checkbox</div>
-      <div class="flex gap-6 mt-6">
+    <div class="tw:mt-24">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Indeterminate Checkbox</div>
+      <div class="tw:flex tw:gap-6 tw:mt-6">
         <!-- Check all checkbox (use indeterminate) -->
         <i-checkbox
           v-model="modelCheckAll"

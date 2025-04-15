@@ -55,21 +55,21 @@ export default {
 </script>
 
 <style>
-@reference "../assets/global.css";
+@reference "@/assets/global.css";
 
 .i-radio {
-  @apply cursor-pointer;
+  @apply tw:cursor-pointer;
 
   &.checked {
-    @apply font-bold;
+    @apply tw:font-bold;
   }
 
   &.disabled {
-    @apply text-gray-700 accent-gray-700 cursor-not-allowed;
+    @apply tw:text-gray-700 tw:accent-gray-700 tw:bg-transparent tw:cursor-not-allowed;
   }
 
   .i-radio-input {
-    @apply mr-2 accent-gray-900;
+    @apply tw:mr-2 tw:accent-gray-900;
   }
 }
 </style>

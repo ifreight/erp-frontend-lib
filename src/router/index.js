@@ -1,12 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import InputView from '../views/InputView.vue'
-import ButtonView from '../views/ButtonView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import InputView from '../views/InputView.vue';
+import ButtonView from '../views/ButtonView.vue';
+import TextAreaView from '../views/TextAreaView.vue';
+import DialogView from '../views/DialogView.vue';
+import TabsView from '../views/TabsView.vue';
+import DropdownView from '../views/DropdownView.vue';
+import InputTelView from '../views/InputTelView.vue';
 import RadioView from '../views/RadioView.vue'
 import CheckboxView from '../views/CheckboxView.vue'
-import TextAreaView from '../views/TextAreaView.vue'
-import DialogView from '../views/DialogView.vue'
-import TabsView from '../views/TabsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,7 +53,17 @@ const router = createRouter({
       name: 'tabs',
       component: TabsView,
     },
+    {
+      path: '/dropdown',
+      name: 'dropdown',
+      component: DropdownView,
+    },
+    {
+      path: '/input-tel',
+      name: 'inputTel',
+      component: InputTelView,
+    },
   ],
-})
+});
 
-export default router
+export default router;

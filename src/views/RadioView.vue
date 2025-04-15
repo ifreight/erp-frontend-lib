@@ -2,8 +2,8 @@
   <div>
     <!-- Normal Radio - true or false -->
     <div>
-      <div class="font-bold bg-amber-300 text-xl">Normal Radio</div>
-      <div class="flex mt-6 gap-6">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Normal Radio</div>
+      <div class="tw:flex tw:mt-6 tw:gap-6">
         <i-radio
           v-model="normalRadio"
           :label-value="false"
@@ -22,9 +22,9 @@
     </div>
 
     <!-- Option Radio - be able to use string or number -->
-    <div class="mt-24">
-      <div class="font-bold bg-amber-300 text-xl">Option Radio</div>
-      <div class="flex mt-6 gap-6">
+    <div class="tw:mt-24">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Option Radio</div>
+      <div class="tw:flex tw:mt-6 tw:gap-6">
         <i-radio
           v-model="optionRadio"
           :label-value="'optionA'"
@@ -57,9 +57,9 @@
     </div>
 
     <!-- Disabled Radio -->
-    <div class="mt-24">
-      <div class="font-bold bg-amber-300 text-xl">Disabled Radio</div>
-      <div class="flex mt-6 gap-6">
+    <div class="tw:mt-24">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Disabled Radio</div>
+      <div class="tw:flex tw:mt-6 tw:gap-6">
         <i-radio
           v-model="disabledRadio"
           :label-value="true"

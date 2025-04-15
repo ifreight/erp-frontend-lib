@@ -28,9 +28,9 @@
 
     <slot>
       <span :class="{
-        'text-gray-700': disabled,
-        'ml-2.5': indeterminate,
-        'ml-6': !indeterminate
+        'tw:text-gray-700': disabled,
+        'tw:ml-2.5': indeterminate,
+        'tw:ml-6': !indeterminate
       }">
         {{ label }}
       </span>
@@ -131,50 +131,50 @@ export default {
 @reference '@/assets/global.css';
 
 .i-checkbox {
-  @apply flex items-center relative cursor-pointer m-0 z-1;
+  @apply tw:flex tw:items-center tw:relative tw:cursor-pointer tw:m-0 tw:z-1;
 
   .i-checkbox-dash-icon {
-    @apply opacity-100 text-white bg-gray-900 w-3.5 h-3.5 rounded-xs p-0.5;
+    @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5;
   }
 
   .i-checkbox-input {
-    @apply border border-gray-900 rounded-xs w-3.5 h-3.5 absolute;
+    @apply tw:border tw:border-gray-900 tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
 
     .i-checkbox-icon {
-      @apply opacity-0 w-3.5 h-3.5;
+      @apply tw:opacity-0 tw:w-3.5 tw:h-3.5;
     }
 
     input[type='checkbox'] {
-      @apply hidden;
+      @apply tw:hidden;
 
       &:checked {
         + .i-checkbox-icon {
-          @apply opacity-100 text-white bg-gray-900 rounded-xs p-0.5;
+          @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:rounded-xs tw:p-0.5;
         }
       }
 
       &:disabled {
         + .i-checkbox-icon {
-          @apply bg-gray-700;
+          @apply tw:bg-gray-700;
         }
       }
     }
 
     &.checked {
-      @apply border-none;
+      @apply tw:border-none;
     }
 
     &.disabled {
-      @apply border-gray-700 cursor-not-allowed;
+      @apply tw:border-gray-700 tw:cursor-not-allowed tw:bg-transparent;
     }
 
     &.invalid {
-      @apply border-red-300;
+      @apply tw:border-red-300;
     }
   }
 
   &.disabled {
-    @apply cursor-not-allowed;
+    @apply tw:cursor-not-allowed tw:bg-transparent;
   }
 }
 </style>
