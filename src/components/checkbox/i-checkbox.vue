@@ -5,33 +5,30 @@
   >
     <span
       class="i-checkbox-input"
-      :class="{
-        checked: isChecked,
-        disabled,
-        invalid
-      }"
+      :class="checkboxInputClass"
     >
       <input
         type="checkbox"
         :name="name"
         :checked="isChecked"
         :disabled="disabled"
+        :class="elementInputClass"
         v-on:click="onClick"
       />
-      <ic-check class="i-checkbox-icon" />
+      <ic-check
+        class="i-checkbox-icon"
+        :class="checkboxInputClass"
+      />
     </span>
 
     <ic-dash
       v-if="indeterminate"
       class="i-checkbox-dash-icon"
+      :class="checkboxInputClass"
     />
 
     <slot>
-      <span :class="{
-        'tw:text-gray-700': disabled,
-        'tw:ml-2.5': indeterminate,
-        'tw:ml-6': !indeterminate
-      }">
+      <span :class="spanClass">
         {{ label }}
       </span>
     </slot>
@@ -39,7 +36,7 @@
 </template>
 
 <script>
-import { inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 
 import IcCheck from '@/icons/ic-check.vue';
 import IcDash from '@/icons/ic-dash.vue';
@@ -63,7 +60,7 @@ export default {
     },
     label: {
       type: String,
-      required: true
+      required: false
     },
     name: {
       type: String,
@@ -81,12 +78,77 @@ export default {
       type: Boolean,
       default: false,
       required: false
+    },
+    size: {
+      type: String,
+      default: 'base',
+      validator(value) {
+        return ['base', 'lg'].includes(value)
+      }
+    },
+    theme: {
+      type: String,
+      required: true,
+      validator(value) {
+        return ['dark', 'light'].includes(value)
+      }
     }
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const isChecked = ref(false)
     const rootChecked = inject('rootCheckbox', null)
+
+    const checkboxInputClass = computed(() => {
+      const classes = ref([])
+
+      if (isChecked.value) {
+        classes.value.push('checked')
+      }
+      if (props.disabled) {
+        classes.value.push('disabled')
+      }
+      if (props.invalid) {
+        classes.value.push('invalid')
+      }
+      if (props.size !== 'base') {
+        classes.value.push(`${props.size}`)
+      }
+      classes.value.push(props.theme)
+
+      return classes.value
+    })
+
+    const elementInputClass = computed(() => {
+      const classes = ref([])
+
+      if (props.size !== 'base') {
+        classes.value.push(`${props.size}`)
+      }
+      classes.value.push(props.theme)
+
+      return classes.value
+    })
+
+    const spanClass = computed(() => {
+      const classes = ref([])
+
+      if (props.size == 'base') {
+        classes.value.push({
+          'tw:text-gray-700': props.disabled,
+          'tw:ml-2.5': props.indeterminate,
+          'tw:ml-6': !props.indeterminate
+        })
+      } else {
+        classes.value.push({
+          'tw:text-gray-700': props.disabled,
+          'tw:ml-3': props.indeterminate,
+          'tw:ml-8': !props.indeterminate
+        })
+      }
+
+      return classes.value
+    })
 
     watch(() => props.modelValue, (value) => {
       if (!props.modelLabel) {
@@ -121,6 +183,9 @@ export default {
     return {
       isChecked,
       rootChecked,
+      checkboxInputClass,
+      elementInputClass,
+      spanClass,
       onClick
     }
   }
@@ -134,28 +199,70 @@ export default {
   @apply tw:flex tw:items-center tw:relative tw:cursor-pointer tw:m-0 tw:z-1;
 
   .i-checkbox-dash-icon {
-    @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5;
+    @apply tw:opacity-100 tw:text-white tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5;
+
+    &.disabled {
+      &.dark {
+        @apply tw:bg-gray-700;
+      }
+
+      &.light {
+        @apply tw:text-gray-700 tw:bg-transparent;
+      }
+    }
+
+    &.lg {
+      @apply tw:w-5 tw:h-5;
+    }
+
+    &.dark {
+      @apply tw:bg-gray-900;
+    }
+
+    &.light {
+      @apply tw:bg-transparent tw:text-gray-900;
+    }
   }
 
   .i-checkbox-input {
-    @apply tw:border tw:border-gray-900 tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
+    @apply tw:border tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
 
     .i-checkbox-icon {
       @apply tw:opacity-0 tw:w-3.5 tw:h-3.5;
+
+      &.lg {
+        @apply tw:w-5 tw:h-5;
+      }
     }
 
     input[type='checkbox'] {
       @apply tw:hidden;
 
       &:checked {
-        + .i-checkbox-icon {
-          @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:rounded-xs tw:p-0.5;
+        &.dark {
+          + .i-checkbox-icon {
+            @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:rounded-xs tw:p-0.5;
+          }
+        }
+
+        &.light {
+          + .i-checkbox-icon {
+            @apply tw:opacity-100 tw:text-gray-900 tw:rounded-xs tw:p-0.5 tw:border tw:border-gray-700;
+          }
         }
       }
 
       &:disabled {
-        + .i-checkbox-icon {
-          @apply tw:bg-gray-700;
+        &.dark {
+          + .i-checkbox-icon {
+            @apply tw:bg-gray-700;
+          }
+        }
+
+        &.light {
+          + .i-checkbox-icon {
+            @apply tw:text-gray-700 tw:bg-transparent;
+          }
         }
       }
     }
@@ -165,11 +272,31 @@ export default {
     }
 
     &.disabled {
-      @apply tw:border-gray-700 tw:cursor-not-allowed tw:bg-transparent;
+      @apply tw:cursor-not-allowed tw:bg-transparent;
+
+      &.dark,
+      &.light {
+        @apply tw:border-gray-700;
+      }
     }
 
     &.invalid {
-      @apply tw:border-red-300;
+      &.dark,
+      &.light {
+        @apply tw:border-red-300;
+      }
+    }
+
+    &.lg {
+      @apply tw:w-5 tw:h-5;
+    }
+
+    &.dark {
+      @apply tw:border-gray-900;
+    }
+
+    &.light {
+      @apply tw:border-gray-700;
     }
   }
 
