@@ -47,7 +47,7 @@
           <template #append><ic-calendar /></template>
           <span class="tw:mr-1">Append</span>
         </i-button>
-        <i-button @click="haloTest">
+        <i-button>
           <template #prepend><ic-calendar /></template>
           <template #append><ic-calendar /></template>
           <span class="tw:mx-1">Pre - Append</span>
@@ -67,14 +67,6 @@ export default {
     IButton,
     IcCalendar,
   },
-  setup() {
-    const haloTest = (() => {
-      console.log('halo')
-    })
-    return {
-      haloTest,
-    }
-  }
 }
 </script>
 

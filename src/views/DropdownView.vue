@@ -35,7 +35,6 @@ export default {
   setup() {
     const dropdownVisible = ref(false);
     const clickHere = (() => {
-      console.log('woi')
       dropdownVisible.value = !dropdownVisible.value;
     })
     return {
