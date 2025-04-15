@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex gap-2">
+    <div class="tw:flex tw:gap-2">
       <button
         class="i-button"
         @click="showDialog = true"
@@ -136,8 +136,6 @@ export default {
 }
 
 .btn-wrapper {
-  @reference "tailwindcss";
-
   @apply mt-9 flex justify-end;
 }
 </style>
