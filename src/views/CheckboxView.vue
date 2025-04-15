@@ -53,23 +53,27 @@
     <div class="mt-24">
       <div class="font-bold bg-amber-300 text-xl">Indeterminate Checkbox</div>
       <div class="flex gap-6 mt-6">
+        <!-- Check all checkbox (use indeterminate) -->
         <i-checkbox
           v-model="modelCheckAll"
           :indeterminate="isIndeterminate"
           name="modelCheckAll"
           label="Check all"
+          @change="changeCheckAllHandler"
         />
+        <!-- checkbox group is required -->
         <i-checkbox-group
           v-model="checkedList"
           @change="changeCheckedHandler"
         >
+          <!-- use model-label instead (string) -->
           <i-checkbox
-            :model-label="'modelCheckA'"
+            model-label="modelCheckA"
             name="modelCheckA"
             label="A"
           />
           <i-checkbox
-            :model-label="'modelCheckB'"
+            model-label="modelCheckB"
             name="modelCheckB"
             label="B"
           />
@@ -80,7 +84,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import ICheckboxGroup from '@/components/checkbox/i-checkbox-group.vue';
@@ -101,10 +105,18 @@ export default {
 
     const modelCheckAll = ref(false)
     const isIndeterminate = ref(false)
-    const checkedList = ref(['modelCheckA', 'modelCheckB'])
+    const checkboxOptions = computed(() => ['modelCheckA', 'modelCheckB'])
+    const checkedList = ref(['modelCheckA'])
 
-    const changeCheckedHandler = (array) => {
+    const changeCheckAllHandler = () => {
+      checkedList.value = modelCheckAll.value ? checkboxOptions.value : []
+      isIndeterminate.value = false
+    }
 
+    const changeCheckedHandler = () => {
+      const checkedCount = checkedList.value.length
+      modelCheckAll.value = checkedCount === checkboxOptions.value.length
+      isIndeterminate.value = checkedCount > 0 && checkedCount < checkboxOptions.value.length
     }
 
     return {
@@ -115,7 +127,9 @@ export default {
       modelInvalid,
       modelCheckAll,
       isIndeterminate,
-      checkedList
+      checkedList,
+      changeCheckAllHandler,
+      changeCheckedHandler
     }
   }
 }

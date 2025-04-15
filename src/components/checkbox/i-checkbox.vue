@@ -6,7 +6,7 @@
     <span
       class="i-checkbox-input"
       :class="{
-        checked: modelValue,
+        checked: isChecked || indeterminate,
         disabled,
         invalid
       }"
@@ -14,25 +14,24 @@
       <input
         type="checkbox"
         :name="name"
-        :checked="modelValue"
+        :checked="isChecked"
         :disabled="disabled"
         v-on:click="onClick"
       />
-      <ic-dash
-        v-if="indeterminate"
-        class="i-checkbox-icon"
-      />
-      <ic-check
-        v-else
-        class="i-checkbox-icon"
-      />
+      <ic-check class="i-checkbox-icon" />
     </span>
 
+    <ic-dash
+      v-if="indeterminate"
+      class="i-checkbox-dash-icon"
+    />
+
     <slot>
-      <span
-        class="ml-6"
-        :class="disabled ? 'text-gray-700' : ''"
-      >
+      <span :class="{
+        'text-gray-700': disabled,
+        'ml-2.5': indeterminate,
+        'ml-6': !indeterminate
+      }">
         {{ label }}
       </span>
     </slot>
@@ -40,6 +39,8 @@
 </template>
 
 <script>
+import { inject, onMounted, ref, watch } from 'vue';
+
 import IcCheck from '@/icons/ic-check.vue';
 import IcDash from '@/icons/ic-dash.vue';
 
@@ -52,12 +53,13 @@ export default {
   props: {
     modelValue: {
       type: Boolean,
-      default: false,
+      default: null,
       required: false
     },
     modelLabel: {
       type: String,
-      default: null
+      default: null,
+      required: false
     },
     label: {
       type: String,
@@ -83,11 +85,42 @@ export default {
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
+    const isChecked = ref(false)
+    const rootChecked = inject('rootCheckbox', null)
+
+    watch(() => props.modelValue, (value) => {
+      if (!props.modelLabel) {
+        isChecked.value = value
+      }
+    }, { immediate: true })
+
+    watch(() => rootChecked, (value) => {
+      if (value) {
+        if (props.modelLabel) {
+          if (value.value.includes(props.modelLabel)) {
+            isChecked.value = true
+          } else {
+            isChecked.value = false
+          }
+        }
+      }
+    }, { deep: true })
+
+    onMounted(() => {
+      if (props.modelLabel) {
+        if (rootChecked && rootChecked.value.includes(props.modelLabel)) {
+          isChecked.value = true
+        }
+      }
+    })
+
     const onClick = () => {
-      emit('update:modelValue', !props.modelValue)
+      emit('update:modelValue', !isChecked.value)
     }
 
     return {
+      isChecked,
+      rootChecked,
       onClick
     }
   }
@@ -99,6 +132,10 @@ export default {
 
 .i-checkbox {
   @apply flex items-center relative cursor-pointer m-0 z-1;
+
+  .i-checkbox-dash-icon {
+    @apply opacity-100 text-white bg-gray-900 w-3.5 h-3.5 rounded-xs p-0.5;
+  }
 
   .i-checkbox-input {
     @apply border border-gray-900 rounded-xs w-3.5 h-3.5 absolute;

@@ -117,7 +117,6 @@ export default {
 
     const changeActiveTab = (pane) => {
       if (!pane.disabled) {
-        activeTab.value = pane.name;
         emit('update:modelValue', pane.name);
       }
     }
