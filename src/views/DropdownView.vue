@@ -2,12 +2,55 @@
   <div class="container-dropdown-view">
     <div class="tw:relative">
       <i-button
-        @click="clickHere"
+        @click="dropdownVisible = !dropdownVisible"
         class="tw:w-[200px]"
       >
-        Click Here
+        Show Dropdown Bottom
       </i-button>
       <i-dropdown :visible="dropdownVisible">
+        <div>
+          halo 1
+        </div>
+        <div>
+          halo 2
+        </div>
+        <div>
+          halo 3
+        </div>
+      </i-dropdown>
+    </div>
+    <div class="tw:fixed tw:bottom-0">
+      <div class="tw:relative">
+        <i-button
+          @click="dropdownVisible2 = !dropdownVisible2"
+          class="tw:w-[200px]"
+        >
+          Show Dropdown Top
+        </i-button>
+        <i-dropdown :visible="dropdownVisible2">
+          <div>
+            halo 1
+          </div>
+          <div>
+            halo 2
+          </div>
+          <div>
+            halo 3
+          </div>
+        </i-dropdown>
+      </div>
+    </div>
+    <div class="tw:relative tw:mt-5">
+      <i-button
+        @click="dropdownVisible3 = !dropdownVisible3"
+        class="tw:w-[220px]"
+      >
+        Dropdown without arrow
+      </i-button>
+      <i-dropdown
+        :visible="dropdownVisible3"
+        :isShowArrow="false"
+      >
         <div>
           halo 1
         </div>
@@ -34,12 +77,14 @@ export default {
   },
   setup() {
     const dropdownVisible = ref(false);
-    const clickHere = (() => {
-      dropdownVisible.value = !dropdownVisible.value;
-    })
+    const dropdownVisible2 = ref(false);
+    const dropdownVisible3 = ref(false);
+
+
     return {
       dropdownVisible,
-      clickHere,
+      dropdownVisible2,
+      dropdownVisible3,
     }
   }
 }

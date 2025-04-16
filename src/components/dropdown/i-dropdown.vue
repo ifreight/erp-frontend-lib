@@ -9,10 +9,10 @@
     />
 
     <div
-      v-show="visible"
+      v-show="visible && isShowArrow"
       class="i-dropdown-arrow"
     >
-      <span :style="arrowStyles" />
+      <span class="i-dropdown-arrow-icon"></span>
     </div>
 
     <div
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, watch } from 'vue';
 
 export default {
   name: 'IDropdown',
@@ -36,25 +36,19 @@ export default {
       type: String,
       default: '100%',
     },
+    isShowArrow: {
+      type: Boolean,
+      default: true,
+    },
   },
   setup(props) {
     const openDirection = ref('below');
     const reference = ref();
 
-    const arrowStyles = computed(() => {
-      if (openDirection.value === 'below') {
-        return {
-          top: '-7px',
-        };
-      }
-      return {
-        top: '-9px',
-      };
-    });
-
     watch(() => props.visible, (value) => {
       if (value && reference.value) {
         const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
+        console.log(window.innerHeight, reference.value.getBoundingClientRect().bottom, spaceBelow)
         if (spaceBelow > 250) {
           openDirection.value = 'below';
         } else {
@@ -65,7 +59,6 @@ export default {
 
     return {
       openDirection,
-      arrowStyles,
       reference,
     };
   },
@@ -86,33 +79,44 @@ export default {
   .i-dropdown-arrow {
     position: absolute;
     width: 100%;
-
-    span {
-      position: absolute;
-      left: 15%;
-      z-index: 3;
-      border: solid 8px transparent;
-    }
+    left: 15%;
+    z-index: 4;
   }
 
   .i-dropdown-box {
     position: absolute;
     left: 0;
     z-index: 2;
-    padding: 20px;
     overflow: hidden;
     background-color: var(--white);
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgb(0 0 0 / 25%);
+    border: 1px solid var(--gray-500);
+    font-size: 12px;
+
+    padding: 4px;
+    border-radius: 8px;
   }
 
   &.below {
-    .i-dropdown-arrow {
-      top: 100%;
-
-      span {
-        border-bottom-color: var(--white);
-      }
+    .i-dropdown-arrow-icon {
+      position: absolute;
+      top: 1px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 10px solid var(--white);
+    }
+    .i-dropdown-arrow-icon::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -5px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 10px solid var(--gray-500);
+      z-index: -1;
     }
 
     .i-dropdown-box {
@@ -122,13 +126,27 @@ export default {
 
   &.above {
     .i-dropdown-arrow {
+      position: absolute;
       bottom: 100%;
-
-      span {
-        border-top-color: var(--white);
-      }
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent; /* Left side */
+      border-right: 5px solid transparent; /* Right side */
+      border-top: 10px solid var(--gray-500);
     }
 
+    .i-dropdown-arrow::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -5px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 10px solid var(--white);
+      z-index: -1;
+    }
     .i-dropdown-box {
       bottom: calc(100% + 9px);
     }
