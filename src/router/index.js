@@ -9,6 +9,7 @@ import DropdownView from '../views/DropdownView.vue';
 import InputTelView from '../views/InputTelView.vue';
 import RadioView from '../views/RadioView.vue'
 import CheckboxView from '../views/CheckboxView.vue'
+import PaginationView from '../views/PaginationView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +64,11 @@ const router = createRouter({
       name: 'inputTel',
       component: InputTelView,
     },
+    {
+      path: '/pagination',
+      name: 'pagination',
+      component: PaginationView,
+    }
   ],
 });
 

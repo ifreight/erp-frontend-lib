@@ -55,7 +55,7 @@
     <!-- Overflow Tab -->
     <div class="tw:mt-24">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Overflow Tab</div>
-      <div class="w-1/2">
+      <div class="tw:w-1/2">
         <i-tabs v-model="activeTab3">
           <i-tab-pane
             label="Tab One January"
