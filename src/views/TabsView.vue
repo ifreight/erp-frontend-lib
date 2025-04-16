@@ -2,7 +2,7 @@
   <div>
     <!-- Normal Tab -->
     <div>
-      <div class="tw:font-bold tw:text-xl">Normal Tab</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Normal Tab</div>
       <i-tabs v-model="activeTab1">
         <i-tab-pane
           label="Tab One"
@@ -27,7 +27,7 @@
 
     <!-- Disabled Tab -->
     <div class="tw:mt-24">
-      <div class="tw:font-bold tw:text-xl">Disabled Tab</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Disabled Tab</div>
       <i-tabs v-model="activeTab2">
         <i-tab-pane
           label="Tab One"
@@ -54,7 +54,7 @@
 
     <!-- Overflow Tab -->
     <div class="tw:mt-24">
-      <div class="tw:font-bold tw:text-xl">Overflow Tab</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Overflow Tab</div>
       <div class="w-1/2">
         <i-tabs v-model="activeTab3">
           <i-tab-pane

@@ -7,6 +7,8 @@ import DialogView from '../views/DialogView.vue';
 import TabsView from '../views/TabsView.vue';
 import DropdownView from '../views/DropdownView.vue';
 import InputTelView from '../views/InputTelView.vue';
+import RadioView from '../views/RadioView.vue'
+import CheckboxView from '../views/CheckboxView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +27,16 @@ const router = createRouter({
       path: '/button',
       name: 'button',
       component: ButtonView,
+    },
+    {
+      path: '/radio',
+      name: 'radio',
+      component: RadioView,
+    },
+    {
+      path: '/checkbox',
+      name: 'checkbox',
+      component: CheckboxView,
     },
     {
       path: '/textarea',

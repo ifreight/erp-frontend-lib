@@ -11,6 +11,8 @@
         <router-link to="/tabs">tabs</router-link>
         <router-link to="/dropdown">dropdown</router-link>
         <router-link to="/input-tel">tel input</router-link>
+        <router-link to="/radio">radio</router-link>
+        <router-link to="/checkbox">checkbox</router-link>
       </div>
     </div>
     <div class="tw:flex-1 tw:py-5 tw:px-6">

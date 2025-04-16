@@ -117,7 +117,6 @@ export default {
 
     const changeActiveTab = (pane) => {
       if (!pane.disabled) {
-        activeTab.value = pane.name;
         emit('update:modelValue', pane.name);
       }
     }
@@ -164,7 +163,7 @@ export default {
         }
 
         &.disabled {
-          @apply tw:text-gray-500 tw:cursor-not-allowed;
+          @apply tw:text-gray-500 tw:cursor-not-allowed tw:bg-transparent;
         }
       }
     }
