@@ -6,13 +6,11 @@
       <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
           v-model="modelOne"
-          theme="dark"
           name="modelOneNormal"
           label="Pilih opsi A"
         />
         <i-checkbox
           v-model="modelTwo"
-          theme="dark"
           name="modelTwoNormal"
           label="Pilih opsi B"
         />
@@ -26,14 +24,12 @@
         <i-checkbox
           v-model="modelOneDisabled"
           disabled
-          theme="dark"
           name="modelOneDisabled"
           label="Pilih opsi A"
         />
         <i-checkbox
           v-model="modelTwoDisabled"
           disabled
-          theme="dark"
           name="modelTwoDisabled"
           label="Pilih opsi B"
         />
@@ -47,7 +43,6 @@
         <i-checkbox
           v-model="modelInvalid"
           invalid
-          theme="dark"
           name="modelInvalid"
           label="Klik me"
         />
@@ -62,7 +57,6 @@
         <i-checkbox
           v-model="modelCheckAll"
           :indeterminate="isIndeterminate"
-          theme="dark"
           name="modelCheckAll"
           label="Check all"
           @change="changeCheckAllHandler"
@@ -74,16 +68,11 @@
         >
           <!-- use model-label instead (string) -->
           <i-checkbox
-            model-label="modelCheckA"
-            theme="dark"
-            name="modelCheckA"
-            label="A"
-          />
-          <i-checkbox
-            model-label="modelCheckB"
-            theme="dark"
-            name="modelCheckB"
-            label="B"
+            v-for="(checkOpt, index) in checkboxOptions"
+            :key="index"
+            :model-label="checkOpt"
+            :name="checkOpt"
+            :label="`Check ${index+1}`"
           />
         </i-checkbox-group>
       </div>
@@ -95,30 +84,28 @@
       <div class="tw:flex tw:gap-16 tw:mt-6">
         <i-checkbox
           v-model="modelStyleA"
-          theme="dark"
           name="modelStyleA"
           label="Dark and default size"
         />
         <i-checkbox
           v-model="modelStyleB"
-          theme="light"
+          light
           size="lg"
           name="modelStyleB"
           label="Light and large size"
         />
         <i-checkbox
-          v-model="modelStyleA"
+          v-model="modelStyleC"
           disabled
-          theme="dark"
           size="lg"
-          name="modelStyleA"
+          name="modelStyleC"
           label="Dark and large size (disabled)"
         />
         <i-checkbox
-          v-model="modelStyleB"
+          v-model="modelStyleD"
           disabled
-          theme="light"
-          name="modelStyleB"
+          light
+          name="modelStyleD"
           label="Light and default size (disabled)"
         />
       </div>
@@ -127,7 +114,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import ICheckboxGroup from '@/components/checkbox/i-checkbox-group.vue';
@@ -148,22 +135,28 @@ export default {
 
     const modelCheckAll = ref(false)
     const isIndeterminate = ref(false)
-    const checkboxOptions = computed(() => ['modelCheckA', 'modelCheckB'])
-    const checkedList = ref(['modelCheckA'])
+    const checkboxOptions = computed(() => ['modelCheck1', 'modelCheck2'])
+    const checkedList = ref(['modelCheck1'])
 
     const modelStyleA = ref(true)
     const modelStyleB = ref(true)
+    const modelStyleC = ref(true)
+    const modelStyleD = ref(true)
 
     const changeCheckAllHandler = () => {
       checkedList.value = modelCheckAll.value ? checkboxOptions.value : []
       isIndeterminate.value = false
     }
 
-    const changeCheckedHandler = () => {
+    const changeCheckedHandler = () => { // return name and checked list
       const checkedCount = checkedList.value.length
       modelCheckAll.value = checkedCount === checkboxOptions.value.length
       isIndeterminate.value = checkedCount > 0 && checkedCount < checkboxOptions.value.length
     }
+
+    onMounted(() => {
+      changeCheckedHandler()
+    })
 
     return {
       modelOne,
@@ -173,8 +166,11 @@ export default {
       modelInvalid,
       modelCheckAll,
       isIndeterminate,
+      checkboxOptions,
       modelStyleA,
       modelStyleB,
+      modelStyleC,
+      modelStyleD,
       checkedList,
       changeCheckAllHandler,
       changeCheckedHandler

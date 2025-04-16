@@ -86,12 +86,9 @@ export default {
         return ['base', 'lg'].includes(value)
       }
     },
-    theme: {
-      type: String,
-      required: true,
-      validator(value) {
-        return ['dark', 'light'].includes(value)
-      }
+    light: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:modelValue'],
@@ -114,7 +111,9 @@ export default {
       if (props.size !== 'base') {
         classes.value.push(`${props.size}`)
       }
-      classes.value.push(props.theme)
+      if (props.light) {
+        classes.value.push('light')
+      }
 
       return classes.value
     })
@@ -125,7 +124,9 @@ export default {
       if (props.size !== 'base') {
         classes.value.push(`${props.size}`)
       }
-      classes.value.push(props.theme)
+      if (props.light) {
+        classes.value.push('light')
+      }
 
       return classes.value
     })
@@ -199,12 +200,10 @@ export default {
   @apply tw:flex tw:items-center tw:relative tw:cursor-pointer tw:m-0 tw:z-1;
 
   .i-checkbox-dash-icon {
-    @apply tw:opacity-100 tw:text-white tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5;
+    @apply tw:opacity-100 tw:bg-gray-900 tw:text-white tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5;
 
     &.disabled {
-      &.dark {
-        @apply tw:bg-gray-700;
-      }
+      @apply tw:bg-gray-700;
 
       &.light {
         @apply tw:text-gray-700 tw:bg-transparent;
@@ -215,17 +214,13 @@ export default {
       @apply tw:w-5 tw:h-5;
     }
 
-    &.dark {
-      @apply tw:bg-gray-900;
-    }
-
     &.light {
       @apply tw:bg-transparent tw:text-gray-900;
     }
   }
 
   .i-checkbox-input {
-    @apply tw:border tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
+    @apply tw:border tw:border-gray-900 tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
 
     .i-checkbox-icon {
       @apply tw:opacity-0 tw:w-3.5 tw:h-3.5;
@@ -239,24 +234,20 @@ export default {
       @apply tw:hidden;
 
       &:checked {
-        &.dark {
-          + .i-checkbox-icon {
-            @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:rounded-xs tw:p-0.5;
-          }
+        + .i-checkbox-icon {
+          @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:rounded-xs tw:p-0.5;
         }
 
         &.light {
           + .i-checkbox-icon {
-            @apply tw:opacity-100 tw:text-gray-900 tw:rounded-xs tw:p-0.5 tw:border tw:border-gray-700;
+            @apply tw:opacity-100 tw:text-gray-900 tw:rounded-xs tw:p-0.5 tw:border tw:border-gray-700 tw:bg-transparent;
           }
         }
       }
 
       &:disabled {
-        &.dark {
-          + .i-checkbox-icon {
-            @apply tw:bg-gray-700;
-          }
+        + .i-checkbox-icon {
+          @apply tw:bg-gray-700;
         }
 
         &.light {
@@ -271,28 +262,18 @@ export default {
       @apply tw:border-none;
     }
 
-    &.disabled {
-      @apply tw:cursor-not-allowed tw:bg-transparent;
-
-      &.dark,
-      &.light {
-        @apply tw:border-gray-700;
-      }
+    &.disabled,
+    &.disabled.light {
+      @apply tw:cursor-not-allowed tw:bg-transparent tw:border-gray-700;
     }
 
-    &.invalid {
-      &.dark,
-      &.light {
-        @apply tw:border-red-300;
-      }
+    &.invalid,
+    &.invalid.light {
+      @apply tw:border-red-300;
     }
 
     &.lg {
       @apply tw:w-5 tw:h-5;
-    }
-
-    &.dark {
-      @apply tw:border-gray-900;
     }
 
     &.light {

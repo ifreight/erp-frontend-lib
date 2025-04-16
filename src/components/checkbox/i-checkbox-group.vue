@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { onMounted, provide, ref, useTemplateRef, watch, watchEffect } from 'vue'
+import { provide, ref, useTemplateRef, watch, watchEffect } from 'vue'
 
 export default {
   name: 'ICheckboxGroup',
@@ -34,23 +34,22 @@ export default {
       }
     })
 
-    onMounted(() => {
-      emit('change')
-    })
-
     const clickCheckHandler = (e) => {
-      if (e.target.name) {
+      const isCheckbox = e.target.type === 'checkbox';
+      if (isCheckbox) {
         const targetName = ref(e.target.name)
-        if (checkedList.value.includes(targetName.value)) {
-          const selectedValue = checkedList.value.indexOf(targetName.value)
-          checkedList.value.splice(selectedValue, 1)
-          emit('update:modelValue', checkedList.value)
-        } else {
-          checkedList.value.push(targetName.value)
-          emit('update:modelValue', checkedList.value)
+        if (targetName.value) {
+          if (checkedList.value.includes(targetName.value)) {
+            const selectedValue = checkedList.value.indexOf(targetName.value)
+            checkedList.value.splice(selectedValue, 1)
+            emit('update:modelValue', checkedList.value)
+          } else {
+            checkedList.value.push(targetName.value)
+            emit('update:modelValue', checkedList.value)
+          }
+          emit('change', targetName.value, checkedList.value)
         }
       }
-      emit('change')
     }
   }
 }
