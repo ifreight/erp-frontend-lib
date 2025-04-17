@@ -208,14 +208,11 @@ export default {
 
     return {
       activePage,
-      totalButton, // remove later
       lastNumber,
       middlePage,
       isShowFirstInterval,
       isHideLastInterval,
       paginationCountText,
-      startLoopNumber, // remove later
-      limitLoop, // remove later
       clickLeftHandler,
       clickRightHandler,
       changePageHandler
