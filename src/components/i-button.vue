@@ -67,7 +67,7 @@ export default {
 @reference "@/assets/global.css";
 
 .i-button {
-  @apply tw:w-full tw:rounded-md tw:bg-yellow-300 tw:border tw:border-yellow-300 tw:h-[53px] tw:p-2 tw:cursor-pointer;
+  @apply tw:w-full tw:rounded-md tw:bg-yellow-800 tw:border tw:border-yellow-800 tw:h-[53px] tw:p-2 tw:cursor-pointer;
   @apply tw:relative tw:font-semibold tw:text-base tw:text-gray-900 tw:flex tw:justify-center tw:items-center;
 
   &.disabled {

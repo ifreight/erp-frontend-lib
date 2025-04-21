@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Normal Checkbox -->
-    <div>
+    <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Normal Checkbox</div>
       <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
@@ -18,7 +18,7 @@
     </div>
 
     <!-- Disabled Checkbox -->
-    <div class="tw:mt-24">
+    <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Disabled Checkbox</div>
       <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
@@ -37,7 +37,7 @@
     </div>
 
     <!-- Invalid Checkbox -->
-    <div class="tw:mt-24">
+    <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Invalid Checkbox</div>
       <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Indeterminate Checkbox -->
-    <div class="tw:mt-24">
+    <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Indeterminate Checkbox</div>
       <div class="tw:flex tw:gap-6 tw:mt-6">
         <!-- Check all checkbox (use indeterminate) -->
@@ -79,7 +79,7 @@
     </div>
 
     <!-- Style Checkbox -->
-    <div class="tw:mt-24">
+    <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Style Checkbox</div>
       <div class="tw:flex tw:gap-16 tw:mt-6">
         <i-checkbox

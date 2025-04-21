@@ -9,3 +9,4 @@ export { default as IDropdown } from './dropdown/i-dropdown.vue';
 export { default as ITabs } from './tabs/i-tabs.vue';
 export { default as ITabPane } from './tabs/i-tab-pane.vue';
 export { default as ITextArea } from './i-text-area.vue';
+export { default as IPagination } from './tabs/i-pagination.vue';
