@@ -3,6 +3,7 @@
     :visible="visible"
     :width="width"
     class="i-dropdown-options"
+    :rounded="rounded"
   >
     <div
       v-if="$slots.header"
@@ -14,6 +15,7 @@
     <ul
       v-if="filteredOptions.length > 0"
       class="i-dropdown-options-body"
+      :class="bodyClasses"
       :style="{
         'max-height': maxHeight,
       }"
@@ -59,6 +61,7 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 import IDropdown from './i-dropdown.vue';
 
 export default {
@@ -107,6 +110,18 @@ export default {
       type: String,
       default: '264px',
     },
+    rounded: {
+      type: String,
+      default: 'xs',
+    },
+  },
+  setup(props) {
+    const bodyClasses = computed(() => {
+      return [`rounded-${props.rounded}`]
+    })
+    return {
+      bodyClasses,
+    }
   },
   computed: {
     filteredOptions() {
@@ -208,25 +223,36 @@ export default {
       border: none;
       border-radius: 20px;
     }
-
     li {
       display: flex;
       align-items: center;
-      padding: 16px 32px;
-      font-size: 14px;
-      line-height: 16px;
+      padding: 8px 6px;
+      font-size: 12px;
+      line-height: normal;
       color: var(--gray-900);
       cursor: pointer;
-      border-radius: 10px;
 
       &.selected {
         font-weight: 600;
-        background-color: var(--gray-100);
+        background-color: var(--yellow-100);
       }
 
       &:hover {
-        background-color: var(--gray-100);
+        background-color: var(--yellow-100);
       }
+    }
+
+    &.rounded-xs li {
+      border-radius: 2px;
+    }
+    &.rounded-sm li {
+      border-radius: 4px;
+    }
+    &.rounded-lg li {
+      border-radius: 8px;
+    }
+    &.rounded-xl li {
+      border-radius: 12px;
     }
   }
 

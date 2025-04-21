@@ -78,7 +78,7 @@
 <script>
 import { ref } from 'vue';
 import IButton from '@/components/i-button.vue';
-import IDialog from '@/components/i-dialogs.vue';
+import IDialog from '@/components/i-dialog.vue';
 
 export default {
   components: {

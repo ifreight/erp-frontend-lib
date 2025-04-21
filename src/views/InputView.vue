@@ -65,7 +65,7 @@
       clearable
       mask="decimal"
     />
-    <div>Number type</div>
+    <div>Number type + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)</div>
     <i-input
       v-model="input7"
       input-id="Text7"
@@ -74,6 +74,7 @@
       class="tw:flex-1 tw:mb-2"
       clearable
       mask="number"
+      rounded="lg"
     />
     <div>Date type + readonly</div>
     <i-input

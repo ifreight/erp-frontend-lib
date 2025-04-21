@@ -1,15 +1,22 @@
-import './assets/global.css'
-import './assets/index.scss'
+import './assets/global.css';
+import './assets/index.scss';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
+import router from './router';
+import InputTelStore from './components/input-tel/store';
 
-const app = createApp(App)
+InputTelStore.setCountryList(
+  fetch('https://api-dev.ifreight.id/api/v1/country', { methods: 'GET' })
+    .then((response) => response.text())
+    .then((response) => JSON.parse(response)),
+);
 
-app.use(createPinia())
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(createPinia());
+app.use(router);
+
+app.mount('#app');

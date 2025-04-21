@@ -153,6 +153,10 @@ export default {
       default: null,
     },
     clearable: Boolean,
+    rounded: {
+      type: String,
+      default: 'xs',
+    },
   },
   emits: [
     'update:modelValue',
@@ -167,17 +171,20 @@ export default {
 
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
     const classes = computed(() => {
-      return {
-        dark: props.dark,
-        disabled: props.disabled,
-        readonly: props.readOnly,
-        invalid: props.invalid || !!props.errorMessage,
-        prepend: !!slots.prepend,
-        append: !!slots.append || props.clearable,
-        filled: props.filled,
-        borderless: props.borderless,
-        sm: props.size === 'sm',
-      }
+      return [
+        `rounded-${props.rounded}`,
+        {
+          dark: props.dark,
+          disabled: props.disabled,
+          readonly: props.readOnly,
+          invalid: props.invalid || !!props.errorMessage,
+          prepend: !!slots.prepend,
+          append: !!slots.append || props.clearable,
+          filled: props.filled,
+          borderless: props.borderless,
+          sm: props.size === 'sm',
+        }
+      ]
     });
     const isLabelActive = computed(() => props.filled || !!props.placeholder || !!props.placeholderValue);
     const displayModelValue = computed(() => {
@@ -306,12 +313,22 @@ export default {
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
-    border-radius: 2px;
 
     &.sm {
       height: 32px;
     }
-
+    &.rounded-xs {
+      border-radius: 2px;
+    }
+    &.rounded-sm {
+      border-radius: 4px;
+    }
+    &.rounded-lg {
+      border-radius: 8px;
+    }
+    &.rounded-xl {
+      border-radius: 12px;
+    }
     .input {
       width: 100%;
       height: 100%;
