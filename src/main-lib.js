@@ -1,1 +1,2 @@
-export * from './components'
+import './assets/flag-icons.css';
+export * from './components';

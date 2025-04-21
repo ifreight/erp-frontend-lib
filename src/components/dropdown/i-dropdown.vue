@@ -18,6 +18,7 @@
     <div
       v-show="visible"
       class="i-dropdown-box"
+      :class="boxClasses"
       :style="{ width }"
     >
       <slot />
@@ -26,7 +27,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 export default {
   name: 'IDropdown',
@@ -39,6 +40,10 @@ export default {
     isShowArrow: {
       type: Boolean,
       default: true,
+    },
+    rounded: {
+      type: String,
+      default: 'xs',
     },
   },
   setup(props) {
@@ -56,10 +61,13 @@ export default {
         }
       }
     });
-
+    const boxClasses = computed(() => {
+      return [`rounded-${props.rounded}`]
+    })
     return {
       openDirection,
       reference,
+      boxClasses,
     };
   },
 };
@@ -91,15 +99,26 @@ export default {
     background-color: var(--white);
     border: 1px solid var(--gray-500);
     font-size: 12px;
-
     padding: 4px;
-    border-radius: 8px;
+
+    &.rounded-xs {
+      border-radius: 2px;
+    }
+    &.rounded-sm {
+      border-radius: 4px;
+    }
+    &.rounded-lg {
+      border-radius: 8px;
+    }
+    &.rounded-xl {
+      border-radius: 12px;
+    }
   }
 
   &.below {
     .i-dropdown-arrow-icon {
       position: absolute;
-      top: 1px;
+      top: 2px;
       width: 0;
       height: 0;
       border-left: 5px solid transparent;
