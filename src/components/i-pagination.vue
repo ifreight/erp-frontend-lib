@@ -11,7 +11,7 @@
         hidden: !showCountPage
       }"
     >
-      {{ paginationCountText }} {{ showCountPageText }} {{ totalPage }}
+      {{ paginationCountText }} {{ prepositionText }} {{ totalPage }}
     </div>
 
     <div class="i-pagination-container">
@@ -36,7 +36,7 @@
       </button>
 
       <div v-if="isShowFirstInterval">
-        <ic-more-horizontal class="tw:text-brown-600 tw:w-8 tw:h-8" />
+        <ic-three-dot-horizontal class="tw:text-brown-600 tw:w-8 tw:h-8" />
       </div>
 
       <button
@@ -52,7 +52,7 @@
       </button>
 
       <div v-if="!isHideLastInterval">
-        <ic-more-horizontal class="tw:text-brown-600 tw:w-8 tw:h-8" />
+        <ic-three-dot-horizontal class="tw:text-brown-600 tw:w-8 tw:h-8" />
       </div>
 
       <button
@@ -84,14 +84,14 @@ import { computed, ref, watch } from 'vue';
 
 import IcChevronLeft from "@/icons/ic-chevron-left.vue";
 import IcChevronRight from "@/icons/ic-chevron-right.vue";
-import IcMoreHorizontal from "@/icons/ic-more-horizontal.vue";
+import IcThreeDotHorizontal from "@/icons/ic-three-dot-horizontal.vue";
 
 export default {
   name: 'IPagination',
   components: {
     IcChevronLeft,
     IcChevronRight,
-    IcMoreHorizontal
+    IcThreeDotHorizontal
   },
   props: {
     currentPage: {
@@ -114,7 +114,7 @@ export default {
       type: Boolean,
       default: false
     },
-    showCountPageText: {
+    prepositionText: {
       type: String,
       default: 'of'
     }
