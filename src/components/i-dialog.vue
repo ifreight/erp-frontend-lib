@@ -51,7 +51,7 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import IcTimes from '@/icons/ic-times.vue';
 
 export default {
-  name: 'i-dialog',
+  name: 'IDialog',
   components: { IcTimes },
   props: {
     show: Boolean,
