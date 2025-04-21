@@ -1,65 +1,104 @@
 <template>
-  <div class="i-input-tel">
+  <div class="i-input-tel-wrapper">
     <div
-      ref="selectCountry"
-      class="i-input-tel-country-wrapper"
-      tabindex="0"
-      @blur="closeCountryDropdown"
+      class="i-input-tel"
+      :class="classes"
     >
-      <div class="i-input-tel-country">
-        <div
-          class="i-input-tel-country-select"
-          :class="countryDropdownOpen && 'open'"
-          @click="toggleCountryDropdown"
-        >
-          <div class="i-input-tel-country-flag">
-            <span :class="activeCountryFlagClass" />
-          </div>
+      <div
+        ref="selectCountry"
+        class="i-input-tel-country-wrapper"
+        tabindex="0"
+        @blur="closeCountryDropdown"
+      >
+        <div class="i-input-tel-country">
+          <div
+            class="i-input-tel-country-select"
+            :class="countryDropdownOpen && 'open'"
+            @click="toggleCountryDropdown"
+          >
+            <div class="i-input-tel-country-flag">
+              <span :class="activeCountryFlagClass" />
+            </div>
 
-          <div class="i-input-tel-country-code">
-            {{ activeCountry && activeCountry.phoneCode }}
-          </div>
+            <div class="i-input-tel-country-code">
+              {{ activeCountry && activeCountry.phoneCode }}
+            </div>
 
-          <div>
-            <ic-chevron-up
-              v-if="countryDropdownOpen"
-              class="tw:text-gray-700"
-            />
-            <ic-chevron-down
-              v-else
-              class="tw:text-gray-700"
-            />
+            <div>
+              <ic-chevron-up
+                v-if="countryDropdownOpen"
+                class="tw:text-gray-700"
+              />
+              <ic-chevron-down
+                v-else
+                class="tw:text-gray-700"
+              />
+            </div>
           </div>
         </div>
+        <i-dropdown-options
+          :visible="countryDropdownOpen"
+          :options="countryList"
+          option-key="countryCode"
+          option-value="name"
+          :current-value="activeCountry && activeCountry.countryCode"
+          @selectedValue="onSelectCountry"
+        >
+          <template #options="{ option }">
+            <span
+              :class="`fi fi-${option.countryCode.toLowerCase()}`"
+              class="i-input-tel-country-icon"
+            />
+            {{ option.name }}
+            ({{ option.phoneCode }})
+          </template>
+        </i-dropdown-options>
       </div>
-      <i-dropdown-options
-        :visible="countryDropdownOpen"
-        :options="countryList"
-        option-key="countryCode"
-        option-value="name"
-        :current-value="activeCountry && activeCountry.countryCode"
-        @selectedValue="onSelectCountry"
-      >
-        <template #options="{ option }">
-          <span
-            :class="`fi fi-${option.countryCode.toLowerCase()}`"
-            class="i-input-tel-country-icon"
+      <div class="i-input-tel-input-wrapper">
+        <input-tel
+          v-model="phone"
+          v-model:country="countryCode"
+          :name="name"
+          :placeholder="placeholder"
+          :auto-complete="autoComplete"
+          :disabled="disabled"
+          :read-only="readOnly"
+          @validate="onValidate"
+        />
+        <div
+          v-if="clearable && (!disabled || !readOnly)"
+          v-show="filled"
+          class="append-container"
+        >
+          <ic-times-circle
+            class="icon-clear"
+            @click.once="onClear"
           />
-          {{ option.name }}
-          ({{ option.phoneCode }})
-        </template>
-      </i-dropdown-options>
+        </div>
+      </div>
     </div>
-    <div class="i-input-tel-wrapper">
-      <input-tel />
+    <div
+      v-if="invalid"
+      class="i-input-tel-error"
+    >
+      {{ errorMessage }}
     </div>
   </div>
 </template>
 
 <script>
+import {
+  computed,
+  nextTick,
+  onMounted,
+  ref,
+  watch,
+} from 'vue';
+
 import InputTel from './index.js'
 import IcChevronUp from '@/icons/ic-chevron-up.vue';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
+import IcTimesCircle from '@/icons/ic-times-circle.vue';
 
 import IDropdownOptions from '@/components/dropdown/i-dropdown-options.vue';
 
@@ -69,10 +108,11 @@ export default {
     InputTel: InputTel.component,
     IcChevronUp,
     IcChevronDown,
+    IcTimesCircle,
     IDropdownOptions,
   },
   props: {
-    value: {
+    modelValue: {
       type: String,
       default: '',
     },
@@ -98,115 +138,199 @@ export default {
     readOnly: Boolean,
     dark: Boolean,
     borderless: Boolean,
+    clearable: Boolean,
     optionWidth: {
       type: String,
       default: '115px',
     },
-  },
-  emits: ['input', 'update:valid'],
-  data() {
-    return {
-      phone: '',
-      countryCode: '',
-      countryDropdownOpen: false,
-      countryList: [],
-    };
-  },
-  computed: {
-    activeCountry() {
-      return this.countryList.find((country) => country.countryCode === this.countryCode);
+    errorMessage: {
+      type: String,
+      default: 'Invalid phone number',
     },
-    activeCountryFlagClass() {
-      if (!this.activeCountry) {
+  },
+  emits: ['update:modelValue', 'update:valid', 'clear'],
+  setup(props, { emit }) {
+    const selectCountry = ref();
+    const phone = ref('');
+    const countryCode = ref('');
+    const countryDropdownOpen = ref(false);
+    const countryList = ref([]);
+
+    const filled = computed(() => props.modelValue != null && props.modelValue !== '');
+    const activeCountry = computed(() => countryList.value.find((country) => country.countryCode === countryCode.value));
+    const activeCountryFlagClass = computed(() => {
+      if (!activeCountry.value) {
         return '';
       }
-      return `fi fi-${this.activeCountry.countryCode.toLowerCase()}`;
-    },
-  },
-  watch: {
-    phone: {
-      handler(value) {
-        if (value !== this.value) {
-          this.$emit('input', value);
-        }
-      },
-    },
-  },
-  created() {
-    this.countryCode = this.defaultCountryCode;
+      return `fi fi-${activeCountry.value.countryCode.toLowerCase()}`;
+    });
+    const classes = computed(() => {
+      return {
+        disabled: props.disabled,
+        readonly: props.readOnly,
+        invalid: props.invalid,
+        filled: props.filled,
+      }
+    });
+    watch(() => phone.value, (val) => {
+      if (val !== props.modelValue) {
+        emit('update:modelValue', val);
+      }
+    });
 
-    this.getCountryList();
+    const onClear = (() => {
+      let clearedValue;
+      if (typeof props.modelValue === 'string') {
+        clearedValue = '';
+      }
+      phone.value = clearedValue;
+      emit('update:modelValue', clearedValue);
+      emit('clear');
+    });
 
-    if (this.value) {
-      this.phone = this.value;
+    const getCountryList = (async () => {
+      countryList.value = await InputTel.store.getCountryList();
+    });
+
+    const onValidate = ((value) => {
+      emit('update:valid', value);
+    });
+
+    const onSelectCountry = ((country) => {
+      countryCode.value = country.countryCode;
+      selectCountry.value.blur();
+    });
+
+    const toggleCountryDropdown = (() => {
+      if (props.disabled || props.readOnly) {
+        return;
+      }
+      countryDropdownOpen.value = !countryDropdownOpen.value;
+    });
+    const closeCountryDropdown = (async () => {
+      if (!countryDropdownOpen.value) {
+        return;
+      }
+      await nextTick();
+      countryDropdownOpen.value = false;
+    });
+
+    onMounted(() => {
+      countryCode.value = props.defaultCountryCode;
+
+      getCountryList();
+
+      if (props.modelValue) {
+        phone.value = props.modelValue;
+      }
+    });
+
+    return {
+      phone,
+      countryCode,
+      countryDropdownOpen,
+      countryList,
+      classes,
+      filled,
+      activeCountry,
+      activeCountryFlagClass,
+      selectCountry,
+      onClear,
+      onValidate,
+      onSelectCountry,
+      toggleCountryDropdown,
+      closeCountryDropdown,
     }
-  },
-  methods: {
-    async getCountryList() {
-      this.countryList = await InputTel.store.getCountryList();
-    },
-    onValidate(value) {
-      this.$emit('update:valid', value);
-    },
-    onSelectCountry(country) {
-      this.countryCode = country.countryCode;
-      this.$refs.selectCountry.blur();
-    },
-    toggleCountryDropdown() {
-      if (this.disabled || this.readOnly) {
-        return;
-      }
-      this.countryDropdownOpen = !this.countryDropdownOpen;
-    },
-    closeCountryDropdown() {
-      if (!this.countryDropdownOpen) {
-        return;
-      }
-      this.$nextTick(() => {
-        this.countryDropdownOpen = false;
-      });
-    },
   },
 };
 </script>
 
 <style>
 @reference "@/assets/global.css";
+.i-input-tel-wrapper {
+  .i-input-tel {
+    display: flex;
+    border: 1px solid var(--gray-500);
+    height: 41px;
+    align-items: center;
+    position: relative;
 
-.i-input-tel {
-  display: flex;
-  border: 1px solid var(--gray-500);
-  height: 41px;
-  position: relative;
+    .i-input-tel-country-wrapper {
+      .i-input-tel-country {
+        padding: 12px;
+        border-right: 1px solid var(--gray-500);
+        @apply tw:flex tw:items-center tw:h-full;
 
-  .i-input-tel-country-wrapper {
-    .i-input-tel-country {
-      padding: 12px;
-      border-right: 1px solid var(--gray-500);
-      @apply tw:flex tw:items-center tw:h-full;
+        .i-input-tel-country-select {
+          @apply tw:flex tw:items-center tw:h-full tw:cursor-pointer;
 
-      .i-input-tel-country-select {
-        @apply tw:flex tw:items-center tw:h-full tw:cursor-pointer;
-
-        .i-input-tel-country-flag {
-          @apply tw:flex tw:items-center tw:overflow-hidden;
-          font-size: 20px;
-          box-shadow: 0 0 1px 0 var(--gray-700);
-          border-radius: 2px;
+          .i-input-tel-country-flag {
+            @apply tw:flex tw:items-center tw:overflow-hidden;
+            font-size: 20px;
+            box-shadow: 0 0 1px 0 var(--gray-700);
+            border-radius: 2px;
+          }
+          .i-input-tel-country-code {
+            @apply tw:text-sm tw:mx-2;
+          }
         }
-        .i-input-tel-country-code {
-          @apply tw:text-sm tw:mx-2;
+      }
+    }
+    .i-input-tel-input-wrapper {
+      @apply tw:w-full tw:flex tw:items-center;
+    }
+
+    .append-container {
+      margin-left: 12px;
+      margin-right: 16px;
+
+      .icon-clear {
+        color: var(--gray-600);
+        cursor: pointer;
+        height: 12px;
+        width: 12px;
+      }
+    }
+    &.disabled {
+      @apply tw:bg-gray-300 tw:text-gray-600;
+      .i-input-tel-country-wrapper {
+        .i-input-tel-country {
+          .i-input-tel-country-select {
+            @apply tw:cursor-not-allowed;
+          }
+        }
+      }
+      input {
+        @apply tw:cursor-not-allowed;
+      }
+    }
+    &.readonly {
+      background-color: var(--gray-100);
+      input {
+        cursor: default;
+      }
+      .i-input-tel-country-wrapper {
+        .i-input-tel-country {
+          .i-input-tel-country-select {
+            @apply tw:cursor-default;
+          }
         }
       }
     }
   }
-}
 
-.i-input-tel-country-icon {
-  @apply tw:flex tw:items-center tw:overflow-hidden;
-  margin-right: 4px;
-  font-size: 14px;
-  box-shadow: 0 0 1px 0 var(--gray-700);
-  border-radius: 2px;
+  .i-input-tel-error {
+    padding-top: 8px;
+    font-size: var(--size-xs);
+    line-height: var(--size-sm);
+    color: var(--red-300);
+  }
+  .i-input-tel-country-icon {
+    @apply tw:flex tw:items-center tw:overflow-hidden;
+    margin-right: 4px;
+    font-size: 14px;
+    box-shadow: 0 0 1px 0 var(--gray-700);
+    border-radius: 2px;
+  }
 }
 </style>

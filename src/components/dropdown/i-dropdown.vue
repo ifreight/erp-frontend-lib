@@ -53,7 +53,6 @@ export default {
     watch(() => props.visible, (value) => {
       if (value && reference.value) {
         const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
-        console.log(window.innerHeight, reference.value.getBoundingClientRect().bottom, spaceBelow)
         if (spaceBelow > 250) {
           openDirection.value = 'below';
         } else {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="i-textarea-wrapper">
     <div
       class="i-textarea"
       :class="classes"
@@ -190,58 +190,58 @@ export default {
 
 <style>
 @reference "@/assets/global.css";
+.i-textarea-wrapper {
+  .i-textarea {
+    @apply tw:relative tw:h-[120px] tw:bg-white tw:border tw:border-gray-500 tw:rounded-xs tw:px-4 tw:pt-4;
 
-.i-textarea {
-  @apply tw:relative tw:h-[120px] tw:bg-white tw:border tw:border-gray-500 tw:rounded-xs tw:px-4 tw:pt-4;
-}
+    &.disabled {
+      @apply tw:bg-gray-300 tw:text-gray-600;
+    }
 
-.textarea {
-  @apply tw:w-full tw:h-[90px] tw:p-0 tw:text-sm tw:text-gray-900 tw:text-ellipsis tw:resize-none tw:border-none;
+    &.invalid,
+    &.invalid.filled,
+    &.invalid.dark {
+      border-color: var(--red-300);
+    }
 
-  &:focus-visible,
-  &:focus {
-    outline: none;
+    .i-textarea-limit {
+      position: absolute;
+      right: 10px;
+      bottom: 5px;
+      font-size: var(--size-xs);
+      color: var(--gray-400);
+    }
   }
 
-  &::placeholder {
-    @apply tw:text-gray-700;
-    opacity: 1; /* Firefox */
+  .i-input-error {
+    @apply tw:mt-2 tw:text-xs tw:text-red-300;
   }
+  .textarea {
+    @apply tw:w-full tw:h-[90px] tw:p-0 tw:text-sm tw:text-gray-900 tw:text-ellipsis tw:resize-none tw:border-none;
 
-  &:-webkit-input-placeholder {
-    /* Internet Explorer 10-11 */
-    @apply tw:text-gray-700;
+    &:focus-visible,
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      @apply tw:text-gray-700;
+      opacity: 1; /* Firefox */
+    }
+
+    &:-webkit-input-placeholder {
+      /* Internet Explorer 10-11 */
+      @apply tw:text-gray-700;
+    }
+
+    &::-webkit-input-placeholder {
+      /* Microsoft Edge */
+      @apply tw:text-gray-700;
+    }
+
+    &:disabled {
+      @apply tw:text-gray-600 tw:bg-transparent;
+    }
   }
-
-  &::-webkit-input-placeholder {
-    /* Microsoft Edge */
-    @apply tw:text-gray-700;
-  }
-
-  &:disabled {
-    @apply tw:text-gray-600 tw:bg-transparent;
-  }
-}
-
-.disabled {
-  @apply tw:bg-gray-300 tw:text-gray-600;
-}
-
-.invalid,
-.invalid.filled,
-.invalid.dark {
-  border-color: var(--red-300);
-}
-
-.i-input-error {
-  @apply tw:mt-2 tw:text-xs tw:text-red-300;
-}
-
-.i-textarea-limit {
-  position: absolute;
-  right: 10px;
-  bottom: 5px;
-  font-size: var(--size-xs);
-  color: var(--gray-400);
 }
 </style>
