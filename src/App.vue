@@ -14,6 +14,7 @@
         <router-link to="/radio">radio</router-link>
         <router-link to="/checkbox">checkbox</router-link>
         <router-link to="/pagination">pagination</router-link>
+        <router-link to="/popover">popover</router-link>
       </div>
     </div>
     <div class="tw:flex-1 tw:py-5 tw:px-6">
