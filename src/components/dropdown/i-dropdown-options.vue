@@ -61,10 +61,10 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 import IDropdown from './i-dropdown.vue';
 
-export default {
+export default defineComponent({
   name: 'IDropdownOptions',
   components: {
     IDropdown,
@@ -118,14 +118,10 @@ export default {
   setup(props) {
     const bodyClasses = computed(() => {
       return [`rounded-${props.rounded}`]
-    })
-    return {
-      bodyClasses,
-    }
-  },
-  computed: {
-    filteredOptions() {
-      const dropdownOptions = this.options.map((option) => {
+    });
+
+    const filteredOptions = computed(() => {
+      const dropdownOptions = props.options.map((option) => {
         if (typeof option !== 'object') {
           return {
             id: option,
@@ -134,19 +130,18 @@ export default {
         }
         return option;
       });
-      if (!this.filterable || !this.query) {
+      if (!props.filterable || !props.query) {
         return dropdownOptions;
       }
       const filtered = dropdownOptions.filter((option) => {
-        const query = this.query.toLowerCase();
-        const label = option[this.optionValue].toLowerCase();
+        const query = props.query.toLowerCase();
+        const label = option[props.optionValue].toLowerCase();
         return label.includes(query);
       });
       return filtered;
-    },
-  },
-  methods: {
-    makeBold(str, q) {
+    });
+
+    const makeBold = ((str, q) => {
       if (!str) {
         return str;
       }
@@ -186,9 +181,80 @@ export default {
         });
       }
       return str;
-    },
+    });
+
+    return {
+      bodyClasses,
+      filteredOptions,
+      makeBold,
+    }
   },
-};
+  computed: {
+    // filteredOptions() {
+    //   const dropdownOptions = this.options.map((option) => {
+    //     if (typeof option !== 'object') {
+    //       return {
+    //         id: option,
+    //         name: option,
+    //       };
+    //     }
+    //     return option;
+    //   });
+    //   if (!this.filterable || !this.query) {
+    //     return dropdownOptions;
+    //   }
+    //   const filtered = dropdownOptions.filter((option) => {
+    //     const query = this.query.toLowerCase();
+    //     const label = option[this.optionValue].toLowerCase();
+    //     return label.includes(query);
+    //   });
+    //   return filtered;
+    // },
+  },
+  methods: {
+    // makeBold(str, q) {
+    //   if (!str) {
+    //     return str;
+    //   }
+    //   let query = q;
+    //   if (query == null) {
+    //     ({ query } = this);
+    //   }
+
+    //   // mask all word characters in city name
+    //   const cityMask = str.replace(/\w/g, '#');
+    //   // string city and query string from any non-word character
+    //   const queryStripped = query.toLowerCase().replace(/\W/g, '');
+    //   const stringStripped = str.replace(/\W/g, '');
+    //   // find the index of query string in city name
+    //   const index = stringStripped.toLowerCase().indexOf(queryStripped);
+    //   if (index > -1 && queryStripped.length) {
+    //     // find the end position of substring in stripped city name
+    //     const endIndex = index + queryStripped.length - 1;
+    //     // replacer function for each masked character.
+    //     // it will add to the start and end character of substring the corresponding tags,
+    //     // replacing all masked characters with the original one.
+    //     const replacer = (i) => {
+    //       let repl = stringStripped[i];
+    //       if (i === index) {
+    //         repl = `<b>${repl}`;
+    //       }
+    //       if (i === endIndex) {
+    //         repl += '</b>';
+    //       }
+    //       return repl;
+    //     };
+    //     let i = -1;
+    //     // restore masked string
+    //     return cityMask.replace(/#/g, () => {
+    //       i += 1;
+    //       return replacer(i);
+    //     });
+    //   }
+    //   return str;
+    // },
+  },
+});
 </script>
 
 <style>
