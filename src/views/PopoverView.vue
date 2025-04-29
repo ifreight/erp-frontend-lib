@@ -4,7 +4,7 @@
     <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Normal popover</div>
       <div class="tw:mt-6 tw:flex tw:justify-center tw:gap-32">
-        <i-popover arrow>
+        <i-popover show-arrow>
           <template #content>
             Lorem ipsum
           </template>
@@ -13,7 +13,7 @@
         </i-popover>
 
         <i-popover
-          arrow
+          show-arrow
           hover
           placement="left"
         >
@@ -25,7 +25,7 @@
         </i-popover>
 
         <i-popover
-          arrow
+          show-arrow
           hover
           placement="right"
         >
@@ -37,7 +37,7 @@
         </i-popover>
 
         <i-popover
-          arrow
+          show-arrow
           placement="top"
         >
           <template #content>
@@ -54,7 +54,7 @@
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Style popover</div>
       <div class="tw:mt-6 tw:flex tw:justify-center tw:gap-32">
         <i-popover
-          arrow
+          show-arrow
           hover
         >
           <template #content>
@@ -65,7 +65,7 @@
         </i-popover>
 
         <i-popover
-          arrow
+          show-arrow
           hover
           light
         >
@@ -76,14 +76,44 @@
           <div>Light</div>
         </i-popover>
       </div>
+
+      <div class="tw:mt-10 tw:flex tw:justify-center">
+        <i-popover
+          show-arrow
+          :custom-class="customClass"
+        >
+          <template #content>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
+            In scelerisque malesuada bibendum. Mauris egestas malesuada ligula,<br>
+            non sollicitudin ex egestas a. Duis auctor est eu nibh laoreet,<br>
+            vitae interdum diam vehicula.
+          </template>
+
+          <div>With custom class</div>
+        </i-popover>
+      </div>
     </div>
 
-    <!-- Whitespace popover (with close button and cannot click away) -->
+    <!-- Whitespace popover (with close button) -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Whitespace popover (with close button and cannot click away)</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Whitespace popover (with close button)</div>
       <div class="tw:mt-6 tw:flex tw:justify-center tw:gap-32">
         <i-popover
-          arrow
+          show-arrow
+          show-close-button
+        >
+          <template #content>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
+            In scelerisque malesuada bibendum. Mauris egestas malesuada ligula,<br>
+            non sollicitudin ex egestas a. Duis auctor est eu nibh laoreet,<br>
+            vitae interdum diam vehicula.
+          </template>
+
+          <div>Can click away</div>
+        </i-popover>
+
+        <i-popover
+          show-arrow
           show-close-button
           disable-click-away
         >
@@ -94,19 +124,16 @@
             vitae interdum diam vehicula.
           </template>
 
-          <div>Click me!</div>
+          <div>Cannot click away</div>
         </i-popover>
       </div>
     </div>
 
-    <!-- Popover with buttons -->
+    <!-- Popover with buttons and without arrow -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Popover with buttons</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Popover with buttons and without arrow</div>
       <div class="tw:mt-6 tw:flex tw:justify-center">
-        <i-popover
-          arrow
-          disable-click-away
-        >
+        <i-popover>
           <template #content>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
@@ -134,6 +161,8 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import IButton from '@/components/i-button.vue';
 import IPopover from '@/components/i-popover.vue';
 
@@ -141,6 +170,13 @@ export default {
   components: {
     IButton,
     IPopover
+  },
+  setup() {
+    const customClass = computed(() => 'tw:w-[500px] tw:h-[500px]')
+
+    return {
+      customClass
+    }
   }
 }
 </script>

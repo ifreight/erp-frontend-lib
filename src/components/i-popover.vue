@@ -1,6 +1,6 @@
 <template>
   <popper
-    :arrow="arrow"
+    :arrow="showArrow"
     :placement="placement"
     :hover="hover"
     :disable-click-away="disableClickAway"
@@ -11,9 +11,7 @@
     <template #content="props">
       <div
         class="i-popover-content"
-        :class="{
-          'with-flex': showCloseButton
-        }"
+        :class="popperContentClass"
       >
         <slot name="content" />
 
@@ -32,7 +30,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import Popper from "vue3-popper";
 
 import IcTimes from '@/icons/ic-times.vue';
@@ -52,7 +50,7 @@ export default {
       type: String,
       default: 'bottom'
     },
-    arrow: {
+    showArrow: {
       type: Boolean,
       default: false
     },
@@ -71,6 +69,10 @@ export default {
     disableClickAway: {
       type: Boolean,
       default: false
+    },
+    customClass: {
+      type: String,
+      default: ''
     }
   },
   setup(props) {
@@ -79,8 +81,22 @@ export default {
       'light': props.light
     }))
 
+    const popperContentClass = computed(() => {
+      const classes = ref([])
+
+      if (props.customClass !== '') {
+        const custom = props.customClass.split(" ")
+        for (let i = 0; i < custom.length; i += 1) {
+          classes.value.push(custom[i])
+        }
+      }
+
+      return classes.value
+    })
+
     return {
-      poppersClass
+      poppersClass,
+      popperContentClass
     }
   }
 }
@@ -91,12 +107,8 @@ export default {
 
 .i-popover {
   .i-popover-content {
-    &.with-flex {
-      @apply tw:flex tw:justify-between tw:gap-3.5;
-    }
-
     .i-popover-close-button {
-      @apply tw:h-3 tw:cursor-pointer;
+      @apply tw:h-3 tw:cursor-pointer tw:absolute tw:right-3 tw:top-3;
 
       .i-popover-close-icon {
         @apply tw:w-2.5 tw:h-2.5;

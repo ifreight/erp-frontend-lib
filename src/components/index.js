@@ -10,4 +10,4 @@ export { default as ITabs } from './tabs/i-tabs.vue';
 export { default as ITabPane } from './tabs/i-tab-pane.vue';
 export { default as ITextArea } from './i-text-area.vue';
 export { default as IPagination } from './tabs/i-pagination.vue';
-export { default as IPopover } from './tabs/i-popover.vue'
+export { default as IPopover } from './i-popover.vue'
