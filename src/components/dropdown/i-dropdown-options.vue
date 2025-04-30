@@ -61,10 +61,10 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, defineComponent, watch } from 'vue';
 import IDropdown from './i-dropdown.vue';
 
-export default {
+export default defineComponent({
   name: 'IDropdownOptions',
   components: {
     IDropdown,
@@ -114,18 +114,19 @@ export default {
       type: String,
       default: 'xs',
     },
+    hideEmptyFiltered: {
+      type: Boolean,
+      default: false,
+    },
   },
-  setup(props) {
+  emits: ['onFilteredChanged', 'selectedValue'],
+  setup(props, { emit }) {
     const bodyClasses = computed(() => {
       return [`rounded-${props.rounded}`]
-    })
-    return {
-      bodyClasses,
-    }
-  },
-  computed: {
-    filteredOptions() {
-      const dropdownOptions = this.options.map((option) => {
+    });
+
+    const filteredOptions = computed(() => {
+      const dropdownOptions = props.options.map((option) => {
         if (typeof option !== 'object') {
           return {
             id: option,
@@ -134,27 +135,21 @@ export default {
         }
         return option;
       });
-      if (!this.filterable || !this.query) {
+      if (!props.filterable || !props.query) {
         return dropdownOptions;
       }
       const filtered = dropdownOptions.filter((option) => {
-        const query = this.query.toLowerCase();
-        const label = option[this.optionValue].toLowerCase();
+        const query = props.query.toLowerCase();
+        const label = option[props.optionValue].toLowerCase();
         return label.includes(query);
       });
       return filtered;
-    },
-  },
-  methods: {
-    makeBold(str, q) {
+    });
+
+    const makeBold = (str, query = props.query) => {
       if (!str) {
         return str;
       }
-      let query = q;
-      if (query == null) {
-        ({ query } = this);
-      }
-
       // mask all word characters in city name
       const cityMask = str.replace(/\w/g, '#');
       // string city and query string from any non-word character
@@ -186,9 +181,21 @@ export default {
         });
       }
       return str;
-    },
+    };
+
+    watch(() => filteredOptions.value.length, (val) => {
+      if (props.hideEmptyFiltered) {
+        emit('onFilteredChanged', val)
+      }
+    });
+
+    return {
+      bodyClasses,
+      filteredOptions,
+      makeBold,
+    }
   },
-};
+});
 </script>
 
 <style>

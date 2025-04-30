@@ -256,6 +256,7 @@ export default {
     position: relative;
 
     .i-input-tel-country-wrapper {
+      height: 100%;
       .i-input-tel-country {
         padding: 12px;
         border-right: 1px solid var(--gray-500);
@@ -316,6 +317,9 @@ export default {
           }
         }
       }
+    }
+    &.invalid {
+      border-color: var(--red-300);
     }
   }
 

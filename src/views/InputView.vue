@@ -76,13 +76,14 @@
       mask="number"
       rounded="lg"
     />
-    <div>Date type + readonly</div>
+    <div>Date type + readonly + size sm</div>
     <i-input
       v-model="input8"
       input-id="Text8"
       name="text"
       label="Input Number"
       class="tw:flex-1 tw:mb-2"
+      size="sm"
       clearable
       readOnly
     />

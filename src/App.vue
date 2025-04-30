@@ -14,6 +14,7 @@
         <router-link to="/radio">radio</router-link>
         <router-link to="/checkbox">checkbox</router-link>
         <router-link to="/pagination">pagination</router-link>
+        <router-link to="/suggestion">suggestion</router-link>
         <router-link to="/popover">popover</router-link>
       </div>
     </div>

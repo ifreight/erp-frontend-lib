@@ -33,13 +33,13 @@
       />
 
       <div
-        v-if="clearable && (!disabled || !readOnly)"
+        v-if="isShowClearable"
         v-show="filled"
         class="append-container"
       >
         <ic-times-circle
           class="icon-clear"
-          @click.once="onClear"
+          @click="onClear"
         />
       </div>
       <div
@@ -169,6 +169,18 @@ export default {
   setup(props, { slots, emit }) {
     const inputRef = ref();
 
+    const isShowClearable = computed(() => {
+      if (!props.clearable) {
+        return false;
+      }
+      if (props.disabled && (props.readOnly || !props.readOnly)) {
+        return false;
+      }
+      if (props.readOnly && (props.disabled || !props.disabled)) {
+        return false;
+      }
+      return true;
+    });
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
     const classes = computed(() => {
       return [
@@ -284,6 +296,7 @@ export default {
       }
     )
     return {
+      isShowClearable,
       filled,
       classes,
       isLabelActive,
@@ -313,9 +326,18 @@ export default {
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
-
+    &.base {
+      .input {
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
     &.sm {
       height: 32px;
+      .input {
+        font-size: 12px;
+        line-height: 14px;
+      }
     }
     &.rounded-xs {
       border-radius: 2px;
@@ -332,8 +354,6 @@ export default {
     .input {
       width: 100%;
       height: 100%;
-      font-size: 14px;
-      line-height: 16px;
       color: var(--gray-900);
       text-overflow: ellipsis;
       border: none;

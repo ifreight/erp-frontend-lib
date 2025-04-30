@@ -7,9 +7,10 @@ import DialogView from '../views/DialogView.vue';
 import TabsView from '../views/TabsView.vue';
 import DropdownView from '../views/DropdownView.vue';
 import InputTelView from '../views/InputTelView.vue';
-import RadioView from '../views/RadioView.vue'
-import CheckboxView from '../views/CheckboxView.vue'
-import PaginationView from '../views/PaginationView.vue'
+import RadioView from '../views/RadioView.vue';
+import CheckboxView from '../views/CheckboxView.vue';
+import PaginationView from '../views/PaginationView.vue';
+import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
 
 const router = createRouter({
@@ -69,6 +70,11 @@ const router = createRouter({
       path: '/pagination',
       name: 'pagination',
       component: PaginationView,
+    },
+    {
+      path: '/suggestion',
+      name: 'suggestion',
+      component: InputSuggestionView,
     },
     {
       path: '/popover',
