@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { ref, provide, watch, computed, onMounted, useSlots, useTemplateRef, watchEffect, onUpdated } from 'vue';
+import { ref, provide, watch, computed, onMounted, useSlots, useTemplateRef, watchEffect, onUpdated, onBeforeUnmount } from 'vue';
 
 import IcChevronLeft from '@/icons/ic-chevron-left.vue';
 import IcChevronRight from '@/icons/ic-chevron-right.vue';
@@ -125,11 +125,16 @@ export default {
       loadPanes();
     })
 
+    onBeforeUnmount(() => {
+      tabHeaderWrapperRef.value.removeEventListener('scroll', scrollHandler);
+    })
+
     return {
       activeTab,
       panes,
       isNavLeftVisible,
       isNavRightVisible,
+      tabHeaderWrapperRef,
       clickLeft,
       clickRight,
       changeActiveTab

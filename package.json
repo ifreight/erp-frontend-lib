@@ -18,7 +18,8 @@
     "tailwindcss": "^4.0.13",
     "vue": "^3.5.13",
     "vue-imask": "^7.6.1",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vue3-popper": "^1.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
