@@ -7,7 +7,6 @@
       tabindex="0"
       class="suggestion-container"
       :class="isVisible ? 'visible' : ''"
-      @click="toggleDropdown"
     >
       <i-input
         ref="inputRef"
@@ -24,7 +23,11 @@
         :dark-mode="darkMode"
         :borderless="borderless"
         :size="size"
+        :error-message="errorMessage"
+        :clearable="clearable"
+        @clear="resetInputValue"
         @keyup="onInputKeyup"
+        @focus="toggleDropdown"
       >
         <template
           v-if="$slots.prepend"
@@ -41,7 +44,11 @@
       :option-key="optionKey"
       :option-value="optionValue"
       :max-height="dropdownMaxHeight"
+      :query="modelValue"
+      filterable
+      hide-empty-filtered
       @selectedValue="handleSelected"
+      @onFilteredChanged="onFilteredChanged"
     >
       <template
         v-if="$slots.dropdownHeader"
@@ -54,7 +61,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, onBeforeUnmount, defineComponent } from 'vue';
+import { ref, computed, watch, onBeforeUnmount, defineComponent, nextTick } from 'vue';
 
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
 import IInput from './i-input.vue';
@@ -102,12 +109,7 @@ export default defineComponent({
       type: String,
       default: 'name',
     },
-    disabled: Boolean,
-    readOnly: Boolean,
-    invalid: Boolean,
-    borderless: Boolean,
-    darkMode: Boolean,
-    wide: Boolean,
+
     size: {
       type: String,
       default: 'base',
@@ -117,12 +119,23 @@ export default defineComponent({
     },
     hideAfterInput: {
       type: Number,
-      default: 1,
+      default: -1,
     },
     dropdownMaxHeight: {
       type: String,
       default: '264px',
     },
+    errorMessage: {
+      type: String,
+      default: '',
+    },
+    disabled: Boolean,
+    readOnly: Boolean,
+    invalid: Boolean,
+    borderless: Boolean,
+    darkMode: Boolean,
+    wide: Boolean,
+    clearable: Boolean,
   },
   emits: [
     'update:modelValue',
@@ -136,6 +149,7 @@ export default defineComponent({
     const inputValue = ref();
     const suggestionRef = ref();
     const inputRef = ref();
+    const isFilteredOptionsEmpty = ref(false);
 
     const dropdownOptions = computed(() => {
       let options = [];
@@ -163,6 +177,7 @@ export default defineComponent({
         }
       }
     });
+
     const changeSelected = ((option) => {
       if (!option) {
         inputValue.value = undefined;
@@ -178,10 +193,8 @@ export default defineComponent({
     });
 
     const handleClickOutside = ((event) => {
-      console.log('handle outside');
       const isClickInside = event.composedPath().includes(suggestionRef.value);
       if (!isClickInside) {
-        console.log('is not inside');
         hideDropdown();
       }
     });
@@ -192,47 +205,44 @@ export default defineComponent({
 
     const showDropdown = (() => {
       if (!props.disabled && !props.readOnly) {
-        try {
-          console.log('no disable & no readonly');
-          isVisible.value = true;
-          emit('focus');
-          console.log('focus', isVisible.value, inputRef.value);
-          if (inputRef.value) {
-            inputRef.value.$el.querySelector('input').focus();
-          }
-        } catch (error) {
-          console.log(error);
+        isVisible.value = true;
+        emit('focus');
+        if (inputRef.value) {
+          inputRef.value.$el.querySelector('input').focus();
         }
       }
     });
 
     const toggleDropdown = (() => {
-      console.log('toggle', isVisible.value, props.modelValue);
       switch (isVisible.value) {
         case true:
           hideDropdown();
           break;
         default:
-          if (!props.modelValue) {
-            console.log('to show');
-            showDropdown();
-          }
+          showDropdown();
           break;
       }
     });
 
-    const onInputKeyup = ((event) => {
+    const onFilteredChanged = (val) => {
+      isFilteredOptionsEmpty.value = val > 0 ? false : true;
+    }
+
+    const onInputKeyup = (async (event) => {
       emit('update:modelValue', event.target.value);
       if (props.hideAfterInput > 0 && event.target.value.length >= props.hideAfterInput) {
         isVisible.value = false;
-      } else if (event.target.value.length < props.hideAfterInput) {
-        isVisible.value = true;
+      } else {
+        await nextTick();
+        isVisible.value = isFilteredOptionsEmpty.value ? false : true;
       }
     });
+
     const handleSelected = ((option) => {
       changeSelected(option);
       hideDropdown();
     });
+
 
     watch(() => isVisible.value, (val) => {
       if (val) {
@@ -259,55 +269,10 @@ export default defineComponent({
       hideDropdown,
       toggleDropdown,
       onInputKeyup,
+      onFilteredChanged,
       handleSelected
     }
   },
-  // data() {
-  //   return {
-  //     isVisible: false,
-  //     inputValue: null,
-  //   };
-  // },
-  computed: {
-    // dropdownOptions() {
-    //   let options = [];
-    //   if (this.options && this.options.length) {
-    //     const [firstOption] = this.options;
-    //     if (typeof firstOption !== 'object') {
-    //       options = this.options.map((option) => ({
-    //         id: option,
-    //         name: option,
-    //       }));
-    //     } else {
-    //       options = [...this.options];
-    //     }
-    //   }
-
-    //   return options;
-    // },
-    // customSelectedClass() {
-    //   return {
-    //     'custom-selected': true,
-    //     borderless: this.borderless,
-    //     dark: this.darkMode,
-    //     sm: this.size === 'sm',
-    //   };
-    // },
-  },
-  // watch: {
-  //   isVisible() {
-  //     if (this.isVisible) {
-  //       document.addEventListener('click', this.handleClickOutside);
-  //     } else {
-  //       document.removeEventListener('click', this.handleClickOutside);
-  //     }
-  //   },
-  // },
-  // beforeUnmount() {
-  //   if (this.isVisible) {
-  //     document.removeEventListener('click', this.handleClickOutside);
-  //   }
-  // },
   methods: {
     // changeSelected(option) {
     //   if (!option) {

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, watch } from 'vue';
 import IDropdown from './i-dropdown.vue';
 
 export default defineComponent({
@@ -114,8 +114,13 @@ export default defineComponent({
       type: String,
       default: 'xs',
     },
+    hideEmptyFiltered: {
+      type: Boolean,
+      default: false,
+    },
   },
-  setup(props) {
+  emits: ['onFilteredChanged', 'selectedValue'],
+  setup(props, { emit }) {
     const bodyClasses = computed(() => {
       return [`rounded-${props.rounded}`]
     });
@@ -141,15 +146,10 @@ export default defineComponent({
       return filtered;
     });
 
-    const makeBold = ((str, q) => {
+    const makeBold = (str, query = props.query) => {
       if (!str) {
         return str;
       }
-      let query = q;
-      if (query == null) {
-        ({ query } = this);
-      }
-
       // mask all word characters in city name
       const cityMask = str.replace(/\w/g, '#');
       // string city and query string from any non-word character
@@ -181,6 +181,12 @@ export default defineComponent({
         });
       }
       return str;
+    };
+
+    watch(() => filteredOptions.value.length, (val) => {
+      if (props.hideEmptyFiltered) {
+        emit('onFilteredChanged', val)
+      }
     });
 
     return {
@@ -188,71 +194,6 @@ export default defineComponent({
       filteredOptions,
       makeBold,
     }
-  },
-  computed: {
-    // filteredOptions() {
-    //   const dropdownOptions = this.options.map((option) => {
-    //     if (typeof option !== 'object') {
-    //       return {
-    //         id: option,
-    //         name: option,
-    //       };
-    //     }
-    //     return option;
-    //   });
-    //   if (!this.filterable || !this.query) {
-    //     return dropdownOptions;
-    //   }
-    //   const filtered = dropdownOptions.filter((option) => {
-    //     const query = this.query.toLowerCase();
-    //     const label = option[this.optionValue].toLowerCase();
-    //     return label.includes(query);
-    //   });
-    //   return filtered;
-    // },
-  },
-  methods: {
-    // makeBold(str, q) {
-    //   if (!str) {
-    //     return str;
-    //   }
-    //   let query = q;
-    //   if (query == null) {
-    //     ({ query } = this);
-    //   }
-
-    //   // mask all word characters in city name
-    //   const cityMask = str.replace(/\w/g, '#');
-    //   // string city and query string from any non-word character
-    //   const queryStripped = query.toLowerCase().replace(/\W/g, '');
-    //   const stringStripped = str.replace(/\W/g, '');
-    //   // find the index of query string in city name
-    //   const index = stringStripped.toLowerCase().indexOf(queryStripped);
-    //   if (index > -1 && queryStripped.length) {
-    //     // find the end position of substring in stripped city name
-    //     const endIndex = index + queryStripped.length - 1;
-    //     // replacer function for each masked character.
-    //     // it will add to the start and end character of substring the corresponding tags,
-    //     // replacing all masked characters with the original one.
-    //     const replacer = (i) => {
-    //       let repl = stringStripped[i];
-    //       if (i === index) {
-    //         repl = `<b>${repl}`;
-    //       }
-    //       if (i === endIndex) {
-    //         repl += '</b>';
-    //       }
-    //       return repl;
-    //     };
-    //     let i = -1;
-    //     // restore masked string
-    //     return cityMask.replace(/#/g, () => {
-    //       i += 1;
-    //       return replacer(i);
-    //     });
-    //   }
-    //   return str;
-    // },
   },
 });
 </script>

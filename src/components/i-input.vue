@@ -39,7 +39,7 @@
       >
         <ic-times-circle
           class="icon-clear"
-          @click.once="onClear"
+          @click="onClear"
         />
       </div>
       <div
