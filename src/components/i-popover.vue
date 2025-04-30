@@ -3,34 +3,37 @@
     :arrow="showArrow"
     :placement="placement"
     :hover="hover"
-    :disable-click-away="disableClickAway"
-    :show="show"
+    :show="isShow"
+    :disabled="disabled"
     class="i-popover"
     :class="poppersClass"
   >
-    <template #content="props">
+    <template #content>
       <div
+        ref="popperContentRef"
         class="i-popover-content"
-        :class="popperContentClass"
+        :class="customClass"
       >
         <slot name="content" />
 
         <div
           v-if="showCloseButton"
           class="i-popover-close-button"
-          @click="props.close"
+          @click="() => isShow = false"
         >
           <ic-times class="i-popover-close-icon" />
         </div>
       </div>
     </template>
 
-    <slot />
+    <span ref="popperSlotRef">
+      <slot />
+    </span>
   </popper>
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, watch, onUnmounted } from 'vue';
 import Popper from "vue3-popper";
 
 import IcTimes from '@/icons/ic-times.vue';
@@ -58,45 +61,77 @@ export default {
       type: Boolean,
       default: false
     },
-    show: {
-      type: Boolean,
-      default: null
-    },
     showCloseButton: {
       type: Boolean,
       default: false
     },
-    disableClickAway: {
+    ignoreClickOutside: {
       type: Boolean,
       default: false
     },
     customClass: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {
+    const popperSlotRef = ref()
+    const popperContentRef = ref()
+    const isShow = ref(false)
+
     const poppersClass = computed(() => ({
       'tw:cursor-pointer': !props.hover,
       'light': props.light
     }))
 
-    const popperContentClass = computed(() => {
-      const classes = ref([])
+    const togglePopover = () => {
+      isShow.value = !isShow.value
+    }
 
-      if (props.customClass !== '') {
-        const custom = props.customClass.split(" ")
-        for (let i = 0; i < custom.length; i += 1) {
-          classes.value.push(custom[i])
-        }
+    const clickOutsidePopover = (e) => {
+      const popperRefArray = ref([popperSlotRef.value, popperContentRef.value])
+      const isClickInside = popperRefArray.value.some((item) => e.composedPath().includes(item))
+      if (!isClickInside) {
+        isShow.value = false
+      }
+    }
+
+    watch(() => isShow.value, (val) => {
+      if (props.ignoreClickOutside || props.hover) {
+        return false
       }
 
-      return classes.value
+      if (val) {
+        document.addEventListener('click', clickOutsidePopover, true);
+      } else {
+        document.removeEventListener('click', clickOutsidePopover, true);
+      }
+    });
+
+    onMounted(() => {
+      if (props.hover) {
+        popperSlotRef.value.addEventListener('mouseenter', togglePopover)
+        popperSlotRef.value.addEventListener('mouseleave', togglePopover)
+      } else {
+        popperSlotRef.value.addEventListener('click', togglePopover, true)
+      }
+    });
+
+    onUnmounted(() => {
+      popperSlotRef.value.removeEventListener('mouseenter', togglePopover)
+      popperSlotRef.value.removeEventListener('mouseleave', togglePopover)
+      popperSlotRef.value.removeEventListener('click', togglePopover, true)
     })
 
     return {
       poppersClass,
-      popperContentClass
+      popperContentRef,
+      popperSlotRef,
+      isShow
     }
   }
 }

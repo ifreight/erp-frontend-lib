@@ -9,7 +9,7 @@
             Lorem ipsum
           </template>
 
-          <div>Bottom and click</div>
+          <i-button>Bottom and click</i-button>
         </i-popover>
 
         <i-popover
@@ -21,7 +21,7 @@
             Lorem ipsum
           </template>
 
-          <div>Left and hover</div>
+          <i-button>Left and hover</i-button>
         </i-popover>
 
         <i-popover
@@ -33,7 +33,7 @@
             Lorem ipsum
           </template>
 
-          <div>Right and hover</div>
+          <i-button>Right and hover</i-button>
         </i-popover>
 
         <i-popover
@@ -44,7 +44,7 @@
             Lorem ipsum
           </template>
 
-          <div>Top and click</div>
+          <i-button>Top and click</i-button>
         </i-popover>
       </div>
     </div>
@@ -115,7 +115,7 @@
         <i-popover
           show-arrow
           show-close-button
-          disable-click-away
+          ignore-click-outside
         >
           <template #content>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
@@ -154,6 +154,31 @@
           </template>
 
           <div>Lorem ipsum</div>
+        </i-popover>
+      </div>
+    </div>
+
+    <!-- Disabled popover -->
+    <div class="tw:mb-12">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Disabled popover</div>
+      <div class="tw:mt-6 tw:flex tw:justify-center tw:items-center tw:gap-32">
+        <i-popover
+          hover
+          disabled
+        >
+          <template #content>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </template>
+
+          <div>Disabled popover hover</div>
+        </i-popover>
+
+        <i-popover disabled>
+          <template #content>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </template>
+
+          <i-button>Disabled popover click</i-button>
         </i-popover>
       </div>
     </div>
