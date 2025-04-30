@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { provide, ref, useTemplateRef, watch, watchEffect } from 'vue'
+import { onUnmounted, provide, ref, useTemplateRef, watch, watchEffect } from 'vue'
 
 export default {
   name: 'ICheckboxGroup',
@@ -50,6 +50,16 @@ export default {
           emit('change', targetName.value, checkedList.value)
         }
       }
+    }
+
+    onUnmounted(() => {
+      if (checkboxGroupRef.value) {
+        checkboxGroupRef.value.removeEventListener('click', clickCheckHandler)
+      }
+    })
+
+    return {
+      checkboxGroupRef
     }
   }
 }

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, watch, onUnmounted } from 'vue';
+import { computed, ref, onMounted, watch, onBeforeUnmount } from 'vue';
 import Popper from "vue3-popper";
 
 import IcTimes from '@/icons/ic-times.vue';
@@ -121,10 +121,13 @@ export default {
       }
     });
 
-    onUnmounted(() => {
-      popperSlotRef.value.removeEventListener('mouseenter', togglePopover)
-      popperSlotRef.value.removeEventListener('mouseleave', togglePopover)
-      popperSlotRef.value.removeEventListener('click', togglePopover, true)
+    onBeforeUnmount(() => {
+      if (props.hover) {
+        popperSlotRef.value.removeEventListener('mouseenter', togglePopover)
+        popperSlotRef.value.removeEventListener('mouseleave', togglePopover)
+      } else {
+        popperSlotRef.value.removeEventListener('click', togglePopover, true)
+      }
     })
 
     return {
