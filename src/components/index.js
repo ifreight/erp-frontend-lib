@@ -1,3 +1,5 @@
+export { default as InputTel } from './input-tel';
+
 export { default as IButton } from './i-button.vue';
 export { default as ICheckbox } from './checkbox/i-checkbox.vue';
 export { default as ICheckboxGroup } from './checkbox/i-checkbox-group.vue';
