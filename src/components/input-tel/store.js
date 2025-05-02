@@ -15,6 +15,7 @@ const store = {
 
 export default {
   setCountryList(arrayOrPromise) {
+    console.log(arrayOrPromise);
     if (Array.isArray(arrayOrPromise)) {
       store.countryList = arrayOrPromise;
       return;
