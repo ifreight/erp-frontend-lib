@@ -14,3 +14,4 @@ export { default as IRadio } from './i-radio.vue';
 export { default as ITabs } from './tabs/i-tabs.vue';
 export { default as ITabPane } from './tabs/i-tab-pane.vue';
 export { default as ITextArea } from './i-text-area.vue';
+export { default as IStickyBar } from './i-sticky-bar.vue';
