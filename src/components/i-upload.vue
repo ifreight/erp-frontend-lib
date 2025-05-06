@@ -77,6 +77,7 @@ export default {
       },
     },
     extensions: String,
+    disabled: Boolean,
   },
   emits: ['update:modelValue', 'invalidSize', 'invalidFile'],
   setup(props, { emit }) {
@@ -104,7 +105,7 @@ export default {
       if (props.modelValue.length == 1 && !props.isMultiple && !props.isReplaceable) {
         return true;
       }
-      return false;
+      return props.disabled;
     });
     const dragUploadClass = computed(() => {
       const defaultClass = 'drag-and-drop-area';
@@ -136,7 +137,9 @@ export default {
     }
 
     const clickButton = () => {
-      input.value.click();
+      if (!props.disabled) {
+        input.value.click();
+      }
     };
 
     const inputFile = async (data) => {
@@ -189,8 +192,10 @@ export default {
 
     const handleDrop = (e) => {
       e.preventDefault();
-      input.value.files = e.dataTransfer.files;
-      input.value.dispatchEvent(new Event('change'));
+      if (!props.disabled) {
+        input.value.files = e.dataTransfer.files;
+        input.value.dispatchEvent(new Event('change'));
+      }
       isDragging.value = false;
     };
 

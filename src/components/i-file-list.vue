@@ -9,21 +9,27 @@
             >
               <p class="tw:text-sm tw:self-center" @click="viewFile(file)">{{ file.name }}</p>
               <i-button
-                v-if="showRemoveButton"
+                v-if="isProgressFinish.includes(`${index}-${file.name}`)"
                 :text="true"
                 class="tw:self-center tw:w-fit"
                 @click="remove(index)"
               >
                 <ic-times></ic-times>
               </i-button>
-              <p v-else class="tw:self-center">{{ progress }}%</p>
+              <p v-if="file.progressBarValue" class="tw:self-center">
+                {{ file.progressBarValue }}%
+              </p>
               <i-progress-bar
                 class="tw:absolute tw:bottom-0 tw:left-0 progress-border-radius"
                 v-if="showProgressBar"
-                :progress="progressBarValue"
-                :timeout-value="timeoutValue"
+                :progress="file.progressBarValue"
+                :timeout-value="file.timeoutValue"
                 :color="color"
-                @finish="isProgressFinish = true"
+                @finish="
+                  () => {
+                    isProgressFinish.push(`${index}-${file.name}`);
+                  }
+                "
               ></i-progress-bar>
             </div>
           </slot>
@@ -56,7 +62,7 @@
 </template>
 
 <script>
-import { watch, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import IcTimes from '@/icons/ic-times.vue';
 import IProgressBar from '@/components/i-progress-bar.vue';
 import IButton from '@/components/i-button.vue';
@@ -85,35 +91,19 @@ export default {
     },
     readOnly: Boolean,
     showProgressBar: Boolean,
-    progressBarValue: Number,
-    timeoutValue: Number,
     color: String,
   },
   emits: ['update:files', 'remove', 'click'],
   setup(props, { emit }) {
     const boxList = typeBoxList;
     const list = typeList;
-    let isProgressFinish = ref(false);
-
-    watch(
-      () => props.progressBarValue,
-      (val) => {
-        progress.value = val;
-      },
-    );
+    let isProgressFinish = ref([]);
 
     const showRemoveButton = computed(() => {
       if (props.showProgressBar) {
         return isProgressFinish.value;
       }
       return !props.readOnly;
-    });
-
-    const progress = computed(() => {
-      if (props.timeoutValue) {
-        return 100;
-      }
-      return props.progressBarValue;
     });
 
     const remove = (index) => {
@@ -126,7 +116,7 @@ export default {
         emit('click', file);
       }
     };
-    return { boxList, list, isProgressFinish, showRemoveButton, progress, remove, viewFile };
+    return { boxList, list, isProgressFinish, showRemoveButton, remove, viewFile };
   },
 };
 </script>

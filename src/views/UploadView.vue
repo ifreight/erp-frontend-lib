@@ -8,7 +8,8 @@
       </p>
       <p class="tw:p-2 tw:bg-cyan-100 tw:border tw:border-cyan-500 tw:rounded-s tw:mb-2">
         `FileList` component with type `Box List` can use option from `ProgressBar` to show
-        progress. Use `ShowProgressBar` props. More detail is
+        progress. Use `ShowProgressBar` props, `ProgressBarValue` or `TimeoutValue` for progress bar
+        need to be added into `v-model:files`. More detail is
         <router-link to="/progress-bar" class="tw:text-(--brown-600)">here</router-link>.
       </p>
       <p class="tw:p-2 tw:bg-amber-100 tw:border tw:border-amber-500 tw:rounded-s tw:mb-2">
@@ -48,9 +49,8 @@
         ></i-upload>
         <i-file-list
           class="tw:mt-1"
-          v-model:files="files2"
+          v-model:files="files2WithProgressBarValue"
           :show-progress-bar="true"
-          :progress-bar-value="files2progress"
         ></i-file-list>
       </div>
     </div>
@@ -103,7 +103,60 @@
         </i-upload>
         <i-file-list
           class="tw:mt-1"
-          v-model:files="files4"
+          v-model:files="files4WithTimeoutVal"
+          :show-progress-bar="true"
+          :color="customColor"
+        ></i-file-list>
+      </div>
+    </div>
+    <div class="tw:flex tw:justify-between tw:gap-2 tw:mb-5">
+      <div class="tw:w-[50%]">
+        <p class="tw:font-bold tw:mb-2 tw:text-left">Upload with Button Disabled</p>
+        <i-upload
+          upload-type="button"
+          name="upload5"
+          class="tw:w-[150px]"
+          v-model="files5"
+          :is-multiple="true"
+          accept="image/*"
+          :disabled="true"
+          @invalid-size="displayError"
+          @invalid-file="displayErrorFile"
+        >
+          Upload
+        </i-upload>
+        <i-file-list
+          class="tw:mt-1"
+          type="list"
+          :read-only="true"
+          v-model:files="files5"
+          :show-progress-bar="true"
+          @click="handleViewFile"
+        ></i-file-list>
+      </div>
+      <div class="tw:w-[50%]">
+        <p class="tw:font-bold tw:mb-2">Upload with Drag Disabled</p>
+        <i-upload
+          upload-type="drag"
+          class="tw:h-40"
+          name="upload6"
+          v-model="files6"
+          accept=".pdf"
+          :is-multiple="true"
+          :is-replaceable="true"
+          extensions="pdf"
+          :disabled="true"
+          @invalid-size="displayError"
+          @invalid-file="displayErrorFile"
+        >
+          <div class="tw:flex tw:flex-col tw:align-middle tw:justify-center">
+            <ic-add class="tw:w-[50px] tw:h-[50px] tw:self-center"></ic-add>
+            <p class="tw:text-4xl">Seret File atau Klik disini</p>
+          </div>
+        </i-upload>
+        <i-file-list
+          class="tw:mt-1"
+          v-model:files="files6"
           :show-progress-bar="true"
           :color="customColor"
           :timeout-value="100"
@@ -114,7 +167,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import IUpload from '@/components/i-upload.vue';
 import IFileList from '@/components/i-file-list.vue';
 import IcAdd from '@/icons/ic-add.vue';
@@ -127,7 +180,31 @@ export default {
     let files2 = ref([]);
     let files3 = ref([]);
     let files4 = ref([]);
+    let files5 = ref([]);
+    let files6 = ref([]);
     let files2progress = ref(50);
+
+    const files4WithTimeoutVal = computed({
+      get: () => {
+        return files4.value.map((file) => {
+          return { ...file, timeoutValue: file.size / 100 };
+        });
+      },
+      set: (val) => {
+        files4.value = val;
+      },
+    });
+
+    const files2WithProgressBarValue = computed({
+      get: () => {
+        return files2.value.map((file) => {
+          return { ...file, progressBarValue: files2progress.value };
+        });
+      },
+      set: (val) => {
+        files2.value = val;
+      },
+    });
 
     const displayError = (file) => {
       const msg = `${file.name} exceed 5 MB`;
@@ -151,7 +228,11 @@ export default {
       files2,
       files3,
       files4,
+      files5,
+      files6,
       files2progress,
+      files2WithProgressBarValue,
+      files4WithTimeoutVal,
       displayError,
       displayErrorFile,
       handleViewFile,
