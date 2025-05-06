@@ -97,7 +97,7 @@
           @invalid-file="displayErrorFile"
         >
           <div class="tw:flex tw:flex-col tw:align-middle tw:justify-center">
-            <ic-plus class="tw:w-[50px] tw:h-[50px] tw:self-center"></ic-plus>
+            <ic-add class="tw:w-[50px] tw:h-[50px] tw:self-center"></ic-add>
             <p class="tw:text-4xl">Seret File atau Klik disini</p>
           </div>
         </i-upload>
@@ -117,10 +117,10 @@
 import { ref } from 'vue';
 import IUpload from '@/components/i-upload.vue';
 import IFileList from '@/components/i-file-list.vue';
-import IcPlus from '@/icons/ic-plus.vue';
+import IcAdd from '@/icons/ic-add.vue';
 
 export default {
-  components: { IUpload, IFileList, IcPlus },
+  components: { IUpload, IFileList, IcAdd },
   setup() {
     let customColor = 'var(--red-600)';
     let files1 = ref([]);

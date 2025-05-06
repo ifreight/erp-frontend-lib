@@ -2,7 +2,7 @@
   <div>
     <template v-if="uploadType == button">
       <i-button :disabled="isDisabled" @click="clickButton">
-        <template #prepend><ic-plus /></template>
+        <template #prepend><ic-add /></template>
         <slot>Upload</slot>
       </i-button>
     </template>
@@ -35,7 +35,7 @@
 <script>
 import { useTemplateRef, watch, ref, computed } from 'vue';
 import IButton from '@/components/i-button.vue';
-import IcPlus from '@/icons/ic-plus.vue';
+import IcAdd from '@/icons/ic-add.vue';
 
 const uploadTypeButton = 'button';
 const uploadTypeDrag = 'drag';
@@ -43,7 +43,7 @@ export default {
   name: 'IUpload',
   components: {
     IButton,
-    IcPlus,
+    IcAdd,
   },
   props: {
     accept: {
