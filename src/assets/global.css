@@ -4,23 +4,24 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  --color-yellow-50: #fefca9;
-  --color-yellow-100: #fdf1c3;
+  --color-yellow-70: #fffaed;
+  --color-yellow-100: #fefca9;
+  --color-yellow-200: #fdf1c3;
   --color-yellow-400: #ffd773;
   --color-yellow-800: #f9cf36;
 
   --color-orange-500: #ffb700;
 
-  --color-red-10: #fff1f0;
+  --color-red-100: #fff1f0;
   --color-red-300: #ec7173;
   --color-red-600: #e2283e;
   --color-red-700: #df0000;
 
-  --color-blue-10: #f4f9fd;
+  --color-blue-100: #f4f9fd;
   --color-blue-300: #65c0ff;
   --color-blue-600: #1890ff;
 
-  --color-green-10: #f1fffa;
+  --color-green-100: #f1fffa;
   --color-green-300: #77e4bd;
   --color-green-600: #31c18d;
 

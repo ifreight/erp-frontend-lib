@@ -241,11 +241,11 @@ export default defineComponent({
 
       &.selected {
         font-weight: 600;
-        background-color: var(--yellow-100);
+        background-color: var(--yellow-200);
       }
 
       &:hover {
-        background-color: var(--yellow-100);
+        background-color: var(--yellow-200);
       }
     }
 
