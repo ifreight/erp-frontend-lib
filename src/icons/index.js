@@ -323,3 +323,7 @@ export { default as IcPaypal } from './ic-paypal.vue';
 export { default as IcStripe } from './ic-stripe.vue';
 export { default as IcVenmo } from './ic-venmo.vue';
 export { default as IcSlack } from './ic-slack.vue';
+export { default as IcAlertError } from './ic-alert-error.vue';
+export { default as IcAlertSuccess } from './ic-alert-success.vue';
+export { default as IcAlertInfo } from './ic-alert-info.vue';
+export { default as IcAlertWarning } from './ic-alert-warning.vue';
