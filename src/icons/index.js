@@ -196,7 +196,7 @@ export { default as IcInputPipe } from './ic-input-pipe.vue';
 export { default as IcCrop } from './ic-crop.vue';
 export { default as IcMaximize } from './ic-maximize.vue';
 export { default as IcMinimize } from './ic-minimize.vue';
-export { default as IcScaleBalance } from './ic-scale-ballance.vue';
+export { default as IcScaleBalance } from './ic-scale-balance.vue';
 export { default as IcDiamondGem } from './ic-diamond-gem.vue';
 export { default as IcKey } from './ic-key.vue';
 export { default as IcThumbDown } from './ic-thumb-down.vue';
