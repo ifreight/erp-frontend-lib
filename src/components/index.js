@@ -1,4 +1,5 @@
 export { default as InputTel } from './input-tel';
+export { default as IAlert } from './alert';
 
 export { default as IButton } from './i-button.vue';
 export { default as ICheckbox } from './checkbox/i-checkbox.vue';
@@ -17,4 +18,3 @@ export { default as ITabs } from './tabs/i-tabs.vue';
 export { default as ITabPane } from './tabs/i-tab-pane.vue';
 export { default as ITextArea } from './i-text-area.vue';
 export { default as IUpload } from './i-upload.vue';
-export { default as IAlert } from './i-alert.vue';

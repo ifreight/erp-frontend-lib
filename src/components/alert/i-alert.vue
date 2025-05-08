@@ -4,12 +4,21 @@
       v-if="showIcon"
       class="tw:flex tw:items-center"
     >
-      <ic-alert-error v-if="type === 'error'" />
-      <ic-alert-success v-if="type === 'success'" />
-      <ic-alert-warning v-if="type === 'warning'" />
+      <ic-alert-error
+        v-if="type === 'error'"
+        class="tw:w-4 tw:h-4 tw:text-white"
+      />
+      <ic-alert-success
+        v-if="type === 'success'"
+        class="tw:w-4 tw:h-4 tw:text-white"
+      />
+      <ic-alert-warning
+        v-if="type === 'warning'"
+        class="tw:w-4 tw:h-4 tw:text-white"
+      />
       <ic-alert-info
         v-if="type === 'info'"
-        class="tw:w-4 tw:h-4"
+        class="tw:w-4 tw:h-4 tw:text-white"
       />
     </div>
     <div class="tw:text-gray-900 tw:text-sm tw:truncate">
