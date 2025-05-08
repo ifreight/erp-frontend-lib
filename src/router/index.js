@@ -12,7 +12,12 @@ import CheckboxView from '../views/CheckboxView.vue';
 import PaginationView from '../views/PaginationView.vue';
 import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
+<<<<<<< HEAD
 import SelectView from '../views/SelectView.vue'
+=======
+import UploadView from '../views/UploadView.vue';
+import ProgressView from '../views/ProgressView.vue';
+>>>>>>> vue_3_version
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,6 +91,16 @@ const router = createRouter({
       path: '/select',
       name: 'select',
       component: SelectView,
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: UploadView,
+    },
+    {
+      path: '/progress-bar',
+      name: 'progressBar',
+      component: ProgressView,
     }
   ],
 });
