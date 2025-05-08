@@ -12,6 +12,7 @@ import CheckboxView from '../views/CheckboxView.vue';
 import PaginationView from '../views/PaginationView.vue';
 import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
+import SelectView from '../views/SelectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +81,11 @@ const router = createRouter({
       path: '/popover',
       name: 'popover',
       component: PopoverView,
+    },
+    {
+      path: '/select',
+      name: 'select',
+      component: SelectView,
     }
   ],
 });

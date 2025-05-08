@@ -185,6 +185,7 @@ export default {
     const classes = computed(() => {
       return [
         `rounded-${props.rounded}`,
+        props.size,
         {
           dark: props.dark,
           disabled: props.disabled,
@@ -194,7 +195,6 @@ export default {
           append: !!slots.append || props.clearable,
           filled: props.filled,
           borderless: props.borderless,
-          sm: props.size === 'sm',
         }
       ]
     });
@@ -322,7 +322,7 @@ export default {
 .i-input {
   .i-input-container {
     height: 41px;
-    padding: 0 16px;
+    padding: 0 12px;
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
@@ -425,6 +425,10 @@ export default {
 
     &.disabled {
       background-color: var(--gray-500);
+
+      svg {
+        color: var(--gray-600);
+      }
     }
 
     &.readonly {
@@ -442,6 +446,12 @@ export default {
     &.invalid.filled,
     &.invalid.dark {
       border-color: var(--red-300);
+    }
+
+    &.invalid {
+      svg {
+        color: var(--red-300);
+      }
     }
 
     &.dark {
