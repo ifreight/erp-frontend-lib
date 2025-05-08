@@ -16,6 +16,8 @@
         <router-link to="/pagination">pagination</router-link>
         <router-link to="/suggestion">suggestion</router-link>
         <router-link to="/popover">popover</router-link>
+        <router-link to="/upload">upload</router-link>
+        <router-link to="/progress-bar">progress bar</router-link>
         <router-link to="/alert">alert</router-link>
       </div>
     </div>
@@ -26,5 +28,5 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router';
 </script>

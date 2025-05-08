@@ -12,6 +12,8 @@ import CheckboxView from '../views/CheckboxView.vue';
 import PaginationView from '../views/PaginationView.vue';
 import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
+import UploadView from '../views/UploadView.vue';
+import ProgressView from '../views/ProgressView.vue';
 import AlertView from '../views/AlertView.vue'
 
 const router = createRouter({
@@ -81,6 +83,16 @@ const router = createRouter({
       path: '/popover',
       name: 'popover',
       component: PopoverView,
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: UploadView,
+    },
+    {
+      path: '/progress-bar',
+      name: 'progressBar',
+      component: ProgressView,
     },
     {
       path: '/alert',

@@ -6,83 +6,23 @@
       <div class="tw:mt-6">
         <i-button
           class="tw:w-fit"
-          @click="isShowAlertOne = true"
+          @click="showAlertOneHandler"
         >
           Show all alert
         </i-button>
-
-        <i-alert
-          v-model="isShowAlertOne"
-          message="info"
-        />
-        <i-alert
-          v-model="isShowAlertOne"
-          alert-type="success"
-          message="success"
-        />
-        <i-alert
-          v-model="isShowAlertOne"
-          alert-type="warning"
-          message="warning"
-        />
-        <i-alert
-          v-model="isShowAlertOne"
-          alert-type="error"
-          message="error"
-        />
-        <i-alert
-          v-model="isShowAlertOne"
-          message="with min width 400px"
-        />
-        <i-alert
-          v-model="isShowAlertOne"
-          :auto-close="1000000000000000000"
-          message="This is the alert container with max width 450px so the container is too long"
-        />
       </div>
     </div>
 
-    <!-- Alert without close button -->
+    <!-- Alert without close button (with duration close, and MUST) -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Alert without close button</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Alert without close button (with duration close, and MUST)</div>
       <div class="tw:mt-6">
         <i-button
           class="tw:w-fit"
-          @click="isShowAlertTwo = true"
+          @click="showAlertTwoHandler"
         >
           Without close button
         </i-button>
-
-        <i-alert
-          v-model="isShowAlertTwo"
-          :show-close-button="false"
-          message="This alert doesn't have close button"
-        />
-      </div>
-    </div>
-
-    <!-- Alert with duration close -->
-    <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Alert with duration close</div>
-      <div class="tw:mt-6">
-        <i-button
-          class="tw:w-fit"
-          @click="isShowAlertThree = true"
-        >
-          Show alert
-        </i-button>
-
-        <i-alert
-          v-model="isShowAlertThree"
-          :show-close-button="false"
-          :auto-close="10000"
-          message="This alert will close around ten seconds"
-        />
-        <i-alert
-          v-model="isShowAlertThree"
-          :auto-close="false"
-          message="This alert only be able to close on click container or close button"
-        />
       </div>
     </div>
 
@@ -92,65 +32,103 @@
       <div class="tw:mt-6">
         <i-button
           class="tw:w-fit"
-          @click="isShowAlertFour = true"
+          @click="showAlertThreeHandler"
         >
           Show all alert
         </i-button>
-
-        <i-alert
-          v-model="isShowAlertFour"
-          :show-close-button="false"
-          :show-icon-type="false"
-          message="This alert doesn't have icon"
-        />
-        <i-alert
-          v-model="isShowAlertFour"
-          alert-type="error"
-          :show-close-button="false"
-          :show-icon-type="false"
-          message="This alert doesn't have icon"
-        />
-        <i-alert
-          v-model="isShowAlertFour"
-          alert-type="success"
-          :show-close-button="false"
-          :show-icon-type="false"
-          message="This alert doesn't have icon"
-        />
-        <i-alert
-          v-model="isShowAlertFour"
-          alert-type="warning"
-          :show-close-button="false"
-          :show-icon-type="false"
-          message="This alert doesn't have icon"
-        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import IAlertFunction from '@/components/alert/index';
 
-import IAlert from '@/components/i-alert.vue';
 import IButton from '@/components/i-button.vue';
 
 export default {
   components: {
-    IAlert,
     IButton
   },
   setup() {
-    const isShowAlertOne = ref(false)
-    const isShowAlertTwo = ref(false)
-    const isShowAlertThree = ref(false)
-    const isShowAlertFour = ref(false)
+    const showAlertOneHandler = () => {
+      IAlertFunction({
+        type: 'info',
+        message: 'This is info alert'
+      })
+
+      IAlertFunction({
+        type: 'error',
+        message: 'This is error alert'
+      })
+
+      IAlertFunction({
+        type: 'success',
+        message: 'This is success alert'
+      })
+
+      IAlertFunction({
+        type: 'warning',
+        message: 'This is warning alert'
+      })
+
+      IAlertFunction({
+        message: 'This 400px width alert',
+        type: 'info'
+      })
+
+      IAlertFunction({
+        type: 'info',
+        message: 'This 450px width (max) alert so i create the message is so long long long'
+      })
+    }
+
+    const showAlertTwoHandler = () => {
+      IAlertFunction({
+        type: 'info',
+        message: 'This alert will be close around 5 seconds',
+        showCloseButton: false,
+        autoClose: 5000
+      })
+
+      IAlertFunction({
+        type: 'info',
+        message: 'This alert will be close around 10 seconds',
+        showCloseButton: false,
+        autoClose: 10000
+      })
+    }
+
+    const showAlertThreeHandler = () => {
+      IAlertFunction({
+        type: 'info',
+        message: `This alert doesn't have icon at the left side`,
+        showIcon: false
+      })
+
+      IAlertFunction({
+        type: 'error',
+        message: `This alert doesn't have icon at the left side`,
+        showIcon: false
+      })
+
+      IAlertFunction({
+        type: 'success',
+        message: `This alert doesn't have icon at the left side`,
+        showIcon: false
+      })
+
+      IAlertFunction({
+        type: 'warning',
+        message: `This alert doesn't have icon at the left side`,
+        showIcon: false
+      })
+    }
 
     return {
-      isShowAlertOne,
-      isShowAlertTwo,
-      isShowAlertThree,
-      isShowAlertFour
+      showAlertOneHandler,
+      showAlertTwoHandler,
+      showAlertThreeHandler
     }
   }
 }
