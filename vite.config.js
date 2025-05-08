@@ -5,6 +5,8 @@ import vue from '@vitejs/plugin-vue';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import tailwindcss from '@tailwindcss/vite';
 import { dirname, resolve } from 'path';
+import postcssGlobalData from '@csstools/postcss-global-data';
+import postcssCustomProperties from 'postcss-custom-properties';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -44,11 +46,25 @@ export default defineConfig({
         api: 'modern-compiler',
         // This will export both abstracts and all element plus variables to be accesible on all places
         // Note that all abstracts will have i namespace
-        additionalData: `
-          @use '${pathSrc}/assets/abstracts/index' as i;
-        `,
+        additionalData: `@use '${pathSrc}/assets/abstracts/index.css';`,
         charset: false,
       },
+    },
+    postcss: {
+      plugins: [
+        // The postcssGlobalData plugin works on processed CSS
+        // So we need to preprocess the SCSS file
+        postcssGlobalData({
+          files: [
+            // Path to your CSS variables SCSS file
+            // Make sure this path is processed by SCSS first
+            './src/assets/abstracts/index.css',
+          ],
+        }),
+        postcssCustomProperties({
+          preserve: false, // Set to false to replace variables with their values
+        }),
+      ],
     },
   },
 });
