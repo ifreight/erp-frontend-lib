@@ -29,25 +29,11 @@
 
 
 <script>
-import { ref, computed } from 'vue';
 import IChip from '@/components/i-chip.vue';
 
 export default {
   components: {
     IChip,
-  },
-  setup() {
-    const suggestion = ref();
-    const suggestion2 = ref();
-    const suggestion3 = ref('Carton(s)');
-    const suggestion4 = ref();
-
-    return {
-      suggestion,
-      suggestion2,
-      suggestion3,
-      suggestion4,
-    }
   },
 };
 </script>
