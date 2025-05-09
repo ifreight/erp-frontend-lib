@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import IAlertFunction from '@/components/alert/index';
+import IAlert from '@/components/alert/index';
 
 import IButton from '@/components/i-button.vue';
 
@@ -52,46 +52,46 @@ export default {
   },
   setup() {
     const showAlertOneHandler = () => {
-      IAlertFunction({
+      IAlert({
         type: 'info',
         message: 'This is info alert'
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'error',
         message: 'This is error alert'
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'success',
         message: 'This is success alert'
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'warning',
         message: 'This is warning alert'
       })
 
-      IAlertFunction({
+      IAlert({
         message: 'This 400px width alert',
         type: 'info'
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'info',
         message: 'This 450px width (max) alert so i create the message is so long long long'
       })
     }
 
     const showAlertTwoHandler = () => {
-      IAlertFunction({
+      IAlert({
         type: 'info',
         message: 'This alert will be close around 5 seconds',
         showCloseButton: false,
         autoClose: 5000
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'info',
         message: 'This alert will be close around 10 seconds',
         showCloseButton: false,
@@ -100,25 +100,25 @@ export default {
     }
 
     const showAlertThreeHandler = () => {
-      IAlertFunction({
+      IAlert({
         type: 'info',
         message: `This alert doesn't have icon at the left side`,
         showIcon: false
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'error',
         message: `This alert doesn't have icon at the left side`,
         showIcon: false
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'success',
         message: `This alert doesn't have icon at the left side`,
         showIcon: false
       })
 
-      IAlertFunction({
+      IAlert({
         type: 'warning',
         message: `This alert doesn't have icon at the left side`,
         showIcon: false

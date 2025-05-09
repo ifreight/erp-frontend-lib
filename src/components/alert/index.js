@@ -1,13 +1,14 @@
 import { toast } from 'vue3-toastify';
-import IAlert from '@/components/alert/i-alert.vue';
+import IAlertComponent from '@/components/alert/i-alert-component.vue';
 
-export default function IAlertFunction (props) {
-  toast(IAlert, {
+export default function IAlert (props) {
+  toast(IAlertComponent, {
     contentProps: {
       message: props.message,
       type: props.type,
       showIcon: props.showIcon
     },
+    expandCustomProps: true,
     type: props.type,
     autoClose: props.autoClose,
     closeButton: props.showCloseButton,
