@@ -15,12 +15,14 @@ const pathSrc = resolve(__dirname, './src');
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueDevTools(), tailwindcss()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
-  },
+  plugins: [
+    vue(),
+    vueDevTools(),
+    tailwindcss({
+      // Add explicit configuration if needed
+      configPath: './tailwind.config.js',
+    }),
+  ],
   server: {
     host: '0.0.0.0',
     port: '9001',
