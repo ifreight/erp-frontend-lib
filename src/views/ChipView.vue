@@ -42,16 +42,11 @@ export default {
     const suggestion3 = ref('Carton(s)');
     const suggestion4 = ref();
 
-    const suggestionList = computed(() => {
-      return ['Box(es)', 'Pallet(s)', 'Drum(s)', 'Crate(s)', 'Carton(s)', 'Case(s)'];
-    });
-
     return {
       suggestion,
       suggestion2,
       suggestion3,
       suggestion4,
-      suggestionList,
     }
   },
 };

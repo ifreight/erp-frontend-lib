@@ -17,3 +17,4 @@ export { default as ITabs } from './tabs/i-tabs.vue';
 export { default as ITabPane } from './tabs/i-tab-pane.vue';
 export { default as ITextArea } from './i-text-area.vue';
 export { default as IUpload } from './i-upload.vue';
+export { default as IChip } from './i-chip.vue';
