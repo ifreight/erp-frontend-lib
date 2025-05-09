@@ -14,6 +14,7 @@ import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
 import UploadView from '../views/UploadView.vue';
 import ProgressView from '../views/ProgressView.vue';
+import ChipView from '../views/ChipView.vue';
 import AlertView from '../views/AlertView.vue'
 
 const router = createRouter({
@@ -93,6 +94,11 @@ const router = createRouter({
       path: '/progress-bar',
       name: 'progressBar',
       component: ProgressView,
+    },
+    {
+      path: '/chip',
+      name: 'chip',
+      component: ChipView,
     },
     {
       path: '/alert',

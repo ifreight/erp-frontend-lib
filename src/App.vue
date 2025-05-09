@@ -18,6 +18,7 @@
         <router-link to="/popover">popover</router-link>
         <router-link to="/upload">upload</router-link>
         <router-link to="/progress-bar">progress bar</router-link>
+        <router-link to="/chip">chip</router-link>
         <router-link to="/alert">alert</router-link>
       </div>
     </div>

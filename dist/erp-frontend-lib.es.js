@@ -5170,7 +5170,7 @@ const y2 = /* @__PURE__ */ a(f6, [["render", $6]]), v6 = {
     },
     inputId: {
       type: String,
-      required: !0
+      default: ""
     },
     name: {
       type: String,
@@ -5260,6 +5260,7 @@ const y2 = /* @__PURE__ */ a(f6, [["render", $6]]), v6 = {
   setup(t, { slots: e, emit: r }) {
     const n = E(), i = S(() => !(!t.clearable || t.disabled && (t.readOnly || !t.readOnly) || t.readOnly && (t.disabled || !t.disabled))), l = S(() => t.modelValue != null && t.modelValue !== ""), C = S(() => [
       `rounded-${t.rounded}`,
+      t.size,
       {
         dark: t.dark,
         disabled: t.disabled,
@@ -5268,8 +5269,7 @@ const y2 = /* @__PURE__ */ a(f6, [["render", $6]]), v6 = {
         prepend: !!e.prepend,
         append: !!e.append || t.clearable,
         filled: t.filled,
-        borderless: t.borderless,
-        sm: t.size === "sm"
+        borderless: t.borderless
       }
     ]), u = S(() => t.filled || !!t.placeholder || !!t.placeholderValue), c = S(() => t.modelValue && t.modelValue instanceof Date ? K4(t.modelValue).locale(t.dateLocale).format(t.dateFormat) : typeof t.modelValue == "number" ? Object.is(t.modelValue, -0) ? "-0" : t.modelValue.toLocaleString("id-ID") : t.modelValue || ""), h = S(() => {
       switch (t.mask) {
