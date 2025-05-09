@@ -1,4 +1,5 @@
 export { default as InputTel } from './input-tel';
+export { default as IAlert } from './alert';
 
 export { default as IButton } from './i-button.vue';
 export { default as ICheckbox } from './checkbox/i-checkbox.vue';

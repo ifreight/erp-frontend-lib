@@ -15,7 +15,14 @@ const pathSrc = resolve(__dirname, './src');
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueDevTools(), tailwindcss()],
+  plugins: [
+    vue(),
+    vueDevTools(),
+    tailwindcss({
+      // Add explicit configuration if needed
+      configPath: './tailwind.config.js',
+    }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

@@ -15,6 +15,7 @@ import PopoverView from '../views/PopoverView.vue'
 import UploadView from '../views/UploadView.vue';
 import ProgressView from '../views/ProgressView.vue';
 import ChipView from '../views/ChipView.vue';
+import AlertView from '../views/AlertView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -98,6 +99,11 @@ const router = createRouter({
       path: '/chip',
       name: 'chip',
       component: ChipView,
+    },
+    {
+      path: '/alert',
+      name: 'alert',
+      component: AlertView,
     }
   ],
 });
