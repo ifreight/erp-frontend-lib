@@ -80,7 +80,7 @@ export default {
     },
     inputId: {
       type: String,
-      required: true,
+      default: '',
     },
     name: {
       type: String,
@@ -185,6 +185,7 @@ export default {
     const classes = computed(() => {
       return [
         `rounded-${props.rounded}`,
+        props.size,
         {
           dark: props.dark,
           disabled: props.disabled,
@@ -194,7 +195,6 @@ export default {
           append: !!slots.append || props.clearable,
           filled: props.filled,
           borderless: props.borderless,
-          sm: props.size === 'sm',
         }
       ]
     });
@@ -326,6 +326,7 @@ export default {
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
+
     &.base {
       .input {
         font-size: 14px;
