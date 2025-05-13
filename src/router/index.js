@@ -17,6 +17,8 @@ import ProgressView from '../views/ProgressView.vue';
 import ChipView from '../views/ChipView.vue';
 import AlertView from '../views/AlertView.vue';
 import StickyBarView from '../views/StickyBarView.vue';
+import TableView from '../views/TableView.vue';
+import FileListView from '../views/FileListView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -92,6 +94,11 @@ const router = createRouter({
       component: UploadView,
     },
     {
+      path: '/file-list',
+      name: 'fileList',
+      component: FileListView,
+    },
+    {
       path: '/progress-bar',
       name: 'progressBar',
       component: ProgressView,
@@ -110,6 +117,11 @@ const router = createRouter({
       path: '/sticky-bar',
       name: 'stickyBar',
       component: StickyBarView,
+    },
+    {
+      path: '/table',
+      name: 'table',
+      component: TableView,
     }
   ],
 });

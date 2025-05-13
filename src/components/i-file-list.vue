@@ -2,8 +2,8 @@
   <div>
     <transition-group name="list" tag="div">
       <div class="tw:mb-1" v-for="(file, index) in files" :key="index">
-        <template v-if="type == boxList">
-          <slot>
+        <slot :file="file">
+          <template v-if="type == boxList">
             <div
               class="tw:relative tw:border-(--gray-500) tw:border tw:rounded-sm tw:h-[46px] tw:p-2 tw:flex tw:justify-between tw:align-middle"
             >
@@ -32,10 +32,8 @@
                 "
               ></i-progress-bar>
             </div>
-          </slot>
-        </template>
-        <template v-if="type == list">
-          <slot>
+          </template>
+          <template v-if="type == list">
             <div class="tw:p-1 tw:pb-0 tw:flex tw:justify-between tw:align-middle">
               <i-button
                 :disabled="!readOnly"
@@ -54,8 +52,8 @@
                 <ic-times></ic-times>
               </i-button>
             </div>
-          </slot>
-        </template>
+          </template>
+        </slot>
       </div>
     </transition-group>
   </div>

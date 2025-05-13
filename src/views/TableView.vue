@@ -1,0 +1,239 @@
+<template>
+  <div>
+    <div class="tw:mb-2">
+      <p class="tw:mb-1 tw:mt-1">Simple table example</p>
+      <i-table :data="shuffleData(data)" :headers="header1"></i-table>
+    </div>
+    <div class="tw:mb-2">
+      <p class="tw:mb-1 tw:mt-1">Customize Header and Data column table example</p>
+      <i-table :data="shuffleData(data)" :headers="header2">
+        <template v-slot:header-no>
+          <div><i-checkbox name="selectAll" v-model="selectedRow"></i-checkbox></div>
+        </template>
+        <template v-slot:no="{ row }">
+          <div><i-checkbox :name="`select${row.id}`" v-model="row.id"></i-checkbox></div>
+        </template>
+        <template v-slot:action="{ row }">
+          <div class="tw:flex tw:justify-evenly tw:gap-2 tw:w-1/5">
+            <i-button @click="actionButtonAdd(row)">Add</i-button>
+            <i-button @click="actionButtonDelete(row)">Delete</i-button>
+          </div>
+        </template>
+      </i-table>
+    </div>
+    <div class="tw:mb-2">
+      <p class="tw:mb-1 tw:mt-1">
+        Example with column width (if width 0 or unknown column width will be auto) table example
+      </p>
+      <i-table :data="shuffleData(data)" :headers="header3">
+        <template header-name>
+          <div class="tw:flex tw:gap-1 tw:justify-start tw:align-middle">
+            <span class="tw:self-center">Name</span>
+            <span class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer" @click="sortAction">
+              <ic-chevrons-vertical-up-down class="tw:w-fit"></ic-chevrons-vertical-up-down>
+            </span>
+          </div>
+        </template>
+        <template v-slot:no="{ index }">{{ index + 1 }}</template>
+        <template v-slot:name="{ row }">{{ `${row.firstName} ${row.lastName}` }}</template>
+      </i-table>
+    </div>
+    <div class="tw:mb-2">
+      <p class="tw:mb-1 tw:mt-1">No Data table example</p>
+      <i-table :data="[{}]" :headers="header3"></i-table>
+    </div>
+    <div class="tw:mb-2">
+      <p class="tw:mb-1 tw:mt-1">No Data table with custom slot example</p>
+      <i-table :data="[{}]" :headers="header3">
+        <template #no-data> Data tidak ditemukan </template>
+      </i-table>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue';
+import ITable from '@/components/i-table.vue';
+import ICheckbox from '@/components/checkbox/i-checkbox.vue';
+import IButton from '@/components/i-button.vue';
+import IcChevronsVerticalUpDown from '@/icons/ic-chevrons-vertical-up-down.vue';
+
+export default {
+  components: { ITable, ICheckbox, IButton, IcChevronsVerticalUpDown },
+  setup() {
+    const data = ref([
+      {
+        id: 1,
+        firstName: 'Dolf',
+        lastName: 'Bibb',
+        email: 'dbibb0@boston.com',
+        gender: 'Male',
+        ipAddress: '251.112.142.229',
+      },
+      {
+        id: 2,
+        firstName: 'Addison',
+        lastName: 'Bradneck',
+        email: 'abradneck1@deliciousdays.com',
+        gender: 'Male',
+        ipAddress: '175.123.105.192',
+      },
+      {
+        id: 3,
+        firstName: 'Harriett',
+        lastName: 'Devinn',
+        email: 'hdevinn2@oakley.com',
+        gender: 'Female',
+        ipAddress: '181.215.118.170',
+      },
+      {
+        id: 4,
+        firstName: 'Shepard',
+        lastName: 'Grimsdith',
+        email: 'sgrimsdith3@sitemeter.com',
+        gender: 'Male',
+        ipAddress: '203.132.44.39',
+      },
+      {
+        id: 5,
+        firstName: 'Dicky',
+        lastName: 'Matchitt',
+        email: 'dmatchitt4@earthlink.net',
+        gender: 'Male',
+        ipAddress: '167.154.48.255',
+      },
+      {
+        id: 6,
+        firstName: 'Conant',
+        lastName: 'Thunnercliff',
+        email: 'cthunnercliff5@techcrunch.com',
+        gender: 'Male',
+        ipAddress: '224.122.144.162',
+      },
+      {
+        id: 7,
+        firstName: 'Tawnya',
+        lastName: 'Lorkings',
+        email: 'tlorkings6@stumbleupon.com',
+        gender: 'Female',
+        ipAddress: '175.2.49.75',
+      },
+      {
+        id: 8,
+        firstName: 'Grover',
+        lastName: 'Proctor',
+        email: 'gproctor7@tiny.cc',
+        gender: 'Male',
+        ipAddress: '179.132.196.149',
+      },
+      {
+        id: 9,
+        firstName: 'Donni',
+        lastName: 'Deeman',
+        email: 'ddeeman8@loc.gov',
+        gender: 'Female',
+        ipAddress: '228.110.41.29',
+      },
+      {
+        id: 10,
+        firstName: 'Rebe',
+        lastName: 'Caulcutt',
+        email: 'rcaulcutt9@ycombinator.com',
+        gender: 'Male',
+        ipAddress: '154.182.216.241',
+      },
+    ]);
+    const header1 = ref([
+      {
+        key: 'id',
+        label: 'User ID',
+      },
+      {
+        key: 'firstName',
+        label: 'First Name',
+      },
+      {
+        key: 'lastName',
+        label: 'Last Name',
+      },
+      {
+        key: 'email',
+        label: 'Email',
+      },
+    ]);
+    const header2 = ref([
+      {
+        key: 'no',
+        label: 'No',
+      },
+      {
+        key: 'firstName',
+        label: 'First Name',
+      },
+      {
+        key: 'lastName',
+        label: 'Last Name',
+      },
+      {
+        key: 'ipAddress',
+        label: 'IP Address',
+        width: 15,
+      },
+      {
+        key: 'action',
+        label: '',
+      },
+    ]);
+    const header3 = ref([
+      {
+        key: 'no',
+        label: 'No',
+        width: 5,
+      },
+      {
+        key: 'name',
+        label: 'Name',
+      },
+      {
+        key: 'email',
+        label: 'Email',
+      },
+    ]);
+
+    let selectedRow = ref([]);
+
+    const shuffleData = (item) => {
+      const arr = [];
+      const pool = item.map((item) => item);
+      for (let i = 0; i < 5; i++) {
+        const j = Math.floor(Math.random() * (pool.length - 0) + 0);
+        arr.push(pool[j]);
+        pool[j] = pool[pool.length - 1];
+        pool.splice(pool.length - 1);
+      }
+      return arr;
+    };
+
+    const actionButtonAdd = (row) => {
+      window.alert(`Clicked button add for ${row.firstName} - ${row.ipAddress}`);
+    };
+    const actionButtonDelete = (row) => {
+      window.alert(`Clicked button delete for ${row.firstName} - ${row.id}`);
+    };
+    const sortAction = () => {
+      window.alert('clicked sort');
+    };
+    return {
+      data,
+      header1,
+      header2,
+      header3,
+      selectedRow,
+      shuffleData,
+      actionButtonAdd,
+      actionButtonDelete,
+      sortAction,
+    };
+  },
+};
+</script>
