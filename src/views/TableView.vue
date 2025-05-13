@@ -5,13 +5,18 @@
       <i-table :data="shuffleData(data)" :headers="header1"></i-table>
     </div>
     <div class="tw:mb-2">
-      <p class="tw:mb-1 tw:mt-1">Customize Header and Data column table example</p>
+      <p class="tw:mb-1 tw:mt-1">
+        Customize Header and Data column table example, to add selected effect on row add css class
+        `selected` on template
+      </p>
       <i-table :data="shuffleData(data)" :headers="header2">
         <template v-slot:header-no>
           <div><i-checkbox name="selectAll" v-model="selectedRow"></i-checkbox></div>
         </template>
         <template v-slot:no="{ row }">
-          <div><i-checkbox :name="`select${row.id}`" v-model="row.id"></i-checkbox></div>
+          <div :class="selectedRow.includes(row.id) ? 'selected' : ''">
+            <i-checkbox :name="`select${row.id}`" :model-value="false"></i-checkbox>
+          </div>
         </template>
         <template v-slot:action="{ row }">
           <div class="tw:flex tw:justify-evenly tw:gap-2 tw:w-1/5">
@@ -40,11 +45,11 @@
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table example</p>
-      <i-table :data="[{}]" :headers="header3"></i-table>
+      <i-table :data="[]" :headers="header3"></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table with custom slot example</p>
-      <i-table :data="[{}]" :headers="header3">
+      <i-table :data="[]" :headers="header3">
         <template #no-data> Data tidak ditemukan </template>
       </i-table>
     </div>

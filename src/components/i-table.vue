@@ -70,21 +70,22 @@ export default {
 .i-table {
   @apply tw:w-full tw:border-separate tw:border-spacing-0 tw:border tw:border-(--gray-500) tw:rounded-[8px];
 
+  tbody tr:hover,
+  tbody tr:has(> td .selected) {
+    @apply tw:bg-(--gray-100);
+  }
+
   thead tr th,
   tbody tr td {
     @apply tw:border-b tw:border-b-(--gray-500) tw:py-3 tw:px-2.5;
-    /*box-shadow: 0px -1px 0px 0px rgba(225, 225, 225, 1) inset;*/
   }
 
   thead tr th {
     @apply tw:py-4 tw:text-left;
   }
 
-  tbody tr:last-child {
-    td {
-      @apply tw:border-b-0;
-    }
-    box-shadow: none;
+  tbody tr:last-child td {
+    @apply tw:border-b-0;
   }
 }
 </style>
