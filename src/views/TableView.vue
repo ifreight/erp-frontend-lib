@@ -2,37 +2,29 @@
   <div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">Simple table example</p>
-      <i-table
-        :data="shuffleData(data)"
-        :headers="header1"
-      ></i-table>
+      <i-table :data="shuffleData(data)" :headers="header1"></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">
         Customize Header and Data column table example, to add selected effect on row add css class
         `selected` on template
       </p>
-      <br>
-      <span class="tw:bg-red-400 tw:text-white">selected id : {{selectedRow}}</span>
-      <i-table
-        :data="shuffleData(data)"
-        :headers="header2"
-      >
+      <br />
+      <span class="tw:bg-red-400 tw:text-white">selected id : {{ selectedRow }}</span>
+      <i-table :data="shuffleData(data)" :headers="header2">
         <template v-slot:header-no>
-          <div><i-checkbox
-              name="selectAll"
-              v-model="checkAll"
-              @change="checkAllHandler"
-            ></i-checkbox></div>
+          <div><i-checkbox name="selectAll" v-model="checkAll" @change="checkAllHandler" /></div>
         </template>
         <template v-slot:no="{ row }">
           <div :class="selectedRow.includes(row.id) ? 'selected' : ''">
             <i-checkbox
               :name="`select${row.id}`"
               v-model="row.isChecked"
-              @change="(e, val) => {
-                checkboxChangeHandler(val, row.id);
-              }"
+              @change="
+                (e, val) => {
+                  checkboxChangeHandler(val, row.id);
+                }
+              "
             ></i-checkbox>
           </div>
         </template>
@@ -48,38 +40,26 @@
       <p class="tw:mb-1 tw:mt-1">
         Example with column width (if width 0 or unknown column width will be auto) table example
       </p>
-      <i-table
-        :data="shuffleData(data)"
-        :headers="header3"
-      >
-        <template header-name>
+      <i-table :data="shuffleData(data)" :headers="header3">
+        <template #header-name>
           <div class="tw:flex tw:gap-1 tw:justify-start tw:align-middle">
             <span class="tw:self-center">Name</span>
-            <span
-              class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer"
-              @click="sortAction"
-            >
+            <span class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer" @click="sortAction">
               <ic-chevrons-vertical-up-down class="tw:w-fit"></ic-chevrons-vertical-up-down>
             </span>
           </div>
         </template>
-        <template v-slot:no="{ index }">{{ index + 1 }}</template>
-        <template v-slot:name="{ row }">{{ `${row.firstName} ${row.lastName}` }}</template>
+        <template #no="{ index }">{{ index + 1 }}</template>
+        <template #name="{ row }">{{ `${row.firstName} ${row.lastName}` }}</template>
       </i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table example</p>
-      <i-table
-        :data="[]"
-        :headers="header3"
-      ></i-table>
+      <i-table :data="[]" :headers="header3"></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table with custom slot example</p>
-      <i-table
-        :data="[]"
-        :headers="header3"
-      >
+      <i-table :data="[]" :headers="header3">
         <template #no-data> Data tidak ditemukan </template>
       </i-table>
     </div>
@@ -274,17 +254,17 @@ export default {
         return {
           ...item,
           isChecked: val,
-        }
+        };
       });
       selectedRow.value = data.value.filter((a) => a.isChecked).map((y) => y.id);
-    }
+    };
     const checkboxChangeHandler = (val, id) => {
       if (val) {
         selectedRow.value.push(id);
       } else {
         selectedRow.value = selectedRow.value.filter((val) => val !== id);
       }
-    }
+    };
     onMounted(() => {
       selectedRow.value = data.value.filter((a) => a.isChecked).map((y) => y.id);
     });
