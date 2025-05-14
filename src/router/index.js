@@ -12,6 +12,11 @@ import CheckboxView from '../views/CheckboxView.vue';
 import PaginationView from '../views/PaginationView.vue';
 import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
+import UploadView from '../views/UploadView.vue';
+import ProgressView from '../views/ProgressView.vue';
+import ChipView from '../views/ChipView.vue';
+import AlertView from '../views/AlertView.vue';
+import StickyBarView from '../views/StickyBarView.vue';
 import DualInputView from '../views/DualInputView.vue';
 
 const router = createRouter({
@@ -81,6 +86,31 @@ const router = createRouter({
       path: '/popover',
       name: 'popover',
       component: PopoverView,
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: UploadView,
+    },
+    {
+      path: '/progress-bar',
+      name: 'progressBar',
+      component: ProgressView,
+    },
+    {
+      path: '/chip',
+      name: 'chip',
+      component: ChipView,
+    },
+    {
+      path: '/alert',
+      name: 'alert',
+      component: AlertView,
+    },
+    {
+      path: '/sticky-bar',
+      name: 'stickyBar',
+      component: StickyBarView,
     },
     {
       path: '/dual-input',
