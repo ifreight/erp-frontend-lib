@@ -6,10 +6,12 @@
       <div class="tw:mt-6">
         <i-checkbox-group v-model="checkedList">
           <i-checkbox
+            model-label="modelOne"
             name="modelOne"
             label="One"
           />
           <i-checkbox
+            model-label="modelTwo"
             name="modelTwo"
             label="Two"
           />
@@ -17,7 +19,7 @@
 
         <i-sticky-bar
           v-if="checkedList.length > 0"
-          width-sidebar="20%"
+          left-offset="20%"
         >
           <template #content>
             {{ checkedList.length }} option(s) selected
@@ -28,8 +30,11 @@
                 Cancel
               </i-button>
 
-              <i-button class="tw:w-[150px]">
-                Click me!
+              <i-button
+                class="tw:w-[200px]"
+                @click="hideHandler"
+              >
+                Click to hide!
               </i-button>
             </div>
           </template>
@@ -57,8 +62,13 @@ export default {
   setup() {
     const checkedList = ref([])
 
+    const hideHandler = () => {
+      checkedList.value.splice(0, checkedList.value.length)
+    }
+
     return {
-      checkedList
+      checkedList,
+      hideHandler
     }
   }
 }
