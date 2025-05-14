@@ -8,6 +8,7 @@
 import { watch, useTemplateRef, onMounted, onBeforeUnmount, ref } from 'vue';
 
 export default {
+  name: 'IProgressBar',
   props: {
     progress: {
       type: Number,

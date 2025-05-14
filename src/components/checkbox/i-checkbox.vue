@@ -13,7 +13,8 @@
         :checked="isChecked"
         :disabled="disabled"
         :class="elementInputClass"
-        v-on:click="onClick"
+        @click="onClick"
+        @change="onChange"
       />
       <ic-check
         class="i-checkbox-icon"
@@ -91,7 +92,7 @@ export default {
       default: false
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
     const isChecked = ref(false)
     const rootChecked = inject('rootCheckbox', null)
@@ -181,13 +182,18 @@ export default {
       emit('update:modelValue', !isChecked.value)
     }
 
+    const onChange = (event) => {
+      emit('change', event, isChecked.value)
+    }
+
     return {
       isChecked,
       rootChecked,
       checkboxInputClass,
       elementInputClass,
       spanClass,
-      onClick
+      onClick,
+      onChange,
     }
   }
 }
