@@ -15,7 +15,8 @@ import PopoverView from '../views/PopoverView.vue'
 import UploadView from '../views/UploadView.vue';
 import ProgressView from '../views/ProgressView.vue';
 import ChipView from '../views/ChipView.vue';
-import AlertView from '../views/AlertView.vue'
+import AlertView from '../views/AlertView.vue';
+import StickyBarView from '../views/StickyBarView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -104,6 +105,11 @@ const router = createRouter({
       path: '/alert',
       name: 'alert',
       component: AlertView,
+    },
+    {
+      path: '/sticky-bar',
+      name: 'stickyBar',
+      component: StickyBarView,
     }
   ],
 });
