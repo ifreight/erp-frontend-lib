@@ -2,20 +2,38 @@
   <div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">Simple table example</p>
-      <i-table :data="shuffleData(data)" :headers="header1"></i-table>
+      <i-table
+        :data="shuffleData(data)"
+        :headers="header1"
+      ></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">
         Customize Header and Data column table example, to add selected effect on row add css class
         `selected` on template
       </p>
-      <i-table :data="shuffleData(data)" :headers="header2">
+      <br>
+      <span class="tw:bg-red-400 tw:text-white">selected id : {{selectedRow}}</span>
+      <i-table
+        :data="shuffleData(data)"
+        :headers="header2"
+      >
         <template v-slot:header-no>
-          <div><i-checkbox name="selectAll" v-model="selectedRow"></i-checkbox></div>
+          <div><i-checkbox
+              name="selectAll"
+              v-model="checkAll"
+              @change="checkAllHandler"
+            ></i-checkbox></div>
         </template>
         <template v-slot:no="{ row }">
           <div :class="selectedRow.includes(row.id) ? 'selected' : ''">
-            <i-checkbox :name="`select${row.id}`" :model-value="false"></i-checkbox>
+            <i-checkbox
+              :name="`select${row.id}`"
+              v-model="row.isChecked"
+              @change="(e, val) => {
+                checkboxChangeHandler(val, row.id);
+              }"
+            ></i-checkbox>
           </div>
         </template>
         <template v-slot:action="{ row }">
@@ -30,11 +48,17 @@
       <p class="tw:mb-1 tw:mt-1">
         Example with column width (if width 0 or unknown column width will be auto) table example
       </p>
-      <i-table :data="shuffleData(data)" :headers="header3">
+      <i-table
+        :data="shuffleData(data)"
+        :headers="header3"
+      >
         <template header-name>
           <div class="tw:flex tw:gap-1 tw:justify-start tw:align-middle">
             <span class="tw:self-center">Name</span>
-            <span class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer" @click="sortAction">
+            <span
+              class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer"
+              @click="sortAction"
+            >
               <ic-chevrons-vertical-up-down class="tw:w-fit"></ic-chevrons-vertical-up-down>
             </span>
           </div>
@@ -45,11 +69,17 @@
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table example</p>
-      <i-table :data="[]" :headers="header3"></i-table>
+      <i-table
+        :data="[]"
+        :headers="header3"
+      ></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table with custom slot example</p>
-      <i-table :data="[]" :headers="header3">
+      <i-table
+        :data="[]"
+        :headers="header3"
+      >
         <template #no-data> Data tidak ditemukan </template>
       </i-table>
     </div>
@@ -57,7 +87,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ITable from '@/components/i-table.vue';
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import IButton from '@/components/i-button.vue';
@@ -74,6 +104,7 @@ export default {
         email: 'dbibb0@boston.com',
         gender: 'Male',
         ipAddress: '251.112.142.229',
+        isChecked: true,
       },
       {
         id: 2,
@@ -82,6 +113,7 @@ export default {
         email: 'abradneck1@deliciousdays.com',
         gender: 'Male',
         ipAddress: '175.123.105.192',
+        isChecked: false,
       },
       {
         id: 3,
@@ -90,6 +122,7 @@ export default {
         email: 'hdevinn2@oakley.com',
         gender: 'Female',
         ipAddress: '181.215.118.170',
+        isChecked: false,
       },
       {
         id: 4,
@@ -98,6 +131,7 @@ export default {
         email: 'sgrimsdith3@sitemeter.com',
         gender: 'Male',
         ipAddress: '203.132.44.39',
+        isChecked: false,
       },
       {
         id: 5,
@@ -106,6 +140,7 @@ export default {
         email: 'dmatchitt4@earthlink.net',
         gender: 'Male',
         ipAddress: '167.154.48.255',
+        isChecked: false,
       },
       {
         id: 6,
@@ -114,6 +149,7 @@ export default {
         email: 'cthunnercliff5@techcrunch.com',
         gender: 'Male',
         ipAddress: '224.122.144.162',
+        isChecked: false,
       },
       {
         id: 7,
@@ -122,6 +158,7 @@ export default {
         email: 'tlorkings6@stumbleupon.com',
         gender: 'Female',
         ipAddress: '175.2.49.75',
+        isChecked: false,
       },
       {
         id: 8,
@@ -130,6 +167,7 @@ export default {
         email: 'gproctor7@tiny.cc',
         gender: 'Male',
         ipAddress: '179.132.196.149',
+        isChecked: false,
       },
       {
         id: 9,
@@ -138,6 +176,7 @@ export default {
         email: 'ddeeman8@loc.gov',
         gender: 'Female',
         ipAddress: '228.110.41.29',
+        isChecked: false,
       },
       {
         id: 10,
@@ -146,6 +185,7 @@ export default {
         email: 'rcaulcutt9@ycombinator.com',
         gender: 'Male',
         ipAddress: '154.182.216.241',
+        isChecked: false,
       },
     ]);
     const header1 = ref([
@@ -205,12 +245,13 @@ export default {
       },
     ]);
 
+    const checkAll = ref(false);
     let selectedRow = ref([]);
 
     const shuffleData = (item) => {
       const arr = [];
       const pool = item.map((item) => item);
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 10; i++) {
         const j = Math.floor(Math.random() * (pool.length - 0) + 0);
         arr.push(pool[j]);
         pool[j] = pool[pool.length - 1];
@@ -228,6 +269,25 @@ export default {
     const sortAction = () => {
       window.alert('clicked sort');
     };
+    const checkAllHandler = (event, val) => {
+      data.value = data.value.map((item) => {
+        return {
+          ...item,
+          isChecked: val,
+        }
+      });
+      selectedRow.value = data.value.filter((a) => a.isChecked).map((y) => y.id);
+    }
+    const checkboxChangeHandler = (val, id) => {
+      if (val) {
+        selectedRow.value.push(id);
+      } else {
+        selectedRow.value = selectedRow.value.filter((val) => val !== id);
+      }
+    }
+    onMounted(() => {
+      selectedRow.value = data.value.filter((a) => a.isChecked).map((y) => y.id);
+    });
     return {
       data,
       header1,
@@ -238,6 +298,9 @@ export default {
       actionButtonAdd,
       actionButtonDelete,
       sortAction,
+      checkAll,
+      checkAllHandler,
+      checkboxChangeHandler,
     };
   },
 };
