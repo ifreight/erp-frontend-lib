@@ -19,6 +19,8 @@
         <router-link to="/select">select</router-link>
         <router-link to="/upload">upload</router-link>
         <router-link to="/progress-bar">progress bar</router-link>
+        <router-link to="/chip">chip</router-link>
+        <router-link to="/alert">alert</router-link>
       </div>
     </div>
     <div class="tw:flex-1 tw:py-5 tw:px-6">

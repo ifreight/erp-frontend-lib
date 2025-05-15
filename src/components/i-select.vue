@@ -12,15 +12,16 @@
         ref="inputRef"
         class="i-select-input"
         type="text"
-        :model-value="modelValue"
+        :model-value="inputTextValue"
         :label="label"
         :input-id="inputId"
         :name="name"
         :placeholder="placeholder"
         :disabled="disabled"
-        :read-only="readOnly"
+        :read-only="isInputReadOnly"
         :invalid="invalid"
         :dark="dark"
+        :rounded="rounded"
         :size="size"
         :error-message="errorMessage"
         @keyup="onInputKeyup"
@@ -33,7 +34,10 @@
         </template>
         <template #append>
           <slot name="append">
-            <div class="i-select-arrow-container">
+            <div
+              class="i-select-arrow-container"
+              :style="{ color: arrowColor }"
+            >
               <ic-chevron-down />
             </div>
           </slot>
@@ -46,9 +50,12 @@
       :options="dropdownOptions"
       :option-key="optionKey"
       :option-value="optionValue"
-      :max-height="dropdownMaxHeight"
+      :current-value="selectedOptionValue"
       :query="query"
-      filterable
+      :max-height="dropdownMaxHeight"
+      :filterable="filterable"
+      :remote="remote"
+      :rounded="rounded"
       hide-empty-filtered
       @selectedValue="handleSelected"
     >
@@ -69,8 +76,8 @@ import {
   onBeforeUnmount,
   ref,
   watch,
-  toRefs,
 } from 'vue';
+import debounce from 'lodash/debounce';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
 import IInput from './i-input.vue';
@@ -86,6 +93,10 @@ export default defineComponent({
     modelValue: {
       type: [String, Number],
       default: undefined,
+    },
+    valueOption: {
+      type: [String, Object],
+      default: () => undefined,
     },
     dropdownMaxHeight: {
       type: String,
@@ -120,9 +131,10 @@ export default defineComponent({
       default: 'name',
     },
     disabled: Boolean,
-    noDataText: {
-      type: String,
-      default: 'No results found.',
+    remote: Boolean,
+    remoteMethod: {
+      type: Function,
+      default: undefined,
     },
     readOnly: Boolean,
     filterable: Boolean,
@@ -133,6 +145,14 @@ export default defineComponent({
     },
     loading: Boolean,
     dark: Boolean,
+    arrowColor: {
+      type: String,
+      default: '#2d2d2d',
+    },
+    rounded: {
+      type: String,
+      default: 'xs',
+    },
     size: {
       type: String,
       default: 'base',
@@ -140,28 +160,28 @@ export default defineComponent({
         return ['sm', 'base'].includes(value);
       },
     },
-    clearable: Boolean,
     dropdownWidth: {
       type: String,
       default: undefined,
     },
   },
-  emits: ['update:modelValue', 'input', 'change', 'focus', 'blur', 'clear'],
+  emits: ['update:modelValue', 'update:valueOption', 'input', 'change', 'focus', 'blur'],
 
   setup(props, { emit }) {
-    const {
-      modelValue,
-    } = toRefs(props);
-
     const isVisible = ref(false);
+    const remoteLoading = ref(false);
+    const remoteOptions = ref([]);
     const query = ref('');
     const inputRef = ref();
     const selectRef = ref();
-    const inputValue = ref(modelValue.value);
+    const selectedOption = ref(props.valueOption);
+    const inputValue = ref(props.modelValue);
 
     const dropdownOptions = computed(() => {
       let options = [];
-      if (props.options && props.options.length) {
+      if (props.remote) {
+        options = remoteOptions.value || [];
+      } else if (props.options && props.options.length) {
         const [firstOption] = props.options;
         if (typeof firstOption !== 'object') {
           options = props.options.map((option) => ({
@@ -173,40 +193,106 @@ export default defineComponent({
         }
       }
 
+      if (selectedOption.value) {
+        const isOptionIncluded = options.some(
+          (option) => option[props.optionKey] === selectedOption.value[props.optionKey]
+        );
+
+        if (!isOptionIncluded) {
+          options.unshift(selectedOption.value);
+        }
+      }
+
       return options;
     });
 
+    const selectedOptionValue = computed(() => {
+      return selectedOption.value ? selectedOption.value[props.optionKey] : undefined;
+    });
+
+    const inputTextValue = computed(() => {
+      if (!inputValue.value) {
+        return query.value || '';
+      }
+
+      return selectedOption.value ? selectedOption.value[props.optionValue] : query.value;
+    });
+
+    const isInputReadOnly = computed(() => {
+      if (!isVisible.value) {
+        return true;
+      }
+      return !props.filterable && !props.remote;
+    });
+
+    const updateSelectedOption = ((option) => {
+      selectedOption.value = option || null;
+      emit('update:valueOption', option);
+    });
 
     const changeSelected = ((option) => {
+      remoteOptions.value = [];
+
       if (!option) {
         inputValue.value = '';
-        emit('update:modelValue', '');
-        emit('change', '');
+        updateSelectedOption(undefined);
+        emit('input', undefined);
+        emit('change', undefined);
         return;
       }
 
-      query.value = '';
       inputValue.value = option[props.optionKey];
-      emit('update:modelValue', option[props.optionKey]);
+      query.value = option[props.optionValue];
+      updateSelectedOption(option);
+      emit('input', option[props.optionKey]);
       emit('change', option);
     });
 
     const resetInputValue = (() => {
       query.value = '';
       changeSelected(undefined);
+      remoteOptions.value = [];
     });
 
-    const onInputKeyup = (event) => {
-      console.log(' on input');
+    const handleQuery = async (value) => {
+      if (!value) {
+        remoteOptions.value = [];
+        remoteLoading.value = false;
+        return;
+      }
 
-      const typedValue = event.target.value.trim();
-      inputValue.value = typedValue;
-      query.value = typedValue;
-      emit('update:modelValue', typedValue);
+      try {
+        remoteOptions.value = await props.remoteMethod(value);
+      } catch (err) {
+        console.error(err);
+      }
+      remoteLoading.value = false;
+    };
+
+    const debouncedHandleQuery = debounce(() => {
+      handleQuery(query.value);
+    }, 300);
+
+    const onInputKeyup = (event) => {
+      if (props.filterable || props.remote) {
+        if (inputValue.value) {
+          resetInputValue();
+          if (event.key.length === 1) {
+            query.value = event.key;
+          }
+        } else {
+          query.value = event.target.value;
+        }
+
+        if (props.remote && typeof debouncedHandleQuery === 'function') {
+          remoteLoading.value = true;
+          debouncedHandleQuery();
+        }
+      }
     };
 
     const showDropdown = () => {
-      if (!props.disabled && !props.readOnly) {
+      if (!props.disabled && !props.readOnly && !props.isVisible) {
         isVisible.value = true;
         emit('focus');
 
@@ -233,13 +319,14 @@ export default defineComponent({
 
     const handleSelected = (option) => {
       changeSelected(option);
+      query.value = '';
       hideDropdown();
     };
 
     const handleClickOutside = ((event) => {
       const isClickInside = event.composedPath().includes(selectRef.value);
       if (!isClickInside) {
-        const typedValue = inputValue.value?.trim();
+        const typedValue = typeof inputValue.value === 'string' ? inputValue.value.trim() : '';
 
         if (typedValue) {
           const matchingOption = dropdownOptions.value.find(option =>
@@ -256,6 +343,40 @@ export default defineComponent({
         hideDropdown();
       }
     });
+
+    watch(() => props.valueOption, (value) => {
+      if ((!value && selectedOptionValue.value) || (value && selectedOptionValue.value !== value[props.optionKey])) {
+        selectedOption.value = value;
+      }
+    });
+
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        if (newValue !== inputValue.value) {
+          inputValue.value = newValue;
+        }
+
+        if (!selectedOption.value || selectedOption.value[props.optionKey] !== newValue) {
+          const newSelectedOption = dropdownOptions.value.find(
+            (item) => item[props.optionKey] === newValue
+          );
+          updateSelectedOption(newSelectedOption);
+        }
+      },
+      { immediate: true }
+    );
+
+    watch(() => dropdownOptions, () => {
+      if (inputValue.value && selectedOptionValue.value !== inputValue.value & dropdownOptions.value.length) {
+        updateSelectedOption(dropdownOptions.value.find((item) => item[props.optionKey] === props.inputValue));
+
+        const matchedOption = dropdownOptions.value.find(
+          (item) => item[props.optionKey] === inputValue.value
+        );
+        updateSelectedOption(matchedOption);
+      }
+    }, { deep: true, immediate: true });
 
     watch(() => isVisible.value, (val) => {
       if (val) {
@@ -275,10 +396,16 @@ export default defineComponent({
       selectRef,
       inputRef,
       isVisible,
+      remoteLoading,
+      remoteOptions,
       dropdownOptions,
       inputValue,
       query,
+      selectedOptionValue,
+      inputTextValue,
+      isInputReadOnly,
       resetInputValue,
+      handleQuery,
       showDropdown,
       hideDropdown,
       toggleDropdown,

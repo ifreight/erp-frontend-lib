@@ -80,7 +80,7 @@ export default {
     },
     inputId: {
       type: String,
-      required: true,
+      default: '',
     },
     name: {
       type: String,
@@ -326,6 +326,7 @@ export default {
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
+
     &.base {
       .input {
         font-size: 14px;
@@ -381,6 +382,7 @@ export default {
       &:disabled {
         color: var(--gray-600);
         background-color: transparent;
+        cursor: not-allowed;
       }
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
@@ -425,6 +427,7 @@ export default {
 
     &.disabled {
       background-color: var(--gray-500);
+      cursor: not-allowed;
 
       svg {
         color: var(--gray-600);
@@ -432,7 +435,6 @@ export default {
     }
 
     &.readonly {
-      background-color: var(--gray-100);
       input {
         cursor: default;
       }

@@ -12,12 +12,11 @@ import CheckboxView from '../views/CheckboxView.vue';
 import PaginationView from '../views/PaginationView.vue';
 import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
-<<<<<<< HEAD
 import SelectView from '../views/SelectView.vue'
-=======
 import UploadView from '../views/UploadView.vue';
 import ProgressView from '../views/ProgressView.vue';
->>>>>>> vue_3_version
+import ChipView from '../views/ChipView.vue';
+import AlertView from '../views/AlertView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -101,6 +100,16 @@ const router = createRouter({
       path: '/progress-bar',
       name: 'progressBar',
       component: ProgressView,
+    },
+    {
+      path: '/chip',
+      name: 'chip',
+      component: ChipView,
+    },
+    {
+      path: '/alert',
+      name: 'alert',
+      component: AlertView,
     }
   ],
 });
