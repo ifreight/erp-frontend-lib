@@ -6,6 +6,7 @@
       <div class="tw:flex tw:gap-6 tw:mt-6">
         <i-checkbox
           v-model="modelOne"
+          @change="modelOneChangeHandler"
           name="modelOneNormal"
           label="Pilih opsi A"
         />
@@ -127,6 +128,7 @@ export default {
   setup() {
     const modelOne = ref(true)
     const modelTwo = ref(false)
+    const modelOneChangeDummy = ref();
 
     const modelOneDisabled = ref(true)
     const modelTwoDisabled = ref(false)
@@ -157,7 +159,9 @@ export default {
     onMounted(() => {
       changeCheckedHandler()
     })
-
+    const modelOneChangeHandler = (event, val) => {
+      modelOneChangeDummy.value = val;
+    }
     return {
       modelOne,
       modelTwo,
@@ -173,7 +177,8 @@ export default {
       modelStyleD,
       checkedList,
       changeCheckAllHandler,
-      changeCheckedHandler
+      changeCheckedHandler,
+      modelOneChangeHandler
     }
   }
 }
