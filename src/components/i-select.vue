@@ -262,8 +262,8 @@ export default defineComponent({
 
       try {
         remoteOptions.value = await props.remoteMethod(value);
-      } catch (err) {
-        console.error(err);
+      } catch (ignoreErr) {
+        // do nothing
       }
       remoteLoading.value = false;
     };
