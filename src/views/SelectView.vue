@@ -6,6 +6,7 @@
 
     <div>select + filterable + empty value</div>
     <div class="tw:mb-4 tw:flex-1">
+      <span class="tw:text-red-600">v-model: {{ select }}</span>
       <i-select
         v-model="select"
         input-id="Select-1"
@@ -18,6 +19,7 @@
 
     <div>select + filterable + empty value + placeholder</div>
     <div class="tw:mb-4 tw:flex-1">
+      <span class="tw:text-red-600">v-model: {{ select2 }}</span>
       <i-select
         v-model="select2"
         input-id="Select-2"
@@ -31,6 +33,7 @@
 
     <div>select + filterable + value</div>
     <div class="tw:mb-4">
+      <span class="tw:text-red-600">v-model: {{ select3 }}</span>
       <i-select
         v-model="select3"
         input-id="Select-3"
@@ -43,6 +46,7 @@
 
     <div>select + disabled + value</div>
     <div class="tw:mb-4">
+      <span class="tw:text-red-600">v-model: {{ select4 }}</span>
       <i-select
         v-model="select4"
         input-id="Select-4"
@@ -55,6 +59,7 @@
 
     <div>select + empty value + error</div>
     <div class="tw:mb-4">
+      <span class="tw:text-red-600">v-model: {{ select5 }}</span>
       <i-select
         v-model="select5"
         input-id="Select-5"
@@ -69,6 +74,8 @@
 
     <div>select + remote method </div>
     <div class="tw:mb-4">
+      <span class="tw:text-red-600">v-model: {{ select7 }}</span> <br>
+      <span class="tw:text-red-600">value-option: {{ selectRemote }}</span>
       <i-select
         v-model="select7"
         v-model:value-option="selectRemote"
@@ -83,6 +90,7 @@
 
     <div>select without input</div>
     <div class="tw:mb-4">
+      <span class="tw:text-red-600">v-model: {{ select8 }}</span>
       <i-select
         v-model="select8"
         input-id="Select-8"
@@ -92,8 +100,9 @@
       />
     </div>
 
-    <div>select with rounded, width and size sm</div>
+    <div>select with rounded, width, custom arrow color and size sm</div>
     <div class="tw:mb-4 tw:w-[350px]">
+      <span class="tw:text-red-600">v-model: {{ select9 }}</span>
       <i-select
         v-model="select9"
         input-id="Select-9"

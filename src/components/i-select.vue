@@ -165,8 +165,7 @@ export default defineComponent({
       default: undefined,
     },
   },
-  emits: ['update:modelValue', 'update:valueOption', 'input', 'change', 'focus', 'blur'],
-
+  emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
   setup(props, { emit }) {
     const isVisible = ref(false);
     const remoteLoading = ref(false);
