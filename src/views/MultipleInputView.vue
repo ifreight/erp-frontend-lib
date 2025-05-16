@@ -96,6 +96,7 @@
       <div class="tw:mt-6">
         <i-multiple-input
           :invalid="modelInputTwo === ''"
+          error-message="ini adalah error"
           class="tw:w-[400px]"
         >
           <i-input
@@ -162,9 +163,9 @@
       </div>
     </div>
 
-    <!-- Select + Input text + Button with divider (more than 2 component) -->
+    <!-- Select + Input text without divider -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Select + Input text + Button with divider (more than 2 component)</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Select + Input text without divider</div>
       <div class="tw:mt-6">
         <i-multiple-input>
           <i-select
@@ -175,23 +176,17 @@
             placeholder="Select..."
             filterable
             :options="selectOptions"
-            class="tw:w-1/3"
+            class="tw:w-1/4"
           />
-
-          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
 
           <i-input
             borderless
             name="text"
             placeholder="Search..."
-            class="tw:w-1/3"
-          />
-
-          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
-
-          <i-button class="tw:w-1/3">
-            Only button!
-          </i-button>
+            class="tw:w-3/4"
+          >
+            <template #prepend><ic-search class="tw:text-gray-700" /></template>
+          </i-input>
         </i-multiple-input>
       </div>
     </div>
@@ -228,7 +223,7 @@ export default {
     const modelRadio = ref(false)
     const modelInputTwo = ref('')
     const modelDropdown = ref(false);
-    const modelSelect = ref(null)
+    const modelSelect = ref('America')
 
     const selectOptions = computed(() => ['Asia', 'America', 'Europe', 'Others'])
 
