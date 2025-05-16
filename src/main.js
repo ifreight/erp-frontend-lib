@@ -11,7 +11,7 @@ import Vue3Toastify from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 InputTelStore.setCountryList(
-  fetch('http://erpff-api-dev.eljirehteknologi.com/api/v1/country', {
+  fetch('https://erpff-api-dev.eljirehteknologi.com/api/v1/country', {
     methods: 'GET',
   })
     .then((response) => response.text())
