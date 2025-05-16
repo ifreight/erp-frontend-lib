@@ -322,7 +322,7 @@ export default {
 .i-input {
   .i-input-container {
     height: 41px;
-    padding: 0 16px;
+    padding: 0 12px;
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
@@ -382,6 +382,7 @@ export default {
       &:disabled {
         color: var(--gray-600);
         background-color: transparent;
+        cursor: not-allowed;
       }
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
@@ -426,10 +427,14 @@ export default {
 
     &.disabled {
       background-color: var(--gray-500);
+      cursor: not-allowed;
+
+      svg {
+        color: var(--gray-600);
+      }
     }
 
     &.readonly {
-      background-color: var(--gray-100);
       input {
         cursor: default;
       }
@@ -443,6 +448,12 @@ export default {
     &.invalid.filled,
     &.invalid.dark {
       border-color: var(--red-300);
+    }
+
+    &.invalid {
+      svg {
+        color: var(--red-300);
+      }
     }
 
     &.dark {

@@ -12,6 +12,7 @@ import CheckboxView from '../views/CheckboxView.vue';
 import PaginationView from '../views/PaginationView.vue';
 import InputSuggestionView from '../views/InputSuggestionView.vue';
 import PopoverView from '../views/PopoverView.vue'
+import SelectView from '../views/SelectView.vue'
 import UploadView from '../views/UploadView.vue';
 import ProgressView from '../views/ProgressView.vue';
 import ChipView from '../views/ChipView.vue';
@@ -87,6 +88,11 @@ const router = createRouter({
       path: '/popover',
       name: 'popover',
       component: PopoverView,
+    },
+    {
+      path: '/select',
+      name: 'select',
+      component: SelectView,
     },
     {
       path: '/upload',
