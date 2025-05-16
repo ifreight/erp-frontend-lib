@@ -20,6 +20,7 @@ import AlertView from '../views/AlertView.vue';
 import StickyBarView from '../views/StickyBarView.vue';
 import TableView from '../views/TableView.vue';
 import FileListView from '../views/FileListView.vue';
+import MultipleInputView from '../views/MultipleInputView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -128,6 +129,11 @@ const router = createRouter({
       path: '/table',
       name: 'table',
       component: TableView,
+    },
+    {
+      path: '/multiple-input',
+      name: 'multipleInput',
+      component: MultipleInputView,
     }
   ],
 });
