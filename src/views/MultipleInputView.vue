@@ -161,11 +161,45 @@
         </i-multiple-input>
       </div>
     </div>
+
+    <!-- Select + Input text + Button with divider (more than 2 component) -->
+    <div class="tw:mb-12">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Select + Input text + Button with divider (more than 2 component)</div>
+      <div class="tw:mt-6">
+        <i-multiple-input>
+          <i-select
+            v-model="modelSelect"
+            input-id="select"
+            name="select"
+            label="Select"
+            placeholder="Select..."
+            filterable
+            :options="selectOptions"
+            class="tw:w-1/3"
+          />
+
+          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
+
+          <i-input
+            borderless
+            name="text"
+            placeholder="Search..."
+            class="tw:w-1/3"
+          />
+
+          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
+
+          <i-button class="tw:w-1/3">
+            Only button!
+          </i-button>
+        </i-multiple-input>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import IButton from '@/components/i-button.vue';
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
@@ -173,18 +207,19 @@ import IDropdown from '@/components/dropdown/i-dropdown.vue';
 import IInput from '@/components/i-input.vue';
 import IMultipleInput from '@/components/i-multiple-input.vue';
 import IRadio from '@/components/i-radio.vue';
+import ISelect from '@/components/i-select.vue';
 
 import IcSearch from '@/icons/ic-search.vue';
 
 export default {
   components: {
-    IMultipleInput,
-
     IButton,
     ICheckbox,
     IDropdown,
     IInput,
+    IMultipleInput,
     IRadio,
+    ISelect,
     IcSearch
   },
   setup() {
@@ -193,7 +228,9 @@ export default {
     const modelRadio = ref(false)
     const modelInputTwo = ref('')
     const modelDropdown = ref(false);
+    const modelSelect = ref(null)
 
+    const selectOptions = computed(() => ['Asia', 'America', 'Europe', 'Others'])
 
     const clickHandler = () => {
       modelInputTwo.value = ''
@@ -205,6 +242,8 @@ export default {
       modelRadio,
       modelInputTwo,
       modelDropdown,
+      modelSelect,
+      selectOptions,
       clickHandler
     }
   }

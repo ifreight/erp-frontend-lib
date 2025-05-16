@@ -79,5 +79,13 @@ export default {
       @apply tw:text-base;
     }
   }
+
+  .i-select {
+    .i-input {
+      .i-input-container {
+        @apply tw:h-8 tw:rounded-lg;
+      }
+    }
+  }
 }
 </style>
