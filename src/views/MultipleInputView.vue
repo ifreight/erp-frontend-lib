@@ -176,8 +176,6 @@ import IRadio from '@/components/i-radio.vue';
 
 import IcSearch from '@/icons/ic-search.vue';
 
-// import IcSparkles from '@/icons/ic-sparkles.vue';
-
 export default {
   components: {
     IMultipleInput,
