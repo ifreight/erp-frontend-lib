@@ -21,7 +21,7 @@
         <router-link to="/chip">chip</router-link>
         <router-link to="/alert">alert</router-link>
         <router-link to="/sticky-bar">sticky bar</router-link>
-        <router-link to="/dual-input">dual input</router-link>
+        <router-link to="/multiple-input">multiple input</router-link>
       </div>
     </div>
     <div class="tw:flex-1 tw:py-5 tw:px-6">

@@ -20,4 +20,4 @@ export { default as ITextArea } from './i-text-area.vue';
 export { default as IUpload } from './i-upload.vue';
 export { default as IChip } from './i-chip.vue';
 export { default as IStickyBar } from './i-sticky-bar.vue';
-export { default as IDualInput } from './i-dual-input.vue'
+export { default as IMultipleInput } from './i-multiple-input.vue'

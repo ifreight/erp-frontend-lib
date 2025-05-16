@@ -17,7 +17,7 @@ import ProgressView from '../views/ProgressView.vue';
 import ChipView from '../views/ChipView.vue';
 import AlertView from '../views/AlertView.vue';
 import StickyBarView from '../views/StickyBarView.vue';
-import DualInputView from '../views/DualInputView.vue';
+import MultipleInputView from '../views/MultipleInputView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -113,9 +113,9 @@ const router = createRouter({
       component: StickyBarView,
     },
     {
-      path: '/dual-input',
-      name: 'dualInput',
-      component: DualInputView,
+      path: '/multiple-input',
+      name: 'multipleInput',
+      component: MultipleInputView,
     }
   ],
 });
