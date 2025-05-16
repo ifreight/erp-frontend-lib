@@ -236,7 +236,7 @@ export default defineComponent({
       if (!option) {
         inputValue.value = '';
         updateSelectedOption(undefined);
-        emit('input', undefined);
+        emit('update:modelValue', undefined);
         emit('change', undefined);
         return;
       }
@@ -244,7 +244,7 @@ export default defineComponent({
       inputValue.value = option[props.optionKey];
       query.value = option[props.optionValue];
       updateSelectedOption(option);
-      emit('input', option[props.optionKey]);
+      emit('update:modelValue', option[props.optionKey]);
       emit('change', option);
     });
 
