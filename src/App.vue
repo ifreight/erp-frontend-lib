@@ -17,10 +17,12 @@
         <router-link to="/suggestion">suggestion</router-link>
         <router-link to="/popover">popover</router-link>
         <router-link to="/upload">upload</router-link>
+        <router-link to="/file-list">file list</router-link>
         <router-link to="/progress-bar">progress bar</router-link>
         <router-link to="/chip">chip</router-link>
         <router-link to="/alert">alert</router-link>
         <router-link to="/sticky-bar">sticky bar</router-link>
+        <router-link to="/table">table</router-link>
         <router-link to="/multiple-input">multiple input</router-link>
       </div>
     </div>

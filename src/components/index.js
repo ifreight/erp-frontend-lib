@@ -14,6 +14,7 @@ export { default as IPagination } from './i-pagination.vue';
 export { default as IPopover } from './i-popover.vue';
 export { default as IProgressBar } from './i-progress-bar.vue';
 export { default as IRadio } from './i-radio.vue';
+export { default as ITable } from './i-table.vue';
 export { default as ITabs } from './tabs/i-tabs.vue';
 export { default as ITabPane } from './tabs/i-tab-pane.vue';
 export { default as ITextArea } from './i-text-area.vue';
