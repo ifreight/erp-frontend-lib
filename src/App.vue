@@ -25,6 +25,8 @@
         <router-link to="/sticky-bar">sticky bar</router-link>
         <router-link to="/table">table</router-link>
         <router-link to="/multiple-input">multiple input</router-link>
+        <router-link to="/icons">icons</router-link>
+        <router-link to="/datepicker">date picker</router-link>
       </div>
     </div>
     <div class="tw:flex-1 tw:py-5 tw:px-6">
