@@ -21,6 +21,8 @@ import StickyBarView from '../views/StickyBarView.vue';
 import TableView from '../views/TableView.vue';
 import FileListView from '../views/FileListView.vue';
 import MultipleInputView from '../views/MultipleInputView.vue';
+import IconsView from '../views/IconsView.vue';
+import DatePickerView from '../views/DatepickerView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -134,6 +136,16 @@ const router = createRouter({
       path: '/multiple-input',
       name: 'multipleInput',
       component: MultipleInputView,
+    },
+    {
+      path: '/icons',
+      name: 'icons',
+      component: IconsView,
+    },
+    {
+      path: '/datepicker',
+      name: 'datepicker',
+      component: DatePickerView,
     }
   ],
 });
