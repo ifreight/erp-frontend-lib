@@ -119,7 +119,7 @@ export default {
       default: 'of'
     }
   },
-  emits: ['update:currentPage'],
+  emits: ['update:currentPage', 'change'],
   setup(props, { emit }) {
     const activePage = ref(1)
 
@@ -204,6 +204,7 @@ export default {
 
     const changePageHandler = (page) => {
       activePage.value = page
+      emit('change', page)
     }
 
     return {
