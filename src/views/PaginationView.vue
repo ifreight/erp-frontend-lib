@@ -21,7 +21,11 @@
           :current-page="1"
           :page-size="2"
           :total-page="10"
+          @change="onPageChange"
         />
+      </div>
+      <div class="tw:mt-6 tw:flex tw:justify-end">
+        result change emit: {{ numberPage }}
       </div>
     </div>
 
@@ -72,11 +76,25 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 import IPagination from '@/components/i-pagination.vue';
 
 export default {
   components: {
     IPagination
+  },
+  setup() {
+    const numberPage = ref()
+    const onPageChange = (page) => {
+      numberPage.value = 0
+      numberPage.value = page
+    }
+
+    return {
+      numberPage,
+      onPageChange
+    }
   }
 }
 </script>
