@@ -7998,7 +7998,7 @@ const Ft = /* @__PURE__ */ u(Dt, [["render", Tt]]), Pt = {
       default: "of"
     }
   },
-  emits: ["update:currentPage"],
+  emits: ["update:currentPage", "change"],
   setup(t, { emit: e }) {
     const n = H(1), r = V(() => Math.ceil(t.totalPage / t.pageSize)), i = V(() => Math.floor(t.pagerCount / 2)), l = V(() => r.value > 1 ? r.value : null), s = V(() => r.value <= t.pagerCount ? !1 : n.value - (t.pagerCount - i.value) >= 1), a = V(() => r.value <= t.pagerCount ? !0 : n.value + i.value >= r.value), c = V(() => {
       const g = H(2), w = t.pagerCount - g.value;
@@ -8022,7 +8022,7 @@ const Ft = /* @__PURE__ */ u(Dt, [["render", Tt]]), Pt = {
     }, v = () => {
       p(n.value + 1);
     }, p = (g) => {
-      n.value = g;
+      n.value = g, e("change", g);
     };
     return {
       activePage: n,
