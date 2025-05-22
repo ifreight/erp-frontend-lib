@@ -61,7 +61,7 @@
             Lorem ipsum
           </template>
 
-          <div>Dark</div>
+          Dark
         </i-popover>
 
         <i-popover
@@ -73,7 +73,7 @@
             Lorem ipsum
           </template>
 
-          <div>Light</div>
+          Light
         </i-popover>
       </div>
 
@@ -89,7 +89,7 @@
             vitae interdum diam vehicula.
           </template>
 
-          <div>With custom class</div>
+          With custom class
         </i-popover>
       </div>
     </div>
@@ -109,7 +109,7 @@
             vitae interdum diam vehicula.
           </template>
 
-          <div>Can click away</div>
+          Can click away
         </i-popover>
 
         <i-popover
@@ -124,7 +124,7 @@
             vitae interdum diam vehicula.
           </template>
 
-          <div>Cannot click away</div>
+          Cannot click away
         </i-popover>
       </div>
     </div>
@@ -153,7 +153,7 @@
             </div>
           </template>
 
-          <div>Lorem ipsum</div>
+          Lorem ipsum
         </i-popover>
       </div>
     </div>
@@ -170,7 +170,7 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </template>
 
-          <div>Disabled popover hover</div>
+          Disabled popover hover
         </i-popover>
 
         <i-popover disabled>

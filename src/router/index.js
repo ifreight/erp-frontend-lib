@@ -22,6 +22,8 @@ import TableView from '../views/TableView.vue';
 import FileListView from '../views/FileListView.vue';
 import MultipleInputView from '../views/MultipleInputView.vue';
 import SelectMultipleView from '../views/SelectMultipleView.vue';
+import IconsView from '../views/IconsView.vue';
+import DatePickerView from '../views/DatepickerView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -140,7 +142,17 @@ const router = createRouter({
       path: '/multiple-select',
       name: 'multipleSelect',
       component: SelectMultipleView,
-    }
+    },
+    {
+      path: '/icons',
+      name: 'icons',
+      component: IconsView,
+    },
+    {
+      path: '/datepicker',
+      name: 'datepicker',
+      component: DatePickerView,
+    },
   ],
 });
 
