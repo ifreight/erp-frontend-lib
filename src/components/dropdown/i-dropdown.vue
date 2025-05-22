@@ -9,7 +9,7 @@
     />
 
     <div
-      v-show="visible && isShowArrow"
+      v-show="visible && isShowArrow && !isMultiple"
       class="i-dropdown-arrow"
     >
       <span class="i-dropdown-arrow-icon"></span>
@@ -18,7 +18,7 @@
     <div
       v-show="visible"
       class="i-dropdown-box"
-      :class="boxClasses"
+      :class="isMultiple ? 'multiple-custom' : boxClasses"
       :style="{ width }"
     >
       <slot />
@@ -44,6 +44,10 @@ export default {
     rounded: {
       type: String,
       default: 'xs',
+    },
+    isMultiple: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props) {
@@ -88,6 +92,12 @@ export default {
     width: 100%;
     left: 15%;
     z-index: 4;
+  }
+
+  .multiple-custom {
+    position: relative !important;
+    border: none !important;
+    padding: 0 !important;
   }
 
   .i-dropdown-box {

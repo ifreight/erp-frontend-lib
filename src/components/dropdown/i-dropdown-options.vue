@@ -4,10 +4,12 @@
     :width="width"
     class="i-dropdown-options"
     :rounded="rounded"
+    :is-multiple="isMultiple"
   >
     <div
       v-if="$slots.header"
       class="i-dropdown-options-header"
+      :class="isMultiple ? 'multiple-custom-header' : ''"
     >
       <slot name="header" />
     </div>
@@ -15,7 +17,7 @@
     <ul
       v-if="filteredOptions.length > 0"
       class="i-dropdown-options-body"
-      :class="bodyClasses"
+      :class="isMultiple ? 'tw:px-2.5' : bodyClasses"
       :style="{
         'max-height': maxHeight,
       }"
@@ -88,7 +90,7 @@ export default defineComponent({
       default: 'name',
     },
     currentValue: {
-      type: [String, Number],
+      type: [String, Number, Array],
       default: '',
     },
     query: {
@@ -115,6 +117,10 @@ export default defineComponent({
       default: 'xs',
     },
     hideEmptyFiltered: {
+      type: Boolean,
+      default: false,
+    },
+    isMultiple: {
       type: Boolean,
       default: false,
     },
@@ -204,6 +210,12 @@ export default defineComponent({
     padding: 4px 0 12px;
     margin-bottom: 12px;
     border-bottom: 1px solid var(--gray-200);
+  }
+
+  .multiple-custom-header {
+    padding: 10px 16px !important;
+    border-bottom: 1px solid #e2e2e2 !important;
+    margin-bottom: 4px !important;
   }
 
   .i-dropdown-options-body {

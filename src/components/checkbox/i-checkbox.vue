@@ -90,7 +90,11 @@ export default {
     light: {
       type: Boolean,
       default: false
-    }
+    },
+    isMultiple: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
@@ -114,6 +118,10 @@ export default {
       }
       if (props.light) {
         classes.value.push('light')
+      }
+
+      if (props.isMultiple) {
+        classes.value.push('custom-box')
       }
 
       return classes.value
@@ -222,6 +230,20 @@ export default {
 
     &.light {
       @apply tw:bg-transparent tw:text-gray-900;
+    }
+  }
+
+  .i-checkbox-input.custom-box {
+    @apply tw:border-gray-500 tw:rounded-sm;
+
+    .i-checkbox-icon {
+      @apply tw:bg-white tw:text-gray-900;
+    }
+
+    .i-checkbox-icon.checked {
+      &.checked.custom-box {
+        @apply tw:bg-white tw:text-gray-900 tw:border tw:border-gray-500 tw:rounded-sm;
+      }
     }
   }
 
