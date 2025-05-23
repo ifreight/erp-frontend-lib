@@ -13,12 +13,13 @@ export { default as IFileList } from './i-file-list.vue';
 export { default as IInput } from './i-input.vue';
 export { default as IInputTel } from './input-tel/i-input-tel.vue';
 export { default as IInputSuggestion } from './i-input-suggestion.vue';
-export { default as IMultipleInput } from './i-multiple-input.vue'
+export { default as IMultipleInput } from './i-multiple-input.vue';
 export { default as IPagination } from './i-pagination.vue';
 export { default as IPopover } from './i-popover.vue';
 export { default as IProgressBar } from './i-progress-bar.vue';
 export { default as IRadio } from './i-radio.vue';
 export { default as ISelect } from './i-select.vue';
+export { default as ISortCaret } from './i-sort-caret.vue';
 export { default as IStickyBar } from './i-sticky-bar.vue';
 export { default as ITable } from './i-table.vue';
 export { default as ITabs } from './tabs/i-tabs.vue';
