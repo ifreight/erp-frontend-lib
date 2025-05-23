@@ -69,7 +69,7 @@
       <button
         class="button-right"
         :class="{
-          disabled: totalPage === 1 || activePage === lastNumber
+          disabled: activePage === lastNumber || !lastNumber
         }"
         v-on:click="clickRightHandler"
       >
