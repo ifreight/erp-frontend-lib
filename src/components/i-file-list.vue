@@ -5,7 +5,7 @@
         <slot :file="file">
           <template v-if="type == boxList">
             <div
-              class="tw:relative tw:border-(--gray-500) tw:border tw:rounded-sm tw:h-[46px] tw:p-2 tw:flex tw:justify-between tw:align-middle"
+              class="tw:relative tw:border-(--gray-500) tw:border tw:rounded-sm tw:h-[46px] tw:p-2 tw:flex tw:justify-between tw:align-middle tw:overflow-hidden"
             >
               <p class="tw:text-sm tw:self-center" @click="viewFile(file)">{{ file.name }}</p>
               <i-button
