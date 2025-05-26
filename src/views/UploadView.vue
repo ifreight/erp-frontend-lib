@@ -43,7 +43,7 @@
           v-model="files2"
           :is-multiple="false"
           :is-replaceable="false"
-          extensions="jpg,jpeg,png,gif"
+          extensions="xls,xlsx"
           @invalid-size="displayError"
           @invalid-file="displayErrorFile"
         ></i-upload>
