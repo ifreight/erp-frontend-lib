@@ -16,7 +16,10 @@
               >
                 <ic-times></ic-times>
               </i-button>
-              <p v-if="file.progressBarValue" class="tw:self-center">
+              <p
+                v-if="file.progressBarValue && !isProgressFinish.includes(`${index}-${file.name}`)"
+                class="tw:self-center"
+              >
                 {{ file.progressBarValue }}%
               </p>
               <i-progress-bar

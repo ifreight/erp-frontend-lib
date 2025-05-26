@@ -156,7 +156,7 @@ export default {
       for await (const file of Array.from(data.target.files)) {
         if (props.extensions) {
           const arrExtension = props.extensions.split(',');
-          const fileExt = file.type.split('/');
+          const fileExt = file.name.split('.');
           if (!arrExtension.includes(fileExt[fileExt.length - 1])) {
             emit('invalidFile', file);
             break;
