@@ -129,6 +129,7 @@ export default {
             url: `data:${file.type};base64,${dataURL}`,
             path: URL.createObjectURL(file),
             size: file.size,
+            rawFile: file,
           });
         };
         fr.onerror = reject;
