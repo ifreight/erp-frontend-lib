@@ -1,13 +1,6 @@
 <template>
-  <div
-    ref="selectRef"
-    class="i-select"
-  >
-    <div
-      class="i-select-container"
-      :class="isVisible ? 'visible' : ''"
-      @click="toggleDropdown"
-    >
+  <div ref="selectRef" class="i-select">
+    <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
       <i-input
         ref="inputRef"
         class="i-select-input"
@@ -26,18 +19,12 @@
         :error-message="errorMessage"
         @keyup="onInputKeyup"
       >
-        <template
-          v-if="$slots.prepend"
-          #prepend
-        >
+        <template v-if="$slots.prepend" #prepend>
           <slot name="prepend" />
         </template>
         <template #append>
           <slot name="append">
-            <div
-              class="i-select-arrow-container"
-              :style="{ color: arrowColor }"
-            >
+            <div class="i-select-arrow-container" :style="{ color: arrowColor }">
               <ic-chevron-down />
             </div>
           </slot>
@@ -59,10 +46,7 @@
       hide-empty-filtered
       @selectedValue="handleSelected"
     >
-      <template
-        v-if="$slots.dropdownHeader"
-        #header
-      >
+      <template v-if="$slots.dropdownHeader" #header>
         <slot name="dropdownHeader" />
       </template>
     </i-dropdown-options>
@@ -70,13 +54,7 @@
 </template>
 
 <script>
-import {
-  computed,
-  defineComponent,
-  onBeforeUnmount,
-  ref,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onBeforeUnmount, ref, watch } from 'vue';
 import debounce from 'lodash/debounce';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
@@ -104,7 +82,7 @@ export default defineComponent({
     },
     inputId: {
       type: String,
-      required: true,
+      default: '',
     },
     name: {
       type: String,
@@ -194,7 +172,7 @@ export default defineComponent({
 
       if (selectedOption.value) {
         const isOptionIncluded = options.some(
-          (option) => option[props.optionKey] === selectedOption.value[props.optionKey]
+          (option) => option[props.optionKey] === selectedOption.value[props.optionKey],
         );
 
         if (!isOptionIncluded) {
@@ -224,12 +202,12 @@ export default defineComponent({
       return !props.filterable && !props.remote;
     });
 
-    const updateSelectedOption = ((option) => {
+    const updateSelectedOption = (option) => {
       selectedOption.value = option || null;
       emit('update:valueOption', option);
-    });
+    };
 
-    const changeSelected = ((option) => {
+    const changeSelected = (option) => {
       remoteOptions.value = [];
 
       if (!option) {
@@ -245,13 +223,13 @@ export default defineComponent({
       updateSelectedOption(option);
       emit('update:modelValue', option[props.optionKey]);
       emit('change', option);
-    });
+    };
 
-    const resetInputValue = (() => {
+    const resetInputValue = () => {
       query.value = '';
       changeSelected(undefined);
       remoteOptions.value = [];
-    });
+    };
 
     const handleQuery = async (value) => {
       if (!value) {
@@ -322,14 +300,15 @@ export default defineComponent({
       hideDropdown();
     };
 
-    const handleClickOutside = ((event) => {
+    const handleClickOutside = (event) => {
       const isClickInside = event.composedPath().includes(selectRef.value);
       if (!isClickInside) {
         const typedValue = typeof inputValue.value === 'string' ? inputValue.value.trim() : '';
 
         if (typedValue) {
-          const matchingOption = dropdownOptions.value.find(option =>
-            option[props.optionValue]?.toString().toLowerCase() === typedValue.toLowerCase()
+          const matchingOption = dropdownOptions.value.find(
+            (option) =>
+              option[props.optionValue]?.toString().toLowerCase() === typedValue.toLowerCase(),
           );
 
           if (!matchingOption) {
@@ -341,13 +320,19 @@ export default defineComponent({
 
         hideDropdown();
       }
-    });
+    };
 
-    watch(() => props.valueOption, (value) => {
-      if ((!value && selectedOptionValue.value) || (value && selectedOptionValue.value !== value[props.optionKey])) {
-        selectedOption.value = value;
-      }
-    });
+    watch(
+      () => props.valueOption,
+      (value) => {
+        if (
+          (!value && selectedOptionValue.value) ||
+          (value && selectedOptionValue.value !== value[props.optionKey])
+        ) {
+          selectedOption.value = value;
+        }
+      },
+    );
 
     watch(
       () => props.modelValue,
@@ -358,32 +343,44 @@ export default defineComponent({
 
         if (!selectedOption.value || selectedOption.value[props.optionKey] !== newValue) {
           const newSelectedOption = dropdownOptions.value.find(
-            (item) => item[props.optionKey] === newValue
+            (item) => item[props.optionKey] === newValue,
           );
           updateSelectedOption(newSelectedOption);
         }
       },
-      { immediate: true }
+      { immediate: true },
     );
 
-    watch(() => dropdownOptions, () => {
-      if (inputValue.value && selectedOptionValue.value !== inputValue.value & dropdownOptions.value.length) {
-        updateSelectedOption(dropdownOptions.value.find((item) => item[props.optionKey] === props.inputValue));
+    watch(
+      () => dropdownOptions,
+      () => {
+        if (
+          inputValue.value &&
+          (selectedOptionValue.value !== inputValue.value) & dropdownOptions.value.length
+        ) {
+          updateSelectedOption(
+            dropdownOptions.value.find((item) => item[props.optionKey] === props.inputValue),
+          );
 
-        const matchedOption = dropdownOptions.value.find(
-          (item) => item[props.optionKey] === inputValue.value
-        );
-        updateSelectedOption(matchedOption);
-      }
-    }, { deep: true, immediate: true });
+          const matchedOption = dropdownOptions.value.find(
+            (item) => item[props.optionKey] === inputValue.value,
+          );
+          updateSelectedOption(matchedOption);
+        }
+      },
+      { deep: true, immediate: true },
+    );
 
-    watch(() => isVisible.value, (val) => {
-      if (val) {
-        document.addEventListener('click', handleClickOutside);
-      } else {
-        document.removeEventListener('click', handleClickOutside);
-      }
-    });
+    watch(
+      () => isVisible.value,
+      (val) => {
+        if (val) {
+          document.addEventListener('click', handleClickOutside);
+        } else {
+          document.removeEventListener('click', handleClickOutside);
+        }
+      },
+    );
 
     onBeforeUnmount(() => {
       if (isVisible.value) {
