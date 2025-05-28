@@ -15,9 +15,9 @@
         @dragover="handleDragOver"
         @dragleave.prevent="handleDragLeave"
       >
-        <p class="tw:self-center tw:leading-5 tw:text-sm">
-          <slot> Drop files here or Click to Upload </slot>
-        </p>
+        <slot>
+          <p class="tw:self-center tw:leading-5 tw:text-sm">Drop files here or Click to Upload</p>
+        </slot>
       </div>
     </template>
     <input
@@ -129,6 +129,7 @@ export default {
             url: `data:${file.type};base64,${dataURL}`,
             path: URL.createObjectURL(file),
             size: file.size,
+            rawFile: file,
           });
         };
         fr.onerror = reject;
@@ -156,8 +157,8 @@ export default {
       for await (const file of Array.from(data.target.files)) {
         if (props.extensions) {
           const arrExtension = props.extensions.split(',');
-          const fileExt = file.type.split('/');
-          if (!arrExtension.includes(fileExt[fileExt.length - 1])) {
+          const fileExt = file.name.split('.');
+          if (!arrExtension.includes(fileExt[fileExt.length - 1].toLowerCase())) {
             emit('invalidFile', file);
             break;
           }

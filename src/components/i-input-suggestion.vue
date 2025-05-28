@@ -1,13 +1,6 @@
 <template>
-  <div
-    ref="suggestionRef"
-    class="suggestion-wrapper"
-  >
-    <div
-      tabindex="0"
-      class="suggestion-container"
-      :class="isVisible ? 'visible' : ''"
-    >
+  <div ref="suggestionRef" class="suggestion-wrapper">
+    <div tabindex="0" class="suggestion-container" :class="isVisible ? 'visible' : ''">
       <i-input
         ref="inputRef"
         class="suggestion-input"
@@ -29,10 +22,7 @@
         @keyup="onInputKeyup"
         @focus="toggleDropdown"
       >
-        <template
-          v-if="$slots.prepend"
-          #prepend
-        >
+        <template v-if="$slots.prepend" #prepend>
           <slot name="prepend" />
         </template>
       </i-input>
@@ -50,10 +40,7 @@
       @selectedValue="handleSelected"
       @onFilteredChanged="onFilteredChanged"
     >
-      <template
-        v-if="$slots.dropdownHeader"
-        #header
-      >
+      <template v-if="$slots.dropdownHeader" #header>
         <slot name="dropdownHeader" />
       </template>
     </i-dropdown-options>
@@ -79,7 +66,7 @@ export default defineComponent({
     },
     inputId: {
       type: String,
-      required: true,
+      default: '',
     },
     name: {
       type: String,
@@ -137,13 +124,7 @@ export default defineComponent({
     wide: Boolean,
     clearable: Boolean,
   },
-  emits: [
-    'update:modelValue',
-    'blur',
-    'change',
-    'focus',
-    'input'
-  ],
+  emits: ['update:modelValue', 'blur', 'change', 'focus', 'input'],
   setup(props, { emit }) {
     const isVisible = ref(false);
     const inputValue = ref();
@@ -168,7 +149,7 @@ export default defineComponent({
       return options;
     });
 
-    const hideDropdown = (() => {
+    const hideDropdown = () => {
       if (isVisible.value) {
         isVisible.value = false;
         emit('blur');
@@ -176,9 +157,9 @@ export default defineComponent({
           inputRef.value.$el.querySelector('input').blur();
         }
       }
-    });
+    };
 
-    const changeSelected = ((option) => {
+    const changeSelected = (option) => {
       if (!option) {
         inputValue.value = undefined;
 
@@ -190,20 +171,20 @@ export default defineComponent({
       inputValue.value = option[props.optionKey];
       emit('update:modelValue', option[props.optionKey]);
       emit('change', option);
-    });
+    };
 
-    const handleClickOutside = ((event) => {
+    const handleClickOutside = (event) => {
       const isClickInside = event.composedPath().includes(suggestionRef.value);
       if (!isClickInside) {
         hideDropdown();
       }
-    });
+    };
 
-    const resetInputValue = (() => {
+    const resetInputValue = () => {
       changeSelected(undefined);
-    });
+    };
 
-    const showDropdown = (() => {
+    const showDropdown = () => {
       if (!props.disabled && !props.readOnly) {
         isVisible.value = true;
         emit('focus');
@@ -211,9 +192,9 @@ export default defineComponent({
           inputRef.value.$el.querySelector('input').focus();
         }
       }
-    });
+    };
 
-    const toggleDropdown = (() => {
+    const toggleDropdown = () => {
       switch (isVisible.value) {
         case true:
           hideDropdown();
@@ -222,13 +203,13 @@ export default defineComponent({
           showDropdown();
           break;
       }
-    });
+    };
 
     const onFilteredChanged = (val) => {
       isFilteredOptionsEmpty.value = val > 0 ? false : true;
-    }
+    };
 
-    const onInputKeyup = (async (event) => {
+    const onInputKeyup = async (event) => {
       emit('update:modelValue', event.target.value);
       if (props.hideAfterInput > 0 && event.target.value.length >= props.hideAfterInput) {
         isVisible.value = false;
@@ -236,21 +217,23 @@ export default defineComponent({
         await nextTick();
         isVisible.value = isFilteredOptionsEmpty.value ? false : true;
       }
-    });
+    };
 
-    const handleSelected = ((option) => {
+    const handleSelected = (option) => {
       changeSelected(option);
       hideDropdown();
-    });
+    };
 
-
-    watch(() => isVisible.value, (val) => {
-      if (val) {
-        document.addEventListener('click', handleClickOutside);
-      } else {
-        document.removeEventListener('click', handleClickOutside);
-      }
-    });
+    watch(
+      () => isVisible.value,
+      (val) => {
+        if (val) {
+          document.addEventListener('click', handleClickOutside);
+        } else {
+          document.removeEventListener('click', handleClickOutside);
+        }
+      },
+    );
 
     onBeforeUnmount(() => {
       if (isVisible.value) {
@@ -270,8 +253,8 @@ export default defineComponent({
       toggleDropdown,
       onInputKeyup,
       onFilteredChanged,
-      handleSelected
-    }
+      handleSelected,
+    };
   },
 });
 </script>

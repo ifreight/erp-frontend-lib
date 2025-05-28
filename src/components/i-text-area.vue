@@ -1,9 +1,6 @@
 <template>
   <div class="i-textarea-wrapper">
-    <div
-      class="i-textarea"
-      :class="classes"
-    >
+    <div class="i-textarea" :class="classes">
       <textarea
         v-if="preventEnterKey"
         v-bind="$attrs"
@@ -39,17 +36,11 @@
         @input="onInput"
       />
 
-      <span
-        v-if="isTextLimitVisible"
-        class="i-textarea-limit"
-      >
+      <span v-if="isTextLimitVisible" class="i-textarea-limit">
         {{ textLength }}/{{ maxTextLength }}
       </span>
     </div>
-    <div
-      v-if="!!errorMessage"
-      class="i-input-error"
-    >
+    <div v-if="!!errorMessage" class="i-input-error">
       {{ errorMessage }}
     </div>
   </div>
@@ -67,7 +58,7 @@ export default {
     },
     inputId: {
       type: String,
-      required: true,
+      default: '',
     },
     name: {
       type: String,
@@ -110,13 +101,7 @@ export default {
       default: false,
     },
   },
-  emits: [
-    'update:modelValue',
-    'focus',
-    'blur',
-    'pressEnter',
-    'pressEnterShift',
-  ],
+  emits: ['update:modelValue', 'focus', 'blur', 'pressEnter', 'pressEnterShift'],
   setup(props, { emit }) {
     const attrs = useAttrs();
     const {
@@ -133,7 +118,6 @@ export default {
     } = toRefs(props);
 
     const filled = computed(() => modelValue.value != null && modelValue.value !== '');
-
 
     const classes = computed(() => {
       const classObject = {
@@ -156,14 +140,14 @@ export default {
 
     const maxTextLength = computed(() => attrs.maxlength);
 
-    const isTextLimitVisible = computed(() =>
-      showTextLimit.value && maxTextLength.value && !disabled.value && !readOnly.value
+    const isTextLimitVisible = computed(
+      () => showTextLimit.value && maxTextLength.value && !disabled.value && !readOnly.value,
     );
 
     const isLabelActive = computed(() => filled.value || !!placeholder.value);
 
     const onInput = (event) => {
-      emit('update:modelValue', event.target.value)
+      emit('update:modelValue', event.target.value);
     };
 
     const onFocus = () => emit('focus');
@@ -184,7 +168,7 @@ export default {
       pressKeyEnter,
       pressKeyEnterShift,
     };
-  }
+  },
 };
 </script>
 

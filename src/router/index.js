@@ -11,8 +11,8 @@ import RadioView from '../views/RadioView.vue';
 import CheckboxView from '../views/CheckboxView.vue';
 import PaginationView from '../views/PaginationView.vue';
 import InputSuggestionView from '../views/InputSuggestionView.vue';
-import PopoverView from '../views/PopoverView.vue'
-import SelectView from '../views/SelectView.vue'
+import PopoverView from '../views/PopoverView.vue';
+import SelectView from '../views/SelectView.vue';
 import UploadView from '../views/UploadView.vue';
 import ProgressView from '../views/ProgressView.vue';
 import ChipView from '../views/ChipView.vue';
@@ -24,6 +24,7 @@ import MultipleInputView from '../views/MultipleInputView.vue';
 import SelectMultipleView from '../views/SelectMultipleView.vue';
 import IconsView from '../views/IconsView.vue';
 import DatePickerView from '../views/DatepickerView.vue';
+import SortCaretView from '../views/SortCaretView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -152,6 +153,11 @@ const router = createRouter({
       path: '/datepicker',
       name: 'datepicker',
       component: DatePickerView,
+    },
+    {
+      path: '/sort-caret',
+      name: 'sort-caret',
+      component: SortCaretView,
     },
   ],
 });

@@ -1,13 +1,7 @@
 <template>
   <div class="i-input">
-    <div
-      class="i-input-container"
-      :class="classes"
-    >
-      <div
-        v-if="$slots.prepend"
-        class="prepend-container"
-      >
+    <div class="i-input-container" :class="classes">
+      <div v-if="$slots.prepend" class="prepend-container">
         <slot name="prepend" />
       </div>
       <component
@@ -32,28 +26,15 @@
         @accept:unmasked="onAcceptUnmasked"
       />
 
-      <div
-        v-if="isShowClearable"
-        v-show="filled"
-        class="append-container"
-      >
-        <ic-times-circle
-          class="icon-clear"
-          @click="onClear"
-        />
+      <div v-if="isShowClearable" v-show="filled" class="append-container">
+        <ic-times-circle class="icon-clear" @click="onClear" />
       </div>
-      <div
-        v-if="!!$slots.append"
-        class="append-container"
-      >
+      <div v-if="!!$slots.append" class="append-container">
         <slot name="append" />
       </div>
     </div>
 
-    <div
-      v-if="!!errorMessage"
-      class="i-input-error"
-    >
+    <div v-if="!!errorMessage" class="i-input-error">
       {{ errorMessage }}
     </div>
   </div>
@@ -158,14 +139,7 @@ export default {
       default: 'xs',
     },
   },
-  emits: [
-    'update:modelValue',
-    'clear',
-    'change',
-    'blur',
-    'focus',
-    'keyup'
-  ],
+  emits: ['update:modelValue', 'clear', 'change', 'blur', 'focus', 'keyup'],
   setup(props, { slots, emit }) {
     const inputRef = ref();
 
@@ -195,10 +169,12 @@ export default {
           append: !!slots.append || props.clearable,
           filled: props.filled,
           borderless: props.borderless,
-        }
-      ]
+        },
+      ];
     });
-    const isLabelActive = computed(() => props.filled || !!props.placeholder || !!props.placeholderValue);
+    const isLabelActive = computed(
+      () => props.filled || !!props.placeholder || !!props.placeholderValue,
+    );
     const displayModelValue = computed(() => {
       if (props.modelValue && props.modelValue instanceof Date) {
         return dayjs(props.modelValue).locale(props.dateLocale).format(props.dateFormat);
@@ -255,46 +231,49 @@ export default {
       return props.mask ? 'imask-input' : 'input';
     });
 
-    const onInput = ((event) => {
+    const onInput = (event) => {
       if (!props.mask) {
         emit('update:modelValue', event.target.value);
       }
-    });
+    };
 
-    const onChange = (() => {
+    const onChange = () => {
       emit('change', props.modelValue);
-    });
+    };
 
-    const onFocus = (() => {
+    const onFocus = () => {
       emit('focus');
-    });
+    };
 
-    const onBlur = (() => {
+    const onBlur = () => {
       emit('blur');
-    });
+    };
 
-    const onClear = (() => {
+    const onClear = () => {
       let clearedValue;
       if (typeof props.modelValue === 'string') {
         clearedValue = '';
       }
       emit('update:modelValue', clearedValue);
       emit('clear');
-    });
+      emit('change');
+    };
 
-    const onAcceptUnmasked = ((unmaskedValue) => {
+    const onAcceptUnmasked = (unmaskedValue) => {
       emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
-    });
+    };
 
-    watch(() => displayModelValue, (value) => {
-      if (inputRef.value && !props.mask) {
-        inputRef.value.value = value == null ? '' : value;
-      }
-    },
+    watch(
+      () => displayModelValue,
+      (value) => {
+        if (inputRef.value && !props.mask) {
+          inputRef.value.value = value == null ? '' : value;
+        }
+      },
       {
         immediate: true,
-      }
-    )
+      },
+    );
     return {
       isShowClearable,
       filled,
@@ -311,7 +290,7 @@ export default {
       onBlur,
       onClear,
       onAcceptUnmasked,
-    }
+    };
   },
 };
 </script>
