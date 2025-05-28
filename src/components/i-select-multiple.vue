@@ -2,82 +2,193 @@
   <div
     ref="selectRef"
     class="i-select-multiple"
+    :class="!isNormalSelectMode ? 'custom-select' : 'normal-select'"
   >
-    <div
-      class="i-select-container"
-      :class="isVisible ? 'visible' : ''"
-    >
-      <i-input
-        ref="inputRef"
-        class="i-select-input"
-        type="text"
-        v-model="query"
-        :label="label"
-        :input-id="inputId"
-        :name="name"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :invalid="invalid"
-        :dark="dark"
-        :rounded="rounded"
-        :size="size"
-        :error-message="errorMessage"
+    <template v-if="isNormalSelectMode">
+      <div
+        class="i-select-container"
+        :class="isVisible ? 'visible' : ''"
+        @click="toggleDropdown"
       >
-        <template #prepend><ic-search color="#A8A8A8" /></template>
-      </i-input>
-    </div>
+        <i-input
+          ref="inputRef"
+          class="i-select-input"
+          type="text"
+          v-model="query"
+          :label="label"
+          :input-id="inputId"
+          :name="name"
+          :placeholder="placeholder"
+          :disabled="disabled"
+          :read-only="isInputReadOnly"
+          :invalid="invalid"
+          :dark="dark"
+          :rounded="rounded"
+          :size="size"
+          :error-message="errorMessage"
+        >
+          <template
+            v-if="$slots.prepend"
+            #prepend
+          >
+            <slot name="prepend" />
+          </template>
+          <template #append>
+            <slot name="append">
+              <div
+                class="i-select-arrow-container"
+                :style="{ color: arrowColor }"
+              >
+                <ic-chevron-down />
+              </div>
+            </slot>
+          </template>
+        </i-input>
+      </div>
 
-    <i-dropdown-options
-      :visible="isVisible"
-      :options="dropdownOptions"
-      :option-key="optionKey"
-      :option-value="optionValue"
-      :current-value="selectedOptionValue"
-      :query="query"
-      :max-height="dropdownMaxHeight"
-      :filterable="filterable"
-      :remote="remote"
-      :rounded="rounded"
-      :is-multiple="true"
-      hide-empty-filtered
-      @selectedValue="handleSelected"
-    >
-      <template #header>
-        <div class="select-header">
-          <i-checkbox
-            v-model="modelCheckAll"
-            :is-multiple="true"
-            name="modelCheckAll"
-            label="Pilih Semua"
-            size="lg"
-            @change="toggleSelectAll"
-          />
-          <div class="selected-count">
-            <div class="tw:w-full tw:text-brown-600">
-              {{ selectedOptionValue.length }} dipilih
+      <i-dropdown-options
+        :visible="isVisible"
+        :options="dropdownOptions"
+        :option-key="optionKey"
+        :option-value="optionValue"
+        :current-value="selectedOptionValue"
+        :query="query"
+        :max-height="dropdownMaxHeight"
+        :filterable="filterable"
+        :remote="remote"
+        :rounded="rounded"
+        :is-multiple="true"
+        :is-normal-select-mode="true"
+        :is-show-arrow="true"
+        hide-empty-filtered
+        @selectedValue="handleSelected"
+      >
+        <template #header>
+          <div class="select-header">
+            <i-checkbox
+              v-model="modelCheckAll"
+              :is-multiple="true"
+              :checkbox-rounded="checkboxRounded"
+              :checkbox-color="checkboxColor"
+              name="modelCheckAll"
+              label="Pilih Semua"
+              size="lg"
+              light="light"
+              @change="toggleSelectAll"
+            />
+            <div class="selected-count">
+              <div class="tw:w-full tw:text-brown-600">
+                {{ selectedOptionValue.length }} dipilih
+              </div>
+              <span class="tw:text-gray-900 tw:mx-1">•</span>
+              <i-button
+                text
+                size="xs"
+                class="btn-clear"
+                @click="clearSelection"
+              >
+                Kosongkan
+              </i-button>
             </div>
-            <span class="tw:text-gray-900 tw:mx-1">•</span>
-            <i-button
-              text
-              size="xs"
-              class="btn-clear"
-              @click="clearSelection"
-            >
-              Kosongkan
-            </i-button>
           </div>
-        </div>
-      </template>
-      <template #optionsPrepend="{option}">
-        <i-checkbox
-          :modelValue="cari(option)"
-          :name="`list-${option.id}`"
-          :is-multiple="true"
-          size="lg"
-          @update:modelValue="(checked) => handleCheckboxChange(option, checked)"
-        />
-      </template>
-    </i-dropdown-options>
+        </template>
+        <template #optionsPrepend="{option}">
+          <i-checkbox
+            :modelValue="listValue(option)"
+            :name="`list-${option.id}`"
+            :is-multiple="true"
+            :checkbox-rounded="checkboxRounded"
+            :checkbox-color="checkboxColor"
+            size="lg"
+            light="light"
+            @update:modelValue="(checked) => handleCheckboxChange(option, checked)"
+          />
+        </template>
+      </i-dropdown-options>
+    </template>
+    <template v-else>
+      <div
+        class="i-select-container"
+        :class="isVisible ? 'visible' : ''"
+      >
+        <i-input
+          ref="inputRef"
+          class="i-select-input"
+          type="text"
+          v-model="query"
+          :label="label"
+          :input-id="inputId"
+          :name="name"
+          :placeholder="placeholder"
+          :disabled="disabled"
+          :invalid="invalid"
+          :dark="dark"
+          :rounded="rounded"
+          :size="size"
+          :error-message="errorMessage"
+        >
+          <template #prepend><ic-search class="tw:text-gray-700" /></template>
+        </i-input>
+      </div>
+      <i-dropdown-options
+        :visible="isVisible"
+        :options="dropdownOptions"
+        :option-key="optionKey"
+        :option-value="optionValue"
+        :current-value="selectedOptionValue"
+        :query="query"
+        :max-height="dropdownMaxHeight"
+        :filterable="filterable"
+        :remote="remote"
+        :rounded="rounded"
+        :is-multiple="true"
+        :is-show-arrow="false"
+        hide-empty-filtered
+        @selectedValue="handleSelected"
+      >
+        <template #header>
+          <div class="select-header">
+            <i-checkbox
+              v-model="modelCheckAll"
+              :is-multiple="true"
+              :checkbox-rounded="checkboxRounded"
+              :checkbox-color="checkboxColor"
+              name="modelCheckAll"
+              label="Pilih Semua"
+              size="lg"
+              light="light"
+              @change="toggleSelectAll"
+            />
+            <div class="selected-count">
+              <div class="tw:w-full tw:text-brown-600">
+                {{ selectedOptionValue.length }} dipilih
+              </div>
+              <span class="tw:text-gray-900 tw:mx-1">•</span>
+              <i-button
+                text
+                size="xs"
+                class="btn-clear"
+                @click="clearSelection"
+              >
+                Kosongkan
+              </i-button>
+            </div>
+          </div>
+        </template>
+        <template #optionsPrepend="{option}">
+          <i-checkbox
+            :modelValue="listValue(option)"
+            :name="`list-${option.id}`"
+            :is-multiple="true"
+            :checkbox-rounded="checkboxRounded"
+            :checkbox-color="checkboxColor"
+            size="lg"
+            light="light"
+            @update:modelValue="(checked) => handleCheckboxChange(option, checked)"
+          />
+        </template>
+      </i-dropdown-options>
+    </template>
   </div>
 </template>
 
@@ -85,10 +196,12 @@
 import {
   computed,
   defineComponent,
+  onBeforeUnmount,
   ref,
   watch,
 } from 'vue';
 import debounce from 'lodash/debounce';
+import IcChevronDown from '@/icons/ic-chevron-down.vue';
 import IcSearch from '@/icons/ic-search.vue';
 import IButton from '@/components/i-button.vue';
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
@@ -96,8 +209,9 @@ import IDropdownOptions from './dropdown/i-dropdown-options.vue';
 import IInput from './i-input.vue';
 
 export default defineComponent({
-  name: 'ISelect',
+  name: 'ISelectMultiple',
   components: {
+    IcChevronDown,
     IcSearch,
     IButton,
     ICheckbox,
@@ -160,9 +274,27 @@ export default defineComponent({
     },
     loading: Boolean,
     dark: Boolean,
+    arrowColor: {
+      type: String,
+      default: '#2d2d2d',
+    },
     rounded: {
       type: String,
       default: 'xs',
+    },
+    checkboxRounded: {
+      type: String,
+      default: null,
+      validator(value) {
+        return ['sm', 'md', 'lg'].includes(value);
+      },
+    },
+    checkboxColor: {
+      type: String,
+      default: null,
+      validator(value) {
+        return ['gray-300', 'gray-500', 'gray-700'].includes(value);
+      },
     },
     size: {
       type: String,
@@ -175,10 +307,14 @@ export default defineComponent({
       type: String,
       default: undefined,
     },
+    isNormalSelectMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
   setup(props, { emit }) {
-    const isVisible = ref(true);
+    const isVisible = props.isNormalSelectMode ? ref(false) : ref(true);
     const remoteLoading = ref(false);
     const modelCheckAll = ref(false);
     const remoteOptions = ref([]);
@@ -219,14 +355,37 @@ export default defineComponent({
       return selectedOption.value.map((opt) => opt[props.optionKey]);
     });
 
+    const isInputReadOnly = computed(() => {
+      if (!isVisible.value) {
+        return true;
+      }
+      return !props.filterable && !props.remote;
+    });
+
+    const allOptionIds = computed(() =>
+      (props.remote ? remoteOptions.value : props.options).map(opt => opt[props.optionKey])
+    );
+
+    const normalizeOptions = (options) => {
+      return options.map(opt =>
+        typeof opt === 'object'
+          ? opt
+          : { [props.optionKey]: opt, [props.optionValue]: opt }
+      );
+    };
+
     const toggleSelectAll = () => {
+      const rawOptions = props.remote ? remoteOptions.value : props.options;
+      const allOptions = normalizeOptions(rawOptions);
+
       if (!modelCheckAll.value) {
         selectedOption.value = [];
         inputValue.value = [];
       } else {
-        selectedOption.value = [...dropdownOptions.value];
-        inputValue.value = dropdownOptions.value.map((opt) => opt[props.optionKey]);
+        selectedOption.value = [...allOptions];
+        inputValue.value = allOptions.map((opt) => opt[props.optionKey]);
       }
+
       emit('update:modelValue', [...inputValue.value]);
       emit('update:valueOption', [...selectedOption.value]);
       emit('change', [...selectedOption.value]);
@@ -254,7 +413,11 @@ export default defineComponent({
 
       inputValue.value = selectedOption.value.map((opt) => opt[props.optionKey]);
 
-      modelCheckAll.value = selectedOption.value.length === dropdownOptions.value.length;
+      const rawOptions = props.remote ? remoteOptions.value : props.options;
+      const allOptions = normalizeOptions(rawOptions);
+      const allOptionIds = allOptions.map(opt => opt[props.optionKey]);
+
+      modelCheckAll.value = allOptionIds.every(id => inputValue.value.includes(id));
 
       emit('update:modelValue', [...inputValue.value]);
       emit('update:valueOption', [...selectedOption.value]);
@@ -274,7 +437,11 @@ export default defineComponent({
 
       inputValue.value = selectedOption.value.map((opt) => opt[props.optionKey]);
 
-      modelCheckAll.value = selectedOption.value.length === dropdownOptions.value.length;
+      const rawOptions = props.remote ? remoteOptions.value : props.options;
+      const allOptions = normalizeOptions(rawOptions);
+      const allOptionIds = allOptions.map(opt => opt[props.optionKey]);
+
+      modelCheckAll.value = allOptionIds.every(id => inputValue.value.includes(id));
 
       emit('update:modelValue', [...inputValue.value]);
       emit('update:valueOption', [...selectedOption.value]);
@@ -287,6 +454,57 @@ export default defineComponent({
       if (!props.remote || typeof props.remoteMethod !== 'function') return;
       remoteOptions.value = await props.remoteMethod(q);
     };
+
+    const showDropdown = () => {
+      if (!props.disabled && !props.readOnly && !props.isVisible) {
+        isVisible.value = true;
+        emit('focus');
+
+        if (inputRef.value) {
+          inputRef.value.$el.querySelector('input').focus();
+        }
+      }
+    };
+
+    const hideDropdown = () => {
+      if (isVisible.value) {
+        isVisible.value = false;
+        emit('blur');
+
+        if (inputRef.value) {
+          inputRef.value.$el.querySelector('input').blur();
+        }
+      }
+    };
+
+    const listValue = (opt) => {
+      return selectedOptionValue.value.some((x) => x === opt.id) ? true : false;
+    }
+
+    const toggleDropdown = () => {
+      isVisible.value ? hideDropdown() : showDropdown();
+    };
+
+    const handleClickOutside = ((event) => {
+      const isClickInside = event.composedPath().includes(selectRef.value);
+      if (!isClickInside) {
+        const typedValue = typeof inputValue.value === 'string' ? inputValue.value.trim() : '';
+
+        if (typedValue) {
+          const matchingOption = dropdownOptions.value.find(option =>
+            option[props.optionValue]?.toString().toLowerCase() === typedValue.toLowerCase()
+          );
+
+          if (!matchingOption) {
+            inputValue.value = '';
+            query.value = '';
+            emit('update:modelValue', '');
+          }
+        }
+
+        hideDropdown();
+      }
+    });
 
     watch(() => props.modelValue, (newVal) => {
       inputValue.value = Array.isArray(newVal) ? [...newVal] : [];
@@ -306,9 +524,19 @@ export default defineComponent({
       if (props.remote) debouncedQuery();
     });
 
-    const cari = (opt) => {
-      return selectedOptionValue.value.some((x) => x === opt.id) ? true : false;
-    }
+    watch(() => isVisible.value, (val) => {
+      if (val) {
+        document.addEventListener('click', handleClickOutside);
+      } else {
+        document.removeEventListener('click', handleClickOutside);
+      }
+    });
+
+    onBeforeUnmount(() => {
+      if (isVisible.value) {
+        document.removeEventListener('click', handleClickOutside);
+      }
+    });
 
     return {
       selectRef,
@@ -322,12 +550,18 @@ export default defineComponent({
       inputValue,
       query,
       selectedOptionValue,
+      isInputReadOnly,
+      allOptionIds,
       handleQuery,
       handleSelected,
       handleCheckboxChange,
+      normalizeOptions,
       toggleSelectAll,
       clearSelection,
-      cari,
+      listValue,
+      showDropdown,
+      hideDropdown,
+      toggleDropdown,
     };
   },
 });
@@ -336,8 +570,16 @@ export default defineComponent({
 <style>
 @reference "@/assets/global.css";
 
+.i-select-multiple.custom-select {
+  @apply tw:border tw:border-gray-500 tw:rounded-lg tw:pt-2 tw:pb-2;
+
+  .i-select-container {
+    @apply tw:px-2;
+  }
+}
+
 .i-select-multiple {
-  @apply tw:relative tw:border tw:border-gray-500 tw:rounded-lg tw:pt-2 tw:pb-2;
+  @apply tw:relative;
 
   .select-header {
     @apply tw:flex tw:justify-between;
@@ -349,10 +591,6 @@ export default defineComponent({
 
   .btn-clear {
     @apply tw:text-brown-600 tw:h-fit tw:font-normal;
-  }
-
-  .i-select-container {
-    @apply tw:px-2;
   }
 
   &.inside {

@@ -95,6 +95,20 @@ export default {
       type: Boolean,
       default: false,
     },
+    checkboxRounded: {
+      type: String,
+      default: null,
+      validator(value) {
+        return ['sm', 'md', 'lg'].includes(value);
+      },
+    },
+    checkboxColor: {
+      type: String,
+      default: null,
+      validator(value) {
+        return ['gray-300', 'gray-500', 'gray-700'].includes(value);
+      },
+    },
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
@@ -102,30 +116,29 @@ export default {
     const rootChecked = inject('rootCheckbox', null)
 
     const checkboxInputClass = computed(() => {
-      const classes = ref([])
+      const classes = [
+        `rounded-${props.checkboxRounded}`,
+        `color-${props.checkboxColor}`,
+      ];
 
       if (isChecked.value) {
-        classes.value.push('checked')
+        classes.push('checked');
       }
       if (props.disabled) {
-        classes.value.push('disabled')
+        classes.push('disabled');
       }
       if (props.invalid) {
-        classes.value.push('invalid')
+        classes.push('invalid');
       }
       if (props.size !== 'base') {
-        classes.value.push(`${props.size}`)
+        classes.push(props.size);
       }
       if (props.light) {
-        classes.value.push('light')
+        classes.push('light');
       }
 
-      if (props.isMultiple) {
-        classes.value.push('custom-box')
-      }
-
-      return classes.value
-    })
+      return classes;
+    });
 
     const elementInputClass = computed(() => {
       const classes = ref([])
@@ -233,22 +246,32 @@ export default {
     }
   }
 
-  .i-checkbox-input.custom-box {
-    @apply tw:border-gray-500 tw:rounded-sm;
-
-    .i-checkbox-icon {
-      @apply tw:bg-white tw:text-gray-900;
-    }
-
-    .i-checkbox-icon.checked {
-      &.checked.custom-box {
-        @apply tw:bg-white tw:text-gray-900 tw:border tw:border-gray-500 tw:rounded-sm;
-      }
-    }
-  }
-
   .i-checkbox-input {
     @apply tw:border tw:border-gray-900 tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
+
+    &.rounded-sm {
+      @apply tw:rounded-sm;
+    }
+
+    &.rounded-md {
+      @apply tw:rounded-md;
+    }
+
+    &.rounded-lg {
+      @apply tw:rounded-lg;
+    }
+
+    &.color-gray-300 {
+      @apply tw:border-gray-300;
+    }
+
+    &.color-gray-500 {
+      @apply tw:border-gray-500;
+    }
+
+    &.color-gray-700 {
+      @apply tw:border-gray-700;
+    }
 
     .i-checkbox-icon {
       @apply tw:opacity-0 tw:w-3.5 tw:h-3.5;

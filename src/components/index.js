@@ -14,6 +14,7 @@ export { default as IInput } from './i-input.vue';
 export { default as IInputTel } from './input-tel/i-input-tel.vue';
 export { default as IInputSuggestion } from './i-input-suggestion.vue';
 export { default as IMultipleInput } from './i-multiple-input.vue'
+export { default as IMultipleSelect } from './i-multiple-select.vue'
 export { default as IPagination } from './i-pagination.vue';
 export { default as IPopover } from './i-popover.vue';
 export { default as IProgressBar } from './i-progress-bar.vue';
@@ -25,4 +26,3 @@ export { default as ITabs } from './tabs/i-tabs.vue';
 export { default as ITabPane } from './tabs/i-tab-pane.vue';
 export { default as ITextArea } from './i-text-area.vue';
 export { default as IUpload } from './i-upload.vue';
-export { default as IMultipleSelect } from './i-multiple-select.vue'

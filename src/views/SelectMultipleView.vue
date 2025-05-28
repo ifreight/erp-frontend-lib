@@ -15,10 +15,10 @@
         label="Select"
         size="sm"
         rounded="lg"
+        checkbox-color="gray-500"
         placeholder="Cari..."
         dropdown-max-height="128px"
         :options="selectStaticOptions"
-        :visibleDefault="true"
         :filterable="true"
         :multiple="true"
       />
@@ -39,15 +39,58 @@
           label="Select"
           size="sm"
           rounded="lg"
+          checkbox-color="gray-500"
           placeholder="Cari..."
           dropdown-max-height="128px"
           :options="selectStaticOptions"
-          :visibleDefault="true"
           :filterable="true"
           :multiple="true"
         >
         </i-select-multiple>
       </i-dropdown>
+    </div>
+
+    <div>Multiple Normal Select + Filterable</div>
+    <span class="tw:text-red-600">v-model: {{ select12 }}</span>
+    <div class="tw:mb-4 tw:w-[275px] tw:relative">
+      <i-select-multiple
+        v-model="select12"
+        v-model:value-option="selectedOptions12"
+        input-id="Select-12"
+        name="select-12"
+        label="Select"
+        size="sm"
+        rounded="lg"
+        checkbox-color="gray-500"
+        placeholder="Cari..."
+        dropdown-max-height="128px"
+        :options="selectStaticOptions"
+        :filterable="true"
+        :multiple="true"
+        :is-normal-select-mode="true"
+      >
+      </i-select-multiple>
+    </div>
+
+    <div>Multiple Normal Select Without Filter</div>
+    <span class="tw:text-red-600">v-model: {{ select13 }}</span>
+    <div class="tw:mb-4 tw:w-[275px] tw:relative">
+      <i-select-multiple
+        v-model="select13"
+        input-id="Select-13"
+        name="select-13"
+        label="Select"
+        size="sm"
+        rounded="lg"
+        checkbox-rounded="sm"
+        checkbox-color="gray-500"
+        placeholder="Cari..."
+        dropdown-max-height="128px"
+        :options="selectStaticOptions"
+        :multiple="true"
+        :is-normal-select-mode="true"
+      >
+      </i-select-multiple>
     </div>
   </div>
 </template>
@@ -68,7 +111,10 @@ export default {
   setup() {
     const select10 = ref([]);
     const select11 = ref([]);
+    const select12 = ref([]);
+    const select13 = ref([]);
     const selectedOptions = ref([]);
+    const selectedOptions12 = ref([]);
     const selectRemote = ref([]);
     const dropdownVisible3 = ref(false);
 
@@ -79,7 +125,10 @@ export default {
     return {
       select10,
       select11,
+      select12,
+      select13,
       selectedOptions,
+      selectedOptions12,
       selectRemote,
       selectStaticOptions,
       dropdownVisible3,

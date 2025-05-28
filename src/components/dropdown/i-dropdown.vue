@@ -9,7 +9,7 @@
     />
 
     <div
-      v-show="visible && isShowArrow && !isMultiple"
+      v-show="visible && isShowArrow"
       class="i-dropdown-arrow"
     >
       <span class="i-dropdown-arrow-icon"></span>
@@ -18,7 +18,7 @@
     <div
       v-show="visible"
       class="i-dropdown-box"
-      :class="isMultiple ? 'multiple-custom' : boxClasses"
+      :class="isMultiple && !isNormalSelectMode ? 'multiple-custom' : boxClasses"
       :style="{ width }"
     >
       <slot />
@@ -46,6 +46,10 @@ export default {
       default: 'xs',
     },
     isMultiple: {
+      type: Boolean,
+      default: false,
+    },
+    isNormalSelectMode: {
       type: Boolean,
       default: false,
     },

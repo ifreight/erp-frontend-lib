@@ -4,7 +4,9 @@
     :width="width"
     class="i-dropdown-options"
     :rounded="rounded"
+    :is-show-arrow="isShowArrow"
     :is-multiple="isMultiple"
+    :is-normal-select-mode="isNormalSelectMode"
   >
     <div
       v-if="$slots.header"
@@ -121,6 +123,14 @@ export default defineComponent({
       default: false,
     },
     isMultiple: {
+      type: Boolean,
+      default: false,
+    },
+    isNormalSelectMode: {
+      type: Boolean,
+      default: false,
+    },
+    isShowArrow: {
       type: Boolean,
       default: false,
     },
