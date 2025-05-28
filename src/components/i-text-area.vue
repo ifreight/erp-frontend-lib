@@ -185,7 +185,7 @@ export default {
     &.invalid,
     &.invalid.filled,
     &.invalid.dark {
-      border-color: var(--red-300);
+      border-color: var(--red-300) !important;
     }
 
     .i-textarea-limit {
