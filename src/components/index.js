@@ -13,8 +13,8 @@ export { default as IFileList } from './i-file-list.vue';
 export { default as IInput } from './i-input.vue';
 export { default as IInputTel } from './input-tel/i-input-tel.vue';
 export { default as IInputSuggestion } from './i-input-suggestion.vue';
-export { default as IMultipleInput } from './i-multiple-input.vue'
-export { default as IMultipleSelect } from './i-multiple-select.vue'
+export { default as IMultipleInput } from './i-multiple-input.vue';
+export { default as ISelectMultiple } from './i-select-multiple.vue';
 export { default as IPagination } from './i-pagination.vue';
 export { default as IPopover } from './i-popover.vue';
 export { default as IProgressBar } from './i-progress-bar.vue';
