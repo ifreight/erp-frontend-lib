@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="tw:mb-5">
-      Select Types
-    </div>
+    <div class="tw:mb-5">Select Types</div>
 
     <div>select + filterable + empty value</div>
     <div class="tw:mb-4 tw:flex-1">
@@ -17,7 +15,7 @@
       />
     </div>
 
-    <div>select + filterable + empty value + placeholder</div>
+    <div>select + filterable + placeholder + custom empty message</div>
     <div class="tw:mb-4 tw:flex-1">
       <span class="tw:text-red-600">v-model: {{ select2 }}</span>
       <i-select
@@ -28,10 +26,11 @@
         placeholder="Select..."
         filterable
         :options="selectStaticOptions"
+        no-data-text="contoh custom no data text"
       />
     </div>
 
-    <div>select + filterable + value</div>
+    <div>select + filterable + init value</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">v-model: {{ select3 }}</span>
       <i-select
@@ -72,9 +71,9 @@
       />
     </div>
 
-    <div>select + remote method </div>
+    <div>select + remote method</div>
     <div class="tw:mb-4">
-      <span class="tw:text-red-600">v-model: {{ select7 }}</span> <br>
+      <span class="tw:text-red-600">v-model: {{ select7 }}</span> <br />
       <span class="tw:text-red-600">value-option: {{ selectRemote }}</span>
       <i-select
         v-model="select7"
@@ -85,10 +84,11 @@
         :options="selectStaticOptions"
         remote
         :remote-method="selectRemoteMethod"
+        :remote-text="'Contoh Remote Text Custom'"
       />
     </div>
 
-    <div>select without input</div>
+    <div>select without filterable</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">v-model: {{ select8 }}</span>
       <i-select
@@ -167,7 +167,7 @@ export default {
       selectRemote,
       selectStaticOptions,
       selectRemoteMethod,
-    }
+    };
   },
-}
+};
 </script>

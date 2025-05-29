@@ -1,20 +1,16 @@
 <template>
-  <div
-    ref="selectRef"
-    class="i-select-multiple"
-    :class="!isNormalSelectMode ? 'custom-select' : 'normal-select'"
-  >
-    <template v-if="isNormalSelectMode">
-      <div
-        class="i-select-container"
-        :class="isVisible ? 'visible' : ''"
-        @click="toggleDropdown"
-      >
+  <div class="i-select-multiple-wrapper">
+    <div
+      ref="selectRef"
+      class="i-select-multiple"
+      :class="!isNormalSelectMode ? 'fixed-options-select' : ''"
+    >
+      <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
         <i-input
           ref="inputRef"
           class="i-select-input"
           type="text"
-          v-model="query"
+          :model-value="inputTextValue"
           :label="label"
           :input-id="inputId"
           :name="name"
@@ -25,27 +21,20 @@
           :dark="dark"
           :rounded="rounded"
           :size="size"
-          :error-message="errorMessage"
+          @keyup="onInputKeyup"
         >
-          <template
-            v-if="$slots.prepend"
-            #prepend
-          >
+          <template v-if="$slots.prepend" #prepend>
             <slot name="prepend" />
           </template>
-          <template #append>
+          <template v-if="showInputArrow" #append>
             <slot name="append">
-              <div
-                class="i-select-arrow-container"
-                :style="{ color: arrowColor }"
-              >
+              <div class="i-select-arrow-container" :style="{ color: arrowColor }">
                 <ic-chevron-down />
               </div>
             </slot>
           </template>
         </i-input>
       </div>
-
       <i-dropdown-options
         :visible="isVisible"
         :options="dropdownOptions"
@@ -57,19 +46,18 @@
         :filterable="filterable"
         :remote="remote"
         :rounded="rounded"
-        :is-multiple="true"
-        :is-normal-select-mode="true"
-        :is-show-arrow="true"
-        hide-empty-filtered
+        :is-show-arrow="isNormalSelectMode"
+        :borderless="!isNormalSelectMode"
+        :relative-box="!isNormalSelectMode"
+        :padding="isNormalSelectMode ? 'base' : 'none'"
         @selectedValue="handleSelected"
       >
         <template #header>
           <div class="select-header">
             <i-checkbox
               v-model="modelCheckAll"
-              :is-multiple="true"
               :checkbox-rounded="checkboxRounded"
-              :checkbox-color="checkboxColor"
+              :checkbox-border-color="checkboxBorderColor"
               name="modelCheckAll"
               label="Pilih Semua"
               size="lg"
@@ -81,128 +69,47 @@
                 {{ selectedOptionValue.length }} dipilih
               </div>
               <span class="tw:text-gray-900 tw:mx-1">•</span>
-              <i-button
-                text
-                size="xs"
-                class="btn-clear"
-                @click="clearSelection"
-              >
+              <i-button text size="xs" class="btn-clear" @click="clearSelection">
                 Kosongkan
               </i-button>
             </div>
           </div>
         </template>
-        <template #optionsPrepend="{option}">
+        <template #optionsPrepend="{ option }">
           <i-checkbox
             :modelValue="listValue(option)"
             :name="`list-${option.id}`"
-            :is-multiple="true"
             :checkbox-rounded="checkboxRounded"
-            :checkbox-color="checkboxColor"
+            :checkbox-border-color="checkboxBorderColor"
             size="lg"
             light="light"
+            class="tw:pl-[9px]"
             @update:modelValue="(checked) => handleCheckboxChange(option, checked)"
           />
         </template>
-      </i-dropdown-options>
-    </template>
-    <template v-else>
-      <div
-        class="i-select-container"
-        :class="isVisible ? 'visible' : ''"
-      >
-        <i-input
-          ref="inputRef"
-          class="i-select-input"
-          type="text"
-          v-model="query"
-          :label="label"
-          :input-id="inputId"
-          :name="name"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          :invalid="invalid"
-          :dark="dark"
-          :rounded="rounded"
-          :size="size"
-          :error-message="errorMessage"
-        >
-          <template #prepend><ic-search class="tw:text-gray-700" /></template>
-        </i-input>
-      </div>
-      <i-dropdown-options
-        :visible="isVisible"
-        :options="dropdownOptions"
-        :option-key="optionKey"
-        :option-value="optionValue"
-        :current-value="selectedOptionValue"
-        :query="query"
-        :max-height="dropdownMaxHeight"
-        :filterable="filterable"
-        :remote="remote"
-        :rounded="rounded"
-        :is-multiple="true"
-        :is-show-arrow="false"
-        hide-empty-filtered
-        @selectedValue="handleSelected"
-      >
-        <template #header>
-          <div class="select-header">
-            <i-checkbox
-              v-model="modelCheckAll"
-              :is-multiple="true"
-              :checkbox-rounded="checkboxRounded"
-              :checkbox-color="checkboxColor"
-              name="modelCheckAll"
-              label="Pilih Semua"
-              size="lg"
-              light="light"
-              @change="toggleSelectAll"
-            />
-            <div class="selected-count">
-              <div class="tw:w-full tw:text-brown-600">
-                {{ selectedOptionValue.length }} dipilih
-              </div>
-              <span class="tw:text-gray-900 tw:mx-1">•</span>
-              <i-button
-                text
-                size="xs"
-                class="btn-clear"
-                @click="clearSelection"
-              >
-                Kosongkan
-              </i-button>
-            </div>
+        <template #optionsPlaceholder>
+          <div class="tw:px-2">
+            <template v-if="isLoading"> Loading </template>
+            <template v-else-if="remote">
+              {{ query ? noDataText : remoteText }}
+            </template>
+            <template v-else>
+              {{ noDataText }}
+            </template>
           </div>
         </template>
-        <template #optionsPrepend="{option}">
-          <i-checkbox
-            :modelValue="listValue(option)"
-            :name="`list-${option.id}`"
-            :is-multiple="true"
-            :checkbox-rounded="checkboxRounded"
-            :checkbox-color="checkboxColor"
-            size="lg"
-            light="light"
-            @update:modelValue="(checked) => handleCheckboxChange(option, checked)"
-          />
-        </template>
       </i-dropdown-options>
-    </template>
+    </div>
+    <div v-if="!!errorMessage" class="i-select-multiple-error">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
 <script>
-import {
-  computed,
-  defineComponent,
-  onBeforeUnmount,
-  ref,
-  watch,
-} from 'vue';
+import { computed, defineComponent, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import debounce from 'lodash/debounce';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
-import IcSearch from '@/icons/ic-search.vue';
 import IButton from '@/components/i-button.vue';
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
@@ -212,7 +119,6 @@ export default defineComponent({
   name: 'ISelectMultiple',
   components: {
     IcChevronDown,
-    IcSearch,
     IButton,
     ICheckbox,
     IDropdownOptions,
@@ -289,7 +195,7 @@ export default defineComponent({
         return ['sm', 'md', 'lg'].includes(value);
       },
     },
-    checkboxColor: {
+    checkboxBorderColor: {
       type: String,
       default: null,
       validator(value) {
@@ -311,6 +217,18 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    showInputArrow: {
+      type: Boolean,
+      default: true,
+    },
+    remoteText: {
+      type: String,
+      default: 'Type to search.',
+    },
+    noDataText: {
+      type: String,
+      default: 'No results found.',
+    },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
   setup(props, { emit }) {
@@ -325,10 +243,14 @@ export default defineComponent({
     const selectedOption = ref(Array.isArray(props.valueOption) ? props.valueOption : []);
     const inputValue = ref(Array.isArray(props.modelValue) ? props.modelValue : []);
 
+    const isLoading = computed(() => {
+      return props.remote ? remoteLoading.value : props.loading;
+    });
+
     const dropdownOptions = computed(() => {
       const rawOptions = props.remote ? remoteOptions.value : props.options || [];
       const normalized = rawOptions.map((opt) =>
-        typeof opt === 'object' ? opt : { [props.optionKey]: opt, [props.optionValue]: opt }
+        typeof opt === 'object' ? opt : { [props.optionKey]: opt, [props.optionValue]: opt },
       );
 
       // Include selected options if not present (e.g. async loaded values)
@@ -341,7 +263,7 @@ export default defineComponent({
       // filter by query if local (not remote)
       if (!props.remote && props.filterable && query.value) {
         return normalized.filter((opt) =>
-          String(opt[props.optionValue]).toLowerCase().includes(query.value.toLowerCase())
+          String(opt[props.optionValue]).toLowerCase().includes(query.value.toLowerCase()),
         );
       }
 
@@ -363,14 +285,28 @@ export default defineComponent({
     });
 
     const allOptionIds = computed(() =>
-      (props.remote ? remoteOptions.value : props.options).map(opt => opt[props.optionKey])
+      (props.remote ? remoteOptions.value : props.options).map((opt) => opt[props.optionKey]),
     );
 
+    const inputTextValue = computed(() => {
+      if (props.isNormalSelectMode && selectedOption.value.length > 0) {
+        const find = selectedOption.value.map((y) => y[props.optionValue]);
+        if (!isVisible.value && (props.remote || props.filterable)) {
+          return find.length > 0 ? find.join(', ') : undefined;
+        }
+        if (!props.remote && !props.filterable) {
+          return find.length > 0 ? find.join(', ') : undefined;
+        }
+
+        return query.value;
+      } else {
+        return query.value;
+      }
+    });
+
     const normalizeOptions = (options) => {
-      return options.map(opt =>
-        typeof opt === 'object'
-          ? opt
-          : { [props.optionKey]: opt, [props.optionValue]: opt }
+      return options.map((opt) =>
+        typeof opt === 'object' ? opt : { [props.optionKey]: opt, [props.optionValue]: opt },
       );
     };
 
@@ -402,7 +338,7 @@ export default defineComponent({
 
     const handleSelected = (option) => {
       const index = selectedOption.value.findIndex(
-        (item) => item[props.optionKey] === option[props.optionKey]
+        (item) => item[props.optionKey] === option[props.optionKey],
       );
 
       if (index >= 0) {
@@ -415,9 +351,9 @@ export default defineComponent({
 
       const rawOptions = props.remote ? remoteOptions.value : props.options;
       const allOptions = normalizeOptions(rawOptions);
-      const allOptionIds = allOptions.map(opt => opt[props.optionKey]);
+      const allOptionIds = allOptions.map((opt) => opt[props.optionKey]);
 
-      modelCheckAll.value = allOptionIds.every(id => inputValue.value.includes(id));
+      modelCheckAll.value = allOptionIds.every((id) => inputValue.value.includes(id));
 
       emit('update:modelValue', [...inputValue.value]);
       emit('update:valueOption', [...selectedOption.value]);
@@ -426,7 +362,7 @@ export default defineComponent({
 
     const handleCheckboxChange = (option, checked) => {
       const index = selectedOption.value.findIndex(
-        (item) => item[props.optionKey] === option[props.optionKey]
+        (item) => item[props.optionKey] === option[props.optionKey],
       );
 
       if (checked && index === -1) {
@@ -439,9 +375,9 @@ export default defineComponent({
 
       const rawOptions = props.remote ? remoteOptions.value : props.options;
       const allOptions = normalizeOptions(rawOptions);
-      const allOptionIds = allOptions.map(opt => opt[props.optionKey]);
+      const allOptionIds = allOptions.map((opt) => opt[props.optionKey]);
 
-      modelCheckAll.value = allOptionIds.every(id => inputValue.value.includes(id));
+      modelCheckAll.value = allOptionIds.every((id) => inputValue.value.includes(id));
 
       emit('update:modelValue', [...inputValue.value]);
       emit('update:valueOption', [...selectedOption.value]);
@@ -450,9 +386,22 @@ export default defineComponent({
 
     const debouncedQuery = debounce(() => handleQuery(query.value), 300);
 
-    const handleQuery = async (q) => {
+    const handleQuery = async (value) => {
       if (!props.remote || typeof props.remoteMethod !== 'function') return;
-      remoteOptions.value = await props.remoteMethod(q);
+
+      if (!value) {
+        remoteOptions.value = [];
+        remoteLoading.value = false;
+        return;
+      }
+
+      remoteLoading.value = true;
+      try {
+        remoteOptions.value = await props.remoteMethod(value);
+      } catch (ignoreErr) {
+        // do nothing
+      }
+      remoteLoading.value = false;
     };
 
     const showDropdown = () => {
@@ -479,20 +428,24 @@ export default defineComponent({
 
     const listValue = (opt) => {
       return selectedOptionValue.value.some((x) => x === opt.id) ? true : false;
-    }
+    };
 
     const toggleDropdown = () => {
+      if (!props.isNormalSelectMode) {
+        return false;
+      }
       isVisible.value ? hideDropdown() : showDropdown();
     };
 
-    const handleClickOutside = ((event) => {
+    const handleClickOutside = (event) => {
       const isClickInside = event.composedPath().includes(selectRef.value);
       if (!isClickInside) {
         const typedValue = typeof inputValue.value === 'string' ? inputValue.value.trim() : '';
 
         if (typedValue) {
-          const matchingOption = dropdownOptions.value.find(option =>
-            option[props.optionValue]?.toString().toLowerCase() === typedValue.toLowerCase()
+          const matchingOption = dropdownOptions.value.find(
+            (option) =>
+              option[props.optionValue]?.toString().toLowerCase() === typedValue.toLowerCase(),
           );
 
           if (!matchingOption) {
@@ -504,31 +457,54 @@ export default defineComponent({
 
         hideDropdown();
       }
-    });
+    };
 
-    watch(() => props.modelValue, (newVal) => {
-      inputValue.value = Array.isArray(newVal) ? [...newVal] : [];
-      selectedOption.value = dropdownOptions.value.filter((opt) =>
-        inputValue.value.includes(opt[props.optionKey])
-      );
-    }, { immediate: true });
+    const onInputKeyup = (event) => {
+      query.value = event.target.value;
+    };
 
-    watch(() => props.valueOption, (val) => {
-      if (Array.isArray(val)) {
-        selectedOption.value = [...val];
-        inputValue.value = val.map((opt) => opt[props.optionKey]);
-      }
-    });
+    watch(
+      () => props.modelValue,
+      (newVal) => {
+        inputValue.value = Array.isArray(newVal) ? [...newVal] : [];
+        selectedOption.value = dropdownOptions.value.filter((opt) =>
+          inputValue.value.includes(opt[props.optionKey]),
+        );
+      },
+      { immediate: true },
+    );
 
-    watch(() => query.value, () => {
-      if (props.remote) debouncedQuery();
-    });
+    watch(
+      () => props.valueOption,
+      (val) => {
+        if (Array.isArray(val)) {
+          selectedOption.value = [...val];
+          inputValue.value = val.map((opt) => opt[props.optionKey]);
+        }
+      },
+    );
 
-    watch(() => isVisible.value, (val) => {
-      if (val) {
-        document.addEventListener('click', handleClickOutside);
-      } else {
-        document.removeEventListener('click', handleClickOutside);
+    watch(
+      () => query.value,
+      () => {
+        if (props.remote) debouncedQuery();
+      },
+    );
+
+    watch(
+      () => isVisible.value,
+      (val) => {
+        if (val) {
+          document.addEventListener('click', handleClickOutside);
+        } else {
+          document.removeEventListener('click', handleClickOutside);
+        }
+      },
+    );
+
+    onMounted(() => {
+      if (inputValue.value.length > 0 && props.valueOption.length === 0) {
+        emit('update:valueOption', [...selectedOption.value]);
       }
     });
 
@@ -562,6 +538,10 @@ export default defineComponent({
       showDropdown,
       hideDropdown,
       toggleDropdown,
+      isLoading,
+      selectedOption,
+      onInputKeyup,
+      inputTextValue,
     };
   },
 });
@@ -569,62 +549,63 @@ export default defineComponent({
 
 <style>
 @reference "@/assets/global.css";
+.i-select-multiple-wrapper {
+  .i-select-multiple {
+    @apply tw:relative;
 
-.i-select-multiple.custom-select {
-  @apply tw:border tw:border-gray-500 tw:rounded-lg tw:pt-2 tw:pb-2;
+    &.fixed-options-select {
+      @apply tw:border tw:border-gray-500 tw:rounded-lg tw:pt-2 tw:pb-2;
 
-  .i-select-container {
-    @apply tw:px-2;
-  }
-}
+      .i-select-container {
+        @apply tw:px-2;
+      }
+    }
+    .select-header {
+      padding: 10px 16px 0px !important;
+      @apply tw:flex tw:justify-between;
+    }
 
-.i-select-multiple {
-  @apply tw:relative;
+    .selected-count {
+      @apply tw:flex tw:items-center;
+    }
 
-  .select-header {
-    @apply tw:flex tw:justify-between;
-  }
+    .btn-clear {
+      @apply tw:text-brown-600 tw:h-fit tw:font-normal;
+    }
 
-  .selected-count {
-    @apply tw:flex tw:items-center;
-  }
-
-  .btn-clear {
-    @apply tw:text-brown-600 tw:h-fit tw:font-normal;
-  }
-
-  &.inside {
-    position: relative;
-
-    .i-select-container {
+    &.inside {
       position: relative;
+
+      .i-select-container {
+        position: relative;
+      }
+    }
+
+    .i-select-slot-selected {
+      height: 68px;
+      padding-right: 16px;
+      padding-left: 16px;
+      border: 1px solid var(--gray-400);
+      border-radius: 10px;
+
+      &.sm {
+        height: 60px;
+      }
+
+      &.dark {
+        color: var(--white);
+        background-color: var(--gray-900);
+        border-color: var(--white);
+      }
+    }
+
+    .i-select-arrow-container {
+      padding: 4px;
+      cursor: pointer;
     }
   }
 
-  .i-select-slot-selected {
-    height: 68px;
-    padding-right: 16px;
-    padding-left: 16px;
-    border: 1px solid var(--gray-400);
-    border-radius: 10px;
-
-    &.sm {
-      height: 60px;
-    }
-
-    &.dark {
-      color: var(--white);
-      background-color: var(--gray-900);
-      border-color: var(--white);
-    }
-  }
-
-  .i-select-arrow-container {
-    padding: 4px;
-    cursor: pointer;
-  }
-
-  .i-input-error {
+  .i-select-multiple-error {
     padding-top: 8px;
     font-size: var(--size-xs);
     line-height: var(--size-sm);

@@ -1,55 +1,63 @@
 <template>
-  <div ref="selectRef" class="i-select">
-    <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
-      <i-input
-        ref="inputRef"
-        class="i-select-input"
-        type="text"
-        :model-value="inputTextValue"
-        :label="label"
-        :input-id="inputId"
-        :name="name"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :read-only="isInputReadOnly"
-        :invalid="invalid"
-        :dark="dark"
+  <div class="i-select-wrapper">
+    <div ref="selectRef" class="i-select">
+      <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
+        <i-input
+          ref="inputRef"
+          class="i-select-input"
+          type="text"
+          :model-value="inputTextValue"
+          :label="label"
+          :input-id="inputId"
+          :name="name"
+          :placeholder="placeholder"
+          :disabled="disabled"
+          :read-only="isInputReadOnly"
+          :invalid="invalid"
+          :dark="dark"
+          :rounded="rounded"
+          :size="size"
+          @keyup="onInputKeyup"
+        >
+          <template v-if="$slots.prepend" #prepend>
+            <slot name="prepend" />
+          </template>
+          <template #append>
+            <slot name="append">
+              <div class="i-select-arrow-container" :style="{ color: arrowColor }">
+                <ic-chevron-down />
+              </div>
+            </slot>
+          </template>
+        </i-input>
+      </div>
+
+      <i-dropdown-options
+        :visible="isVisible"
+        :options="dropdownOptions"
+        :option-key="optionKey"
+        :option-value="optionValue"
+        :current-value="selectedOptionValue"
+        :query="query"
+        :max-height="dropdownMaxHeight"
+        :filterable="filterable"
+        :remote="remote"
         :rounded="rounded"
-        :size="size"
-        :error-message="errorMessage"
-        @keyup="onInputKeyup"
+        :is-show-arrow="isShowArrow"
+        :remote-text="remoteText"
+        :no-data-text="noDataText"
+        :loading="isLoading"
+        @selectedValue="handleSelected"
       >
-        <template v-if="$slots.prepend" #prepend>
-          <slot name="prepend" />
+        <template v-if="$slots.dropdownHeader" #header>
+          <slot name="dropdownHeader" />
         </template>
-        <template #append>
-          <slot name="append">
-            <div class="i-select-arrow-container" :style="{ color: arrowColor }">
-              <ic-chevron-down />
-            </div>
-          </slot>
-        </template>
-      </i-input>
+      </i-dropdown-options>
     </div>
 
-    <i-dropdown-options
-      :visible="isVisible"
-      :options="dropdownOptions"
-      :option-key="optionKey"
-      :option-value="optionValue"
-      :current-value="selectedOptionValue"
-      :query="query"
-      :max-height="dropdownMaxHeight"
-      :filterable="filterable"
-      :remote="remote"
-      :rounded="rounded"
-      hide-empty-filtered
-      @selectedValue="handleSelected"
-    >
-      <template v-if="$slots.dropdownHeader" #header>
-        <slot name="dropdownHeader" />
-      </template>
-    </i-dropdown-options>
+    <div v-if="!!errorMessage" class="i-select-error">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
@@ -142,6 +150,18 @@ export default defineComponent({
       type: String,
       default: undefined,
     },
+    isShowArrow: {
+      type: Boolean,
+      default: true,
+    },
+    remoteText: {
+      type: String,
+      default: 'Type to search.',
+    },
+    noDataText: {
+      type: String,
+      default: 'No results found.',
+    },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
   setup(props, { emit }) {
@@ -153,6 +173,10 @@ export default defineComponent({
     const selectRef = ref();
     const selectedOption = ref(props.valueOption);
     const inputValue = ref(props.modelValue);
+
+    const isLoading = computed(() => {
+      return props.remote ? remoteLoading.value : props.loading;
+    });
 
     const dropdownOptions = computed(() => {
       let options = [];
@@ -407,6 +431,7 @@ export default defineComponent({
       toggleDropdown,
       handleSelected,
       onInputKeyup,
+      isLoading,
     };
   },
 });
@@ -414,42 +439,43 @@ export default defineComponent({
 
 <style>
 @reference "@/assets/global.css";
-
-.i-select {
-  position: relative;
-
-  &.inside {
+.i-select-wrapper {
+  .i-select {
     position: relative;
 
-    .i-select-container {
+    &.inside {
       position: relative;
+
+      .i-select-container {
+        position: relative;
+      }
+    }
+
+    .i-select-slot-selected {
+      height: 68px;
+      padding-right: 16px;
+      padding-left: 16px;
+      border: 1px solid var(--gray-400);
+      border-radius: 10px;
+
+      &.sm {
+        height: 60px;
+      }
+
+      &.dark {
+        color: var(--white);
+        background-color: var(--gray-900);
+        border-color: var(--white);
+      }
+    }
+
+    .i-select-arrow-container {
+      padding: 4px;
+      cursor: pointer;
     }
   }
 
-  .i-select-slot-selected {
-    height: 68px;
-    padding-right: 16px;
-    padding-left: 16px;
-    border: 1px solid var(--gray-400);
-    border-radius: 10px;
-
-    &.sm {
-      height: 60px;
-    }
-
-    &.dark {
-      color: var(--white);
-      background-color: var(--gray-900);
-      border-color: var(--white);
-    }
-  }
-
-  .i-select-arrow-container {
-    padding: 4px;
-    cursor: pointer;
-  }
-
-  .i-input-error {
+  .i-select-error {
     padding-top: 8px;
     font-size: var(--size-xs);
     line-height: var(--size-sm);
