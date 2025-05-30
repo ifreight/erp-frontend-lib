@@ -1,12 +1,6 @@
 <template>
-  <label
-    class="i-checkbox"
-    :class="disabled ? 'disabled' : ''"
-  >
-    <span
-      class="i-checkbox-input"
-      :class="checkboxInputClass"
-    >
+  <label class="i-checkbox" :class="disabled ? 'disabled' : ''">
+    <span class="i-checkbox-input" :class="checkboxInputClass">
       <input
         type="checkbox"
         :name="name"
@@ -16,17 +10,10 @@
         @click="onClick"
         @change="onChange"
       />
-      <ic-check
-        class="i-checkbox-icon"
-        :class="checkboxInputClass"
-      />
+      <ic-check class="i-checkbox-icon" :class="checkboxInputClass" />
     </span>
 
-    <ic-dash
-      v-if="indeterminate"
-      class="i-checkbox-dash-icon"
-      :class="checkboxInputClass"
-    />
+    <ic-dash v-if="indeterminate" class="i-checkbox-dash-icon" :class="checkboxInputClass" />
 
     <slot>
       <span :class="spanClass">
@@ -46,145 +33,170 @@ export default {
   name: 'ICheckbox',
   components: {
     IcCheck,
-    IcDash
+    IcDash,
   },
   props: {
     modelValue: {
       type: Boolean,
       default: null,
-      required: false
+      required: false,
     },
     modelLabel: {
       type: String,
       default: null,
-      required: false
+      required: false,
     },
     label: {
       type: String,
-      required: false
+      required: false,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     indeterminate: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invalid: {
       type: Boolean,
       default: false,
-      required: false
+      required: false,
     },
     size: {
       type: String,
       default: 'base',
       validator(value) {
-        return ['base', 'lg'].includes(value)
-      }
+        return ['base', 'lg'].includes(value);
+      },
     },
     light: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    checkboxRounded: {
+      type: String,
+      default: null,
+      validator(value) {
+        return ['sm', 'md', 'lg'].includes(value);
+      },
+    },
+    checkboxBorderColor: {
+      type: String,
+      default: null,
+      validator(value) {
+        return ['gray-300', 'gray-500', 'gray-700'].includes(value);
+      },
+    },
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
-    const isChecked = ref(false)
-    const rootChecked = inject('rootCheckbox', null)
+    const isChecked = ref(false);
+    const rootChecked = inject('rootCheckbox', null);
 
     const checkboxInputClass = computed(() => {
-      const classes = ref([])
+      const classes = [
+        `rounded-${props.checkboxRounded}`,
+        `border-color-${props.checkboxBorderColor}`,
+      ];
 
       if (isChecked.value) {
-        classes.value.push('checked')
+        classes.push('checked');
       }
       if (props.disabled) {
-        classes.value.push('disabled')
+        classes.push('disabled');
       }
       if (props.invalid) {
-        classes.value.push('invalid')
+        classes.push('invalid');
       }
       if (props.size !== 'base') {
-        classes.value.push(`${props.size}`)
+        classes.push(props.size);
       }
       if (props.light) {
-        classes.value.push('light')
+        classes.push('light');
       }
 
-      return classes.value
-    })
+      return classes;
+    });
 
     const elementInputClass = computed(() => {
-      const classes = ref([])
+      const classes = ref([]);
 
       if (props.size !== 'base') {
-        classes.value.push(`${props.size}`)
+        classes.value.push(`${props.size}`);
       }
       if (props.light) {
-        classes.value.push('light')
+        classes.value.push('light');
       }
 
-      return classes.value
-    })
+      return classes.value;
+    });
 
     const spanClass = computed(() => {
-      const classes = ref([])
+      const classes = ref([]);
 
       if (props.size == 'base') {
         classes.value.push({
           'tw:text-gray-700': props.disabled,
           'tw:ml-2.5': props.indeterminate,
-          'tw:ml-6': !props.indeterminate
-        })
+          'tw:ml-6': !props.indeterminate,
+        });
       } else {
         classes.value.push({
           'tw:text-gray-700': props.disabled,
           'tw:ml-3': props.indeterminate,
-          'tw:ml-8': !props.indeterminate
-        })
+          'tw:ml-8': !props.indeterminate,
+        });
       }
 
-      return classes.value
-    })
+      return classes.value;
+    });
 
-    watch(() => props.modelValue, (value) => {
-      if (!props.modelLabel) {
-        isChecked.value = value
-      }
-    }, { immediate: true })
+    watch(
+      () => props.modelValue,
+      (value) => {
+        if (!props.modelLabel) {
+          isChecked.value = value;
+        }
+      },
+      { immediate: true },
+    );
 
-    watch(() => rootChecked, (value) => {
-      if (value) {
-        if (props.modelLabel) {
-          if (value.value.includes(props.modelLabel)) {
-            isChecked.value = true
-          } else {
-            isChecked.value = false
+    watch(
+      () => rootChecked,
+      (value) => {
+        if (value) {
+          if (props.modelLabel) {
+            if (value.value.includes(props.modelLabel)) {
+              isChecked.value = true;
+            } else {
+              isChecked.value = false;
+            }
           }
         }
-      }
-    }, { deep: true })
+      },
+      { deep: true },
+    );
 
     onMounted(() => {
       if (props.modelLabel) {
         if (rootChecked && rootChecked.value.includes(props.modelLabel)) {
-          isChecked.value = true
+          isChecked.value = true;
         }
       }
-    })
+    });
 
     const onClick = () => {
-      emit('update:modelValue', !isChecked.value)
-    }
+      emit('update:modelValue', !isChecked.value);
+    };
 
     const onChange = (event) => {
-      emit('change', event, isChecked.value)
-    }
+      emit('change', event, isChecked.value);
+    };
 
     return {
       isChecked,
@@ -194,9 +206,9 @@ export default {
       spanClass,
       onClick,
       onChange,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style>
@@ -227,6 +239,30 @@ export default {
 
   .i-checkbox-input {
     @apply tw:border tw:border-gray-900 tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
+
+    &.rounded-sm {
+      @apply tw:rounded-sm;
+    }
+
+    &.rounded-md {
+      @apply tw:rounded-md;
+    }
+
+    &.rounded-lg {
+      @apply tw:rounded-lg;
+    }
+
+    &.border-color-gray-300 {
+      @apply tw:border-gray-300;
+    }
+
+    &.border-color-gray-500 {
+      @apply tw:border-gray-500;
+    }
+
+    &.border-color-gray-700 {
+      @apply tw:border-gray-700;
+    }
 
     .i-checkbox-icon {
       @apply tw:opacity-0 tw:w-3.5 tw:h-3.5;

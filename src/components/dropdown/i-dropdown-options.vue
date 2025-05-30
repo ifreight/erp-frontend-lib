@@ -4,11 +4,12 @@
     :width="width"
     class="i-dropdown-options"
     :rounded="rounded"
+    :is-show-arrow="isShowArrow"
+    :borderless="borderless"
+    :relative-box="relativeBox"
+    :padding="padding"
   >
-    <div
-      v-if="$slots.header"
-      class="i-dropdown-options-header"
-    >
+    <div v-if="$slots.header" class="i-dropdown-options-header">
       <slot name="header" />
     </div>
 
@@ -26,36 +27,25 @@
         :class="currentValue === option[optionKey] && 'selected'"
         @click="$emit('selectedValue', option)"
       >
-        <slot
-          name="optionsPrepend"
-          :option="option"
-        />
-        <slot
-          name="options"
-          :option="option"
-          :make-bold="makeBold"
-        >
+        <slot name="optionsPrepend" :option="option" />
+        <slot name="options" :option="option" :make-bold="makeBold">
           <span v-if="currentValue === option[optionKey]">
             {{ option[optionValue] }}
           </span>
-          <span
-            v-else
-            v-html="makeBold(option[optionValue])"
-          />
+          <span v-else v-html="makeBold(option[optionValue])" />
         </slot>
       </li>
     </ul>
-    <div
-      v-else
-      class="i-dropdown-options-placeholder"
-    >
-      <template v-if="loading"> Loading </template>
-      <template v-else-if="remote">
-        {{ query ? noDataText : remoteText }}
-      </template>
-      <template v-else>
-        {{ noDataText }}
-      </template>
+    <div v-else class="i-dropdown-options-placeholder">
+      <slot name="optionsPlaceholder">
+        <template v-if="loading"> Loading </template>
+        <template v-else-if="remote">
+          {{ query ? noDataText : remoteText }}
+        </template>
+        <template v-else>
+          {{ noDataText }}
+        </template>
+      </slot>
     </div>
   </i-dropdown>
 </template>
@@ -88,7 +78,7 @@ export default defineComponent({
       default: 'name',
     },
     currentValue: {
-      type: [String, Number],
+      type: [String, Number, Array],
       default: '',
     },
     query: {
@@ -114,15 +104,30 @@ export default defineComponent({
       type: String,
       default: 'xs',
     },
-    hideEmptyFiltered: {
+    isShowArrow: {
+      type: Boolean,
+      default: true,
+    },
+    relativeBox: {
       type: Boolean,
       default: false,
     },
+    borderless: {
+      type: Boolean,
+      default: false,
+    },
+    padding: {
+      type: String,
+      default: 'base',
+      validator(value) {
+        return ['none', 'base', 'lg'].includes(value);
+      },
+    },
   },
-  emits: ['onFilteredChanged', 'selectedValue'],
+  emits: ['onFilteredLengthChanged', 'selectedValue'],
   setup(props, { emit }) {
     const bodyClasses = computed(() => {
-      return [`rounded-${props.rounded}`]
+      return [`rounded-${props.rounded}`];
     });
 
     const filteredOptions = computed(() => {
@@ -183,17 +188,18 @@ export default defineComponent({
       return str;
     };
 
-    watch(() => filteredOptions.value.length, (val) => {
-      if (props.hideEmptyFiltered) {
-        emit('onFilteredChanged', val)
-      }
-    });
+    watch(
+      () => filteredOptions.value.length,
+      (val) => {
+        emit('onFilteredLengthChanged', val);
+      },
+    );
 
     return {
       bodyClasses,
       filteredOptions,
       makeBold,
-    }
+    };
   },
 });
 </script>
@@ -203,7 +209,7 @@ export default defineComponent({
   .i-dropdown-options-header {
     padding: 4px 0 12px;
     margin-bottom: 12px;
-    border-bottom: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-500);
   }
 
   .i-dropdown-options-body {
@@ -264,9 +270,10 @@ export default defineComponent({
   }
 
   .i-dropdown-options-placeholder {
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 12px;
+    line-height: normal;
     color: var(--gray-700);
+    padding: 8px 6px;
   }
 }
 </style>

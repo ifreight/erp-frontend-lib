@@ -25,6 +25,7 @@
         <router-link to="/sticky-bar">sticky bar</router-link>
         <router-link to="/table">table</router-link>
         <router-link to="/multiple-input">multiple input</router-link>
+        <router-link to="/multiple-select">multiple select</router-link>
         <router-link to="/icons">icons</router-link>
         <router-link to="/datepicker">date picker</router-link>
         <router-link to="/sort-caret">sort caret</router-link>

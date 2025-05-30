@@ -1,26 +1,12 @@
 <template>
-  <div
-    class="i-dropdown"
-    :class="openDirection"
-  >
-    <div
-      ref="reference"
-      class="i-dropdown-reference"
-    />
+  <div class="i-dropdown" :class="openDirection">
+    <div ref="reference" class="i-dropdown-reference" />
 
-    <div
-      v-show="visible && isShowArrow"
-      class="i-dropdown-arrow"
-    >
+    <div v-show="visible && isShowArrow" class="i-dropdown-arrow">
       <span class="i-dropdown-arrow-icon"></span>
     </div>
 
-    <div
-      v-show="visible"
-      class="i-dropdown-box"
-      :class="boxClasses"
-      :style="{ width }"
-    >
+    <div v-show="visible" class="i-dropdown-box" :class="boxClasses" :style="{ width }">
       <slot />
     </div>
   </div>
@@ -45,24 +31,49 @@ export default {
       type: String,
       default: 'xs',
     },
+    relativeBox: {
+      type: Boolean,
+      default: false,
+    },
+    borderless: {
+      type: Boolean,
+      default: false,
+    },
+    padding: {
+      type: String,
+      default: 'base',
+      validator(value) {
+        return ['none', 'base', 'lg'].includes(value);
+      },
+    },
   },
   setup(props) {
     const openDirection = ref('below');
     const reference = ref();
 
-    watch(() => props.visible, (value) => {
-      if (value && reference.value) {
-        const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
-        if (spaceBelow > 250) {
-          openDirection.value = 'below';
-        } else {
-          openDirection.value = 'above';
+    watch(
+      () => props.visible,
+      (value) => {
+        if (value && reference.value) {
+          const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
+          if (spaceBelow > 250) {
+            openDirection.value = 'below';
+          } else {
+            openDirection.value = 'above';
+          }
         }
-      }
-    });
+      },
+    );
     const boxClasses = computed(() => {
-      return [`rounded-${props.rounded}`]
-    })
+      return [
+        `rounded-${props.rounded}`,
+        `padding-${props.padding}`,
+        {
+          relative: props.relativeBox,
+          borderless: props.borderless,
+        },
+      ];
+    });
     return {
       openDirection,
       reference,
@@ -98,7 +109,14 @@ export default {
     background-color: var(--white);
     border: 1px solid var(--gray-500);
     font-size: 12px;
-    padding: 4px;
+
+    &.relative {
+      position: relative;
+    }
+
+    &.borderless {
+      border: 0px;
+    }
 
     &.rounded-xs {
       border-radius: 2px;
@@ -111,6 +129,16 @@ export default {
     }
     &.rounded-xl {
       border-radius: 12px;
+    }
+
+    &.padding-none {
+      padding: 0px;
+    }
+    &.padding-base {
+      padding: 4px;
+    }
+    &.padding-lg {
+      padding: 8px;
     }
   }
 

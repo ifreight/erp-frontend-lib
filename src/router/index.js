@@ -21,6 +21,7 @@ import StickyBarView from '../views/StickyBarView.vue';
 import TableView from '../views/TableView.vue';
 import FileListView from '../views/FileListView.vue';
 import MultipleInputView from '../views/MultipleInputView.vue';
+import SelectMultipleView from '../views/SelectMultipleView.vue';
 import IconsView from '../views/IconsView.vue';
 import DatePickerView from '../views/DatepickerView.vue';
 import SortCaretView from '../views/SortCaretView.vue';
@@ -137,6 +138,11 @@ const router = createRouter({
       path: '/multiple-input',
       name: 'multipleInput',
       component: MultipleInputView,
+    },
+    {
+      path: '/multiple-select',
+      name: 'multipleSelect',
+      component: SelectMultipleView,
     },
     {
       path: '/icons',

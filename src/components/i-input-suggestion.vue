@@ -1,49 +1,52 @@
 <template>
-  <div ref="suggestionRef" class="suggestion-wrapper">
-    <div tabindex="0" class="suggestion-container" :class="isVisible ? 'visible' : ''">
-      <i-input
-        ref="inputRef"
-        class="suggestion-input"
-        type="text"
-        :model-value="modelValue"
-        :input-id="inputId"
-        :name="name"
-        :label="label"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :read-only="readOnly"
-        :invalid="invalid"
-        :dark-mode="darkMode"
-        :borderless="borderless"
-        :size="size"
-        :error-message="errorMessage"
-        :clearable="clearable"
-        @clear="resetInputValue"
-        @keyup="onInputKeyup"
-        @focus="toggleDropdown"
-      >
-        <template v-if="$slots.prepend" #prepend>
-          <slot name="prepend" />
-        </template>
-      </i-input>
-    </div>
+  <div class="i-suggestion-wrapper">
+    <div ref="suggestionRef" class="i-suggestion">
+      <div tabindex="0" class="suggestion-container" :class="isVisible ? 'visible' : ''">
+        <i-input
+          ref="inputRef"
+          class="suggestion-input"
+          type="text"
+          :model-value="modelValue"
+          :input-id="inputId"
+          :name="name"
+          :label="label"
+          :placeholder="placeholder"
+          :disabled="disabled"
+          :read-only="readOnly"
+          :invalid="invalid"
+          :dark-mode="darkMode"
+          :borderless="borderless"
+          :size="size"
+          :clearable="clearable"
+          @clear="resetInputValue"
+          @keyup="onInputKeyup"
+          @focus="toggleDropdown"
+        >
+          <template v-if="$slots.prepend" #prepend>
+            <slot name="prepend" />
+          </template>
+        </i-input>
+      </div>
 
-    <i-dropdown-options
-      :visible="isVisible"
-      :options="dropdownOptions"
-      :option-key="optionKey"
-      :option-value="optionValue"
-      :max-height="dropdownMaxHeight"
-      :query="modelValue"
-      filterable
-      hide-empty-filtered
-      @selectedValue="handleSelected"
-      @onFilteredChanged="onFilteredChanged"
-    >
-      <template v-if="$slots.dropdownHeader" #header>
-        <slot name="dropdownHeader" />
-      </template>
-    </i-dropdown-options>
+      <i-dropdown-options
+        :visible="isVisible"
+        :options="dropdownOptions"
+        :option-key="optionKey"
+        :option-value="optionValue"
+        :max-height="dropdownMaxHeight"
+        :query="modelValue"
+        filterable
+        @selectedValue="handleSelected"
+        @onFilteredLengthChanged="handleFilteredLengthChanged"
+      >
+        <template v-if="$slots.dropdownHeader" #header>
+          <slot name="dropdownHeader" />
+        </template>
+      </i-dropdown-options>
+    </div>
+    <div v-if="!!errorMessage" class="i-suggestion-error">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
@@ -96,7 +99,6 @@ export default defineComponent({
       type: String,
       default: 'name',
     },
-
     size: {
       type: String,
       default: 'base',
@@ -205,7 +207,7 @@ export default defineComponent({
       }
     };
 
-    const onFilteredChanged = (val) => {
+    const handleFilteredLengthChanged = (val) => {
       isFilteredOptionsEmpty.value = val > 0 ? false : true;
     };
 
@@ -252,7 +254,7 @@ export default defineComponent({
       hideDropdown,
       toggleDropdown,
       onInputKeyup,
-      onFilteredChanged,
+      handleFilteredLengthChanged,
       handleSelected,
     };
   },
@@ -260,38 +262,46 @@ export default defineComponent({
 </script>
 
 <style>
-.suggestion-wrapper {
-  position: relative;
+.i-suggestion-wrapper {
+  .i-suggestion {
+    position: relative;
 
-  .suggestion-container,
-  .suggestion-input {
-    cursor: pointer;
+    .suggestion-container,
+    .suggestion-input {
+      cursor: pointer;
+    }
+
+    .suggestion-container.visible ::v-deep .angle-icon svg {
+      transform: rotateZ(180deg);
+    }
+
+    .custom-selected {
+      height: 68px;
+      padding-right: 16px;
+      padding-left: 16px;
+      border: 1px solid var(--gray-400);
+      border-radius: 10px;
+
+      &.sm {
+        height: 60px;
+      }
+
+      &.dark {
+        color: var(--white);
+        background-color: var(--gray-900);
+        border-color: var(--white);
+      }
+
+      &.borderless {
+        border: none;
+      }
+    }
   }
-
-  .suggestion-container.visible ::v-deep .angle-icon svg {
-    transform: rotateZ(180deg);
-  }
-
-  .custom-selected {
-    height: 68px;
-    padding-right: 16px;
-    padding-left: 16px;
-    border: 1px solid var(--gray-400);
-    border-radius: 10px;
-
-    &.sm {
-      height: 60px;
-    }
-
-    &.dark {
-      color: var(--white);
-      background-color: var(--gray-900);
-      border-color: var(--white);
-    }
-
-    &.borderless {
-      border: none;
-    }
+  .i-suggestion-error {
+    padding-top: 8px;
+    font-size: var(--size-xs);
+    line-height: var(--size-sm);
+    color: var(--red-300);
   }
 }
 </style>
