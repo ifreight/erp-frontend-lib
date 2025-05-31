@@ -6,14 +6,20 @@
       <span class="i-dropdown-arrow-icon"></span>
     </div>
 
-    <div v-show="visible" class="i-dropdown-box" :class="boxClasses" :style="{ width }">
+    <div
+      ref="dropdownRef"
+      v-show="visible"
+      class="i-dropdown-box"
+      :class="boxClasses"
+      :style="{ width }"
+    >
       <slot />
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 
 export default {
   name: 'IDropdown',
@@ -47,9 +53,19 @@ export default {
       },
     },
   },
-  setup(props) {
+  emits: ['update:visible'],
+  setup(props, { emit }) {
     const openDirection = ref('below');
     const reference = ref();
+    const dropdownRef = ref();
+
+    const handleClickOutside = (event) => {
+      const isClickInside = event.composedPath().includes(dropdownRef.value);
+
+      if (!isClickInside) {
+        emit('update:visible', false);
+      }
+    };
 
     watch(
       () => props.visible,
@@ -61,9 +77,19 @@ export default {
           } else {
             openDirection.value = 'above';
           }
+          document.addEventListener('click', handleClickOutside);
+        } else {
+          document.removeEventListener('click', handleClickOutside);
         }
       },
     );
+
+    onBeforeUnmount(() => {
+      if (props.visible) {
+        document.removeEventListener('click', handleClickOutside);
+      }
+    });
+
     const boxClasses = computed(() => {
       return [
         `rounded-${props.rounded}`,
@@ -75,6 +101,7 @@ export default {
       ];
     });
     return {
+      dropdownRef,
       openDirection,
       reference,
       boxClasses,

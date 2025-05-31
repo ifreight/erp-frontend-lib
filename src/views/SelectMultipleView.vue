@@ -40,7 +40,7 @@
             <i-select-multiple
               v-model="select11"
               v-model:value-option="selectedOptions11"
-              input-id="Select-11"
+              inputId="Select-11"
               name="select-11"
               label="Select"
               size="sm"
@@ -154,9 +154,9 @@ export default {
   setup() {
     const select10 = ref([]);
     const select11 = ref([]);
-    const select12 = ref([1, 3]);
+    const select12 = ref([1, 2, 3, 4, 5, 6, 7, 8]);
     const select13 = ref([]);
-    const select14 = ref([]);
+    const select14 = ref([1, 2, 3, 4]);
 
     const selectedOptions10 = ref([]);
     const selectedOptions11 = ref([]);

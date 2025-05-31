@@ -11,7 +11,6 @@
           class="i-select-input"
           type="text"
           :model-value="inputTextValue"
-          :label="label"
           :input-id="inputId"
           :name="name"
           :placeholder="placeholder"
@@ -52,7 +51,7 @@
         :padding="isNormalSelectMode ? 'base' : 'none'"
         @selectedValue="handleSelected"
       >
-        <template #header>
+        <template v-if="!remote" #header>
           <div class="select-header">
             <i-checkbox
               v-model="modelCheckAll"
@@ -139,13 +138,9 @@ export default defineComponent({
     },
     inputId: {
       type: String,
-      required: true,
+      default: '',
     },
     name: {
-      type: String,
-      required: true,
-    },
-    label: {
       type: String,
       required: true,
     },
@@ -503,8 +498,19 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      if (inputValue.value.length > 0 && props.valueOption.length === 0) {
-        emit('update:valueOption', [...selectedOption.value]);
+      if (inputValue.value.length > 0) {
+        if (props.valueOption.length === 0) {
+          emit('update:valueOption', [...selectedOption.value]);
+        }
+        if (!props.remote) {
+          const inputVal = selectedOption.value.map((opt) => opt[props.optionKey]);
+
+          const rawOptions = props.options;
+          const allOptions = normalizeOptions(rawOptions);
+          const allOptionIds = allOptions.map((opt) => opt[props.optionKey]);
+
+          modelCheckAll.value = allOptionIds.every((id) => inputVal.includes(id));
+        }
       }
     });
 
