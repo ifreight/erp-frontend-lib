@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, defineComponent, onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
 import debounce from 'lodash/debounce';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
 import IButton from '@/components/i-button.vue';
@@ -497,7 +497,9 @@ export default defineComponent({
       },
     );
 
-    onMounted(() => {
+    onMounted(async () => {
+      await nextTick();
+
       if (inputValue.value.length > 0) {
         if (props.valueOption.length === 0) {
           emit('update:valueOption', [...selectedOption.value]);

@@ -47,6 +47,10 @@
             <span class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer" @click="sortAction">
               <ic-chevrons-vertical-up-down class="tw:w-fit"></ic-chevrons-vertical-up-down>
             </span>
+            <div class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer tw:relative">
+              <ic-filter-bars @click="visibleDropdown = !visibleDropdown" />
+              <i-dropdown v-model:visible="visibleDropdown">halo</i-dropdown>
+            </div>
           </div>
         </template>
         <template #no="{ index }">{{ index + 1 }}</template>
@@ -71,11 +75,15 @@ import { ref, onMounted } from 'vue';
 import ITable from '@/components/i-table.vue';
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import IButton from '@/components/i-button.vue';
+import IDropdown from '@/components/dropdown/i-dropdown.vue';
+
 import IcChevronsVerticalUpDown from '@/icons/ic-chevrons-vertical-up-down.vue';
+import IcFilterBars from '@/icons/ic-filter-bars.vue';
 
 export default {
-  components: { ITable, ICheckbox, IButton, IcChevronsVerticalUpDown },
+  components: { ITable, ICheckbox, IButton, IDropdown, IcChevronsVerticalUpDown, IcFilterBars },
   setup() {
+    const visibleDropdown = ref(false);
     const data = ref([
       {
         id: 1,
@@ -269,6 +277,7 @@ export default {
       selectedRow.value = data.value.filter((a) => a.isChecked).map((y) => y.id);
     });
     return {
+      visibleDropdown,
       data,
       header1,
       header2,

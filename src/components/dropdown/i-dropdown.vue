@@ -61,7 +61,6 @@ export default {
 
     const handleClickOutside = (event) => {
       const isClickInside = event.composedPath().includes(dropdownRef.value);
-
       if (!isClickInside) {
         emit('update:visible', false);
       }
@@ -69,7 +68,7 @@ export default {
 
     watch(
       () => props.visible,
-      (value) => {
+      async (value) => {
         if (value && reference.value) {
           const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
           if (spaceBelow > 250) {
@@ -77,7 +76,9 @@ export default {
           } else {
             openDirection.value = 'above';
           }
-          document.addEventListener('click', handleClickOutside);
+          requestAnimationFrame(() => {
+            document.addEventListener('click', handleClickOutside);
+          });
         } else {
           document.removeEventListener('click', handleClickOutside);
         }
