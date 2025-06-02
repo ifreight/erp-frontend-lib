@@ -9,7 +9,6 @@
         v-model="select"
         input-id="Select-1"
         name="select-1"
-        label="Select"
         filterable
         :options="selectStaticOptions"
       />
@@ -22,7 +21,6 @@
         v-model="select2"
         input-id="Select-2"
         name="select-2"
-        label="Select"
         placeholder="Select..."
         filterable
         :options="selectStaticOptions"
@@ -37,7 +35,6 @@
         v-model="select3"
         input-id="Select-3"
         name="select-3"
-        label="Select"
         filterable
         :options="selectStaticOptions"
       />
@@ -50,7 +47,6 @@
         v-model="select4"
         input-id="Select-4"
         name="select-4"
-        label="Select"
         :options="selectStaticOptions"
         disabled
       />
@@ -63,7 +59,6 @@
         v-model="select5"
         input-id="Select-5"
         name="select-5"
-        label="Select"
         filterable
         :options="selectStaticOptions"
         :invalid="true"
@@ -80,7 +75,6 @@
         v-model:value-option="selectRemote"
         input-id="Select-7"
         name="select-7"
-        label="Select"
         :options="selectStaticOptions"
         remote
         :remote-method="selectRemoteMethod"
@@ -95,7 +89,6 @@
         v-model="select8"
         input-id="Select-8"
         name="select-8"
-        label="Select"
         :options="selectStaticOptions"
       />
     </div>
@@ -107,7 +100,6 @@
         v-model="select9"
         input-id="Select-9"
         name="select-9"
-        label="Select"
         size="sm"
         rounded="lg"
         :arrowColor="customColor"

@@ -7,7 +7,6 @@
           class="i-select-input"
           type="text"
           :model-value="inputTextValue"
-          :label="label"
           :input-id="inputId"
           :name="name"
           :placeholder="placeholder"
@@ -47,6 +46,7 @@
         :remote-text="remoteText"
         :no-data-text="noDataText"
         :loading="isLoading"
+        :width="dropdownWidth"
         @selectedValue="handleSelected"
       >
         <template v-if="$slots.dropdownHeader" #header>
@@ -93,10 +93,6 @@ export default defineComponent({
       default: '',
     },
     name: {
-      type: String,
-      required: true,
-    },
-    label: {
       type: String,
       required: true,
     },
@@ -148,7 +144,7 @@ export default defineComponent({
     },
     dropdownWidth: {
       type: String,
-      default: undefined,
+      default: '100%',
     },
     isShowArrow: {
       type: Boolean,

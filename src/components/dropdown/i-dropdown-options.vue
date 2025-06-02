@@ -123,8 +123,12 @@ export default defineComponent({
         return ['none', 'base', 'lg'].includes(value);
       },
     },
+    isHideOnEmptyOptions: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ['onFilteredLengthChanged', 'selectedValue'],
+  emits: ['update:visible', 'selectedValue'],
   setup(props, { emit }) {
     const bodyClasses = computed(() => {
       return [`rounded-${props.rounded}`];
@@ -189,9 +193,11 @@ export default defineComponent({
     };
 
     watch(
-      () => filteredOptions.value.length,
+      () => filteredOptions.value,
       (val) => {
-        emit('onFilteredLengthChanged', val);
+        if (props.isHideOnEmptyOptions) {
+          emit('update:visible', val.length > 0);
+        }
       },
     );
 

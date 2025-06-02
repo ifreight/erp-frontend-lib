@@ -9,7 +9,6 @@
           :model-value="modelValue"
           :input-id="inputId"
           :name="name"
-          :label="label"
           :placeholder="placeholder"
           :disabled="disabled"
           :read-only="readOnly"
@@ -18,26 +17,34 @@
           :borderless="borderless"
           :size="size"
           :clearable="clearable"
+          :rounded="rounded"
           @clear="resetInputValue"
           @keyup="onInputKeyup"
           @focus="toggleDropdown"
+          @blur="isFocus = false"
         >
           <template v-if="$slots.prepend" #prepend>
             <slot name="prepend" />
           </template>
         </i-input>
       </div>
-
       <i-dropdown-options
-        :visible="isVisible"
+        ref="dropdownRef"
+        v-model:visible="isVisible"
+        :is-hide-on-empty-options="isFocus && hideAfterInput < 1"
         :options="dropdownOptions"
         :option-key="optionKey"
-        :option-value="optionValue"
         :max-height="dropdownMaxHeight"
         :query="modelValue"
+        :width="dropdownWidth"
+        :is-show-arrow="isShowArrow"
+        :remote="remote"
+        :remote-text="remoteText"
+        :no-data-text="noDataText"
+        :loading="isLoading"
+        :rounded="rounded"
         filterable
         @selectedValue="handleSelected"
-        @onFilteredLengthChanged="handleFilteredLengthChanged"
       >
         <template v-if="$slots.dropdownHeader" #header>
           <slot name="dropdownHeader" />
@@ -51,7 +58,8 @@
 </template>
 
 <script>
-import { ref, computed, watch, onBeforeUnmount, defineComponent, nextTick } from 'vue';
+import { ref, computed, watch, onBeforeUnmount, defineComponent } from 'vue';
+import debounce from 'lodash/debounce';
 
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
 import IInput from './i-input.vue';
@@ -75,10 +83,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    label: {
-      type: String,
-      default: '',
-    },
     placeholder: {
       type: String,
       default: '',
@@ -93,10 +97,6 @@ export default defineComponent({
     },
     optionKey: {
       type: String,
-      default: 'id',
-    },
-    optionValue: {
-      type: String,
       default: 'name',
     },
     size: {
@@ -108,7 +108,7 @@ export default defineComponent({
     },
     hideAfterInput: {
       type: Number,
-      default: -1,
+      default: 0,
     },
     dropdownMaxHeight: {
       type: String,
@@ -123,20 +123,54 @@ export default defineComponent({
     invalid: Boolean,
     borderless: Boolean,
     darkMode: Boolean,
-    wide: Boolean,
     clearable: Boolean,
+    rounded: {
+      type: String,
+      default: 'xs',
+    },
+    dropdownWidth: {
+      type: String,
+      default: '100%',
+    },
+    isShowArrow: {
+      type: Boolean,
+      default: true,
+    },
+    remote: Boolean,
+    remoteMethod: {
+      type: Function,
+      default: undefined,
+    },
+    remoteText: {
+      type: String,
+      default: 'Type to search.',
+    },
+    noDataText: {
+      type: String,
+      default: 'No results found.',
+    },
   },
   emits: ['update:modelValue', 'blur', 'change', 'focus', 'input'],
   setup(props, { emit }) {
+    const dropdownRef = ref();
     const isVisible = ref(false);
-    const inputValue = ref();
+    const isFocus = ref(false);
+
     const suggestionRef = ref();
     const inputRef = ref();
-    const isFilteredOptionsEmpty = ref(false);
+
+    const remoteLoading = ref(false);
+    const remoteOptions = ref([]);
+
+    const isLoading = computed(() => {
+      return props.remote ? remoteLoading.value : props.loading;
+    });
 
     const dropdownOptions = computed(() => {
       let options = [];
-      if (props.options && props.options.length) {
+      if (props.remote) {
+        options = remoteOptions.value || [];
+      } else if (props.options && props.options.length) {
         const [firstOption] = props.options;
         if (typeof firstOption !== 'object') {
           options = props.options.map((option) => ({
@@ -163,14 +197,11 @@ export default defineComponent({
 
     const changeSelected = (option) => {
       if (!option) {
-        inputValue.value = undefined;
-
         emit('update:modelValue', undefined);
         emit('change', undefined);
         return;
       }
 
-      inputValue.value = option[props.optionKey];
       emit('update:modelValue', option[props.optionKey]);
       emit('change', option);
     };
@@ -197,27 +228,47 @@ export default defineComponent({
     };
 
     const toggleDropdown = () => {
+      isFocus.value = true;
       switch (isVisible.value) {
         case true:
           hideDropdown();
           break;
         default:
-          showDropdown();
+          if (!props.modelValue) {
+            showDropdown();
+          }
           break;
       }
     };
 
-    const handleFilteredLengthChanged = (val) => {
-      isFilteredOptionsEmpty.value = val > 0 ? false : true;
+    const handleQuery = async (value) => {
+      if (!value) {
+        remoteOptions.value = [];
+        remoteLoading.value = false;
+        return;
+      }
+
+      try {
+        remoteOptions.value = await props.remoteMethod(value);
+      } catch (ignoreErr) {
+        // do nothing
+      }
+      remoteLoading.value = false;
     };
 
-    const onInputKeyup = async (event) => {
+    const debouncedHandleQuery = debounce(() => {
+      handleQuery(props.modelValue);
+    }, 300);
+
+    const onInputKeyup = (event) => {
       emit('update:modelValue', event.target.value);
       if (props.hideAfterInput > 0 && event.target.value.length >= props.hideAfterInput) {
         isVisible.value = false;
-      } else {
-        await nextTick();
-        isVisible.value = isFilteredOptionsEmpty.value ? false : true;
+      }
+
+      if (props.remote && typeof debouncedHandleQuery === 'function') {
+        remoteLoading.value = true;
+        debouncedHandleQuery();
       }
     };
 
@@ -244,8 +295,11 @@ export default defineComponent({
     });
 
     return {
+      dropdownRef,
       isVisible,
-      inputValue,
+      isLoading,
+      isFocus,
+
       suggestionRef,
       dropdownOptions,
       resetInputValue,
@@ -254,7 +308,6 @@ export default defineComponent({
       hideDropdown,
       toggleDropdown,
       onInputKeyup,
-      handleFilteredLengthChanged,
       handleSelected,
     };
   },

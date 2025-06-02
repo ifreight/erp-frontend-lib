@@ -5,7 +5,6 @@
       v-model="input1"
       input-id="Text1"
       name="text"
-      label="Input Text"
       class="tw:flex-1 tw:mb-2"
       clearable
       placeholder="max 3"
@@ -15,7 +14,6 @@
       v-model="input2"
       input-id="Text2"
       name="text"
-      label="Input Text"
       class="tw:flex-1 tw:mb-2"
       :invalid="true"
       errorMessage="Error Message"
@@ -25,7 +23,6 @@
       v-model="input3"
       input-id="Text3"
       name="text"
-      label="Input Text"
       class="tw:flex-1 tw:mb-2"
       :disabled="true"
       placeholder="disabled placholder"
@@ -35,7 +32,6 @@
       v-model="input4"
       input-id="Text4"
       name="text"
-      label="Input Text"
       class="tw:flex-1 tw:mb-2"
       clearable
       :maxlength="3"
@@ -49,7 +45,6 @@
       v-model="input5"
       input-id="Text5"
       name="text"
-      label="Input Text"
       class="tw:flex-1 tw:mb-2"
       clearable
       type="password"
@@ -60,7 +55,6 @@
       v-model="input6"
       input-id="Text6"
       name="text"
-      label="Input Number"
       class="tw:flex-1 tw:mb-2"
       clearable
       mask="decimal"
@@ -70,7 +64,6 @@
       v-model="input7"
       input-id="Text7"
       name="text"
-      label="Input Number"
       class="tw:flex-1 tw:mb-2"
       clearable
       mask="number"
@@ -81,7 +74,6 @@
       v-model="input8"
       input-id="Text8"
       name="text"
-      label="Input Number"
       class="tw:flex-1 tw:mb-2"
       size="sm"
       clearable
@@ -119,9 +111,9 @@ export default {
       input6,
       input7,
       input8,
-    }
+    };
   },
-}
+};
 </script>
 
 <style>

@@ -49,6 +49,7 @@
         :borderless="!isNormalSelectMode"
         :relative-box="!isNormalSelectMode"
         :padding="isNormalSelectMode ? 'base' : 'none'"
+        :width="dropdownWidth"
         @selectedValue="handleSelected"
       >
         <template v-if="!remote" #header>
@@ -214,7 +215,7 @@ export default defineComponent({
     },
     dropdownWidth: {
       type: String,
-      default: undefined,
+      default: '100%',
     },
     isNormalSelectMode: {
       type: Boolean,

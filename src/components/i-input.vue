@@ -67,10 +67,6 @@ export default {
       type: String,
       required: true,
     },
-    label: {
-      type: String,
-      default: '',
-    },
     type: {
       type: String,
       default: 'text',

@@ -64,10 +64,6 @@ export default {
       type: String,
       required: true,
     },
-    label: {
-      type: String,
-      default: '',
-    },
     disabled: {
       type: Boolean,
       default: false,
