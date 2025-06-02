@@ -68,23 +68,31 @@
                 {{ selectedOptionValue.length }} dipilih
               </div>
               <span class="tw:text-gray-900 tw:mx-1">•</span>
-              <i-button text size="xs" class="btn-clear" @click="clearSelection">
+              <i-button
+                text
+                size="xs"
+                class="btn-clear"
+                :disabled="selectedOptionValue.length < 1"
+                @click="clearSelection"
+              >
                 Kosongkan
               </i-button>
             </div>
           </div>
         </template>
         <template #optionsPrepend="{ option }">
-          <i-checkbox
-            :modelValue="listValue(option)"
-            :name="`list-${option.id}`"
-            :checkbox-rounded="checkboxRounded"
-            :checkbox-border-color="checkboxBorderColor"
-            size="lg"
-            light="light"
-            class="tw:pl-[9px]"
-            @update:modelValue="(checked) => handleCheckboxChange(option, checked)"
-          />
+          <div class="tw:relative tw:w-5 tw:h-5 tw:ml-[9px] tw:mr-3">
+            <i-checkbox
+              :modelValue="listValue(option)"
+              :name="`list-${option.id}`"
+              :checkbox-rounded="checkboxRounded"
+              :checkbox-border-color="checkboxBorderColor"
+              size="lg"
+              light="light"
+              class="tw:h-full"
+            />
+            <div class="tw:absolute tw:z-2 tw:w-full tw:h-full tw:top-0"></div>
+          </div>
         </template>
         <template #optionsPlaceholder>
           <div class="tw:px-2">
@@ -319,6 +327,7 @@ export default defineComponent({
 
       emit('update:modelValue', [...inputValue.value]);
       emit('update:valueOption', [...selectedOption.value]);
+
       emit('change', [...selectedOption.value]);
     };
 
@@ -328,6 +337,7 @@ export default defineComponent({
       modelCheckAll.value = false;
       emit('update:modelValue', []);
       emit('update:valueOption', []);
+
       emit('change', []);
     };
 
@@ -340,30 +350,6 @@ export default defineComponent({
         selectedOption.value.splice(index, 1);
       } else {
         selectedOption.value.push(option);
-      }
-
-      inputValue.value = selectedOption.value.map((opt) => opt[props.optionKey]);
-
-      const rawOptions = props.remote ? remoteOptions.value : props.options;
-      const allOptions = normalizeOptions(rawOptions);
-      const allOptionIds = allOptions.map((opt) => opt[props.optionKey]);
-
-      modelCheckAll.value = allOptionIds.every((id) => inputValue.value.includes(id));
-
-      emit('update:modelValue', [...inputValue.value]);
-      emit('update:valueOption', [...selectedOption.value]);
-      emit('change', [...selectedOption.value]);
-    };
-
-    const handleCheckboxChange = (option, checked) => {
-      const index = selectedOption.value.findIndex(
-        (item) => item[props.optionKey] === option[props.optionKey],
-      );
-
-      if (checked && index === -1) {
-        selectedOption.value.push(option);
-      } else if (!checked && index >= 0) {
-        selectedOption.value.splice(index, 1);
       }
 
       inputValue.value = selectedOption.value.map((opt) => opt[props.optionKey]);
@@ -538,7 +524,6 @@ export default defineComponent({
       allOptionIds,
       handleQuery,
       handleSelected,
-      handleCheckboxChange,
       normalizeOptions,
       toggleSelectAll,
       clearSelection,
@@ -562,7 +547,7 @@ export default defineComponent({
     @apply tw:relative;
 
     &.fixed-options-select {
-      @apply tw:border tw:border-gray-500 tw:rounded-lg tw:pt-2 tw:pb-2;
+      @apply tw:pt-2 tw:pb-2;
 
       .i-select-container {
         @apply tw:px-2;

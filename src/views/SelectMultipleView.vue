@@ -8,26 +8,28 @@
         <div class="tw:mb-4 tw:w-[275px]">
           <span class="tw:text-red-600 tw:text-xs">v-model: {{ select10 }}</span>
           <div class="tw:text-xs">selectedOptions: {{ selectedOptions10 }}</div>
-
-          <i-select-multiple
-            v-model="select10"
-            v-model:value-option="selectedOptions10"
-            input-id="Select-10"
-            name="select-10"
-            label="Select"
-            size="sm"
-            rounded="lg"
-            checkbox-color="gray-500"
-            placeholder="Cari..."
-            dropdown-max-height="128px"
-            :options="selectStaticOptions"
-            :filterable="true"
-            :multiple="true"
-            :showInputArrow="false"
-            noDataText="Custom no data text"
-          >
-            <template #prepend><ic-search class="tw:text-gray-700" /></template>
-          </i-select-multiple>
+          <div class="tw:border tw:rounded-md">
+            <i-select-multiple
+              v-model="select10"
+              v-model:value-option="selectedOptions10"
+              input-id="Select-10"
+              name="select-10"
+              label="Select"
+              size="sm"
+              rounded="lg"
+              checkbox-color="gray-500"
+              placeholder="Cari..."
+              dropdown-max-height="128px"
+              :options="selectStaticOptions"
+              :filterable="true"
+              :multiple="true"
+              :showInputArrow="false"
+              noDataText="Custom no data text"
+              @change="changeHandler"
+            >
+              <template #prepend><ic-search class="tw:text-gray-700" /></template>
+            </i-select-multiple>
+          </div>
         </div>
 
         <div>Multiple When Clicked</div>
@@ -36,7 +38,7 @@
           <div class="tw:text-xs">selectedOptions: {{ selectedOptions11 }}</div>
 
           <i-button @click="dropdownVisible3 = !dropdownVisible3">Click Me</i-button>
-          <i-dropdown :visible="dropdownVisible3" :isShowArrow="false">
+          <i-dropdown :visible="dropdownVisible3" :isShowArrow="false" rounded="lg">
             <i-select-multiple
               v-model="select11"
               v-model:value-option="selectedOptions11"
@@ -220,6 +222,10 @@ export default {
       });
     };
 
+    const changeHandler = (e) => {
+      alert('handle change', e);
+    };
+
     return {
       select10,
       select11,
@@ -235,6 +241,7 @@ export default {
       selectStaticOptions,
       selectStaticOptions2,
       dropdownVisible3,
+      changeHandler,
     };
   },
 };

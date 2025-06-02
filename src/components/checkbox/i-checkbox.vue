@@ -16,7 +16,7 @@
     <ic-dash v-if="indeterminate" class="i-checkbox-dash-icon" :class="checkboxInputClass" />
 
     <slot>
-      <span :class="spanClass">
+      <span v-if="label" :class="spanClass">
         {{ label }}
       </span>
     </slot>
