@@ -1,5 +1,4 @@
 <template>
-  <div class="tw:hidden"><slot></slot></div>
   <table class="i-table">
     <thead>
       <tr>
@@ -69,6 +68,7 @@ export default {
 
 .i-table {
   @apply tw:w-full tw:border-separate tw:border-spacing-0 tw:border tw:border-(--gray-500) tw:rounded-[8px];
+  table-layout: fixed;
 
   tbody tr:hover,
   tbody tr:has(> td .selected) {
@@ -78,6 +78,7 @@ export default {
   thead tr th,
   tbody tr td {
     @apply tw:border-b tw:border-b-(--gray-500) tw:py-3 tw:px-2.5;
+    word-wrap: break-word;
   }
 
   thead tr th {
