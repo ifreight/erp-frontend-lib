@@ -7648,7 +7648,7 @@ const h0 = /* @__PURE__ */ c(xt, [["render", It]]), St = {
     },
     errorMessage: {
       type: String,
-      default: "Invalid phone number"
+      default: ""
     }
   },
   emits: ["update:modelValue", "update:valid", "clear"],

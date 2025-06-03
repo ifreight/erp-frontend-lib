@@ -120,7 +120,7 @@ export default {
     },
     errorMessage: {
       type: String,
-      default: 'Invalid phone number',
+      default: '',
     },
   },
   emits: ['update:modelValue', 'update:valid', 'clear'],
