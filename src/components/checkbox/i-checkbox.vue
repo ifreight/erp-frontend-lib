@@ -140,16 +140,12 @@ export default {
       const classes = ref([]);
 
       if (props.size == 'base') {
-        classes.value.push({
+        classes.value.push('tw:ml-2.5', {
           'tw:text-gray-700': props.disabled,
-          'tw:ml-2.5': props.indeterminate,
-          'tw:ml-6': !props.indeterminate,
         });
       } else {
-        classes.value.push({
+        classes.value.push('tw:ml-3', {
           'tw:text-gray-700': props.disabled,
-          'tw:ml-3': props.indeterminate,
-          'tw:ml-8': !props.indeterminate,
         });
       }
 
@@ -218,7 +214,7 @@ export default {
   @apply tw:flex tw:items-center tw:relative tw:cursor-pointer tw:m-0 tw:z-1;
 
   .i-checkbox-dash-icon {
-    @apply tw:opacity-100 tw:bg-gray-900 tw:text-white tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5;
+    @apply tw:opacity-100 tw:bg-gray-900 tw:text-white tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5 tw:absolute;
 
     &.disabled {
       @apply tw:bg-gray-700;
@@ -238,7 +234,7 @@ export default {
   }
 
   .i-checkbox-input {
-    @apply tw:border tw:border-gray-900 tw:rounded-xs tw:w-3.5 tw:h-3.5 tw:absolute;
+    @apply tw:border tw:border-gray-900 tw:rounded-xs tw:w-3.5 tw:h-3.5;
 
     &.rounded-sm {
       @apply tw:rounded-sm;

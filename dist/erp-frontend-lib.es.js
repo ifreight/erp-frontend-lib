@@ -3160,14 +3160,10 @@ const h8 = /* @__PURE__ */ c(u8, [["render", f8]]), p8 = {
       return t.size !== "base" && f.value.push(`${t.size}`), t.light && f.value.push("light"), f.value;
     }), s = b(() => {
       const f = H([]);
-      return t.size == "base" ? f.value.push({
-        "tw:text-gray-700": t.disabled,
-        "tw:ml-2.5": t.indeterminate,
-        "tw:ml-6": !t.indeterminate
-      }) : f.value.push({
-        "tw:text-gray-700": t.disabled,
-        "tw:ml-3": t.indeterminate,
-        "tw:ml-8": !t.indeterminate
+      return t.size == "base" ? f.value.push("tw:ml-2.5", {
+        "tw:text-gray-700": t.disabled
+      }) : f.value.push("tw:ml-3", {
+        "tw:text-gray-700": t.disabled
       }), f.value;
     });
     return N(

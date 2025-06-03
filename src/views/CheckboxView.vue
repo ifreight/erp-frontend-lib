@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="tw:mb-12">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">No label</div>
+      <div class="tw:flex tw:gap-6 tw:mt-6">
+        <i-checkbox v-model="modelOne" @change="modelOneChangeHandler" name="modelOneNormal" />
+      </div>
+    </div>
     <!-- Normal Checkbox -->
     <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Normal Checkbox</div>
@@ -10,11 +16,7 @@
           name="modelOneNormal"
           label="Pilih opsi A"
         />
-        <i-checkbox
-          v-model="modelTwo"
-          name="modelTwoNormal"
-          label="Pilih opsi B"
-        />
+        <i-checkbox v-model="modelTwo" name="modelTwoNormal" label="Pilih opsi B" />
       </div>
     </div>
 
@@ -41,12 +43,7 @@
     <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Invalid Checkbox</div>
       <div class="tw:flex tw:gap-6 tw:mt-6">
-        <i-checkbox
-          v-model="modelInvalid"
-          invalid
-          name="modelInvalid"
-          label="Klik me"
-        />
+        <i-checkbox v-model="modelInvalid" invalid name="modelInvalid" label="Klik me" />
       </div>
     </div>
 
@@ -63,17 +60,14 @@
           @change="changeCheckAllHandler"
         />
         <!-- checkbox group is required -->
-        <i-checkbox-group
-          v-model="checkedList"
-          @change="changeCheckedHandler"
-        >
+        <i-checkbox-group v-model="checkedList" @change="changeCheckedHandler">
           <!-- use model-label instead (string) -->
           <i-checkbox
             v-for="(checkOpt, index) in checkboxOptions"
             :key="index"
             :model-label="checkOpt"
             :name="checkOpt"
-            :label="`Check ${index+1}`"
+            :label="`Check ${index + 1}`"
           />
         </i-checkbox-group>
       </div>
@@ -83,11 +77,7 @@
     <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Style Checkbox</div>
       <div class="tw:flex tw:gap-16 tw:mt-6">
-        <i-checkbox
-          v-model="modelStyleA"
-          name="modelStyleA"
-          label="Dark and default size"
-        />
+        <i-checkbox v-model="modelStyleA" name="modelStyleA" label="Dark and default size" />
         <i-checkbox
           v-model="modelStyleB"
           light
@@ -115,7 +105,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue';
 
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import ICheckboxGroup from '@/components/checkbox/i-checkbox-group.vue';
@@ -123,45 +113,46 @@ import ICheckboxGroup from '@/components/checkbox/i-checkbox-group.vue';
 export default {
   components: {
     ICheckbox,
-    ICheckboxGroup
+    ICheckboxGroup,
   },
   setup() {
-    const modelOne = ref(true)
-    const modelTwo = ref(false)
+    const modelOne = ref(true);
+    const modelTwo = ref(false);
     const modelOneChangeDummy = ref();
 
-    const modelOneDisabled = ref(true)
-    const modelTwoDisabled = ref(false)
+    const modelOneDisabled = ref(true);
+    const modelTwoDisabled = ref(false);
 
-    const modelInvalid = ref(false)
+    const modelInvalid = ref(false);
 
-    const modelCheckAll = ref(false)
-    const isIndeterminate = ref(false)
-    const checkboxOptions = computed(() => ['modelCheck1', 'modelCheck2'])
-    const checkedList = ref(['modelCheck1'])
+    const modelCheckAll = ref(false);
+    const isIndeterminate = ref(false);
+    const checkboxOptions = computed(() => ['modelCheck1', 'modelCheck2']);
+    const checkedList = ref(['modelCheck1']);
 
-    const modelStyleA = ref(true)
-    const modelStyleB = ref(true)
-    const modelStyleC = ref(true)
-    const modelStyleD = ref(true)
+    const modelStyleA = ref(true);
+    const modelStyleB = ref(true);
+    const modelStyleC = ref(true);
+    const modelStyleD = ref(true);
 
     const changeCheckAllHandler = () => {
-      checkedList.value = modelCheckAll.value ? checkboxOptions.value : []
-      isIndeterminate.value = false
-    }
+      checkedList.value = modelCheckAll.value ? checkboxOptions.value : [];
+      isIndeterminate.value = false;
+    };
 
-    const changeCheckedHandler = () => { // return name and checked list
-      const checkedCount = checkedList.value.length
-      modelCheckAll.value = checkedCount === checkboxOptions.value.length
-      isIndeterminate.value = checkedCount > 0 && checkedCount < checkboxOptions.value.length
-    }
+    const changeCheckedHandler = () => {
+      // return name and checked list
+      const checkedCount = checkedList.value.length;
+      modelCheckAll.value = checkedCount === checkboxOptions.value.length;
+      isIndeterminate.value = checkedCount > 0 && checkedCount < checkboxOptions.value.length;
+    };
 
     onMounted(() => {
-      changeCheckedHandler()
-    })
+      changeCheckedHandler();
+    });
     const modelOneChangeHandler = (event, val) => {
       modelOneChangeDummy.value = val;
-    }
+    };
     return {
       modelOne,
       modelTwo,
@@ -178,8 +169,8 @@ export default {
       checkedList,
       changeCheckAllHandler,
       changeCheckedHandler,
-      modelOneChangeHandler
-    }
-  }
-}
+      modelOneChangeHandler,
+    };
+  },
+};
 </script>
