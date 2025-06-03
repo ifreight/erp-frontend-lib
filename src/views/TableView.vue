@@ -98,7 +98,8 @@ export default {
         id: 2,
         firstName: 'Addison',
         lastName: 'Bradneck',
-        email: 'abradneck1@deliciousdays.com',
+        email:
+          'abradneck1@deliciousdays.comabradneck1@deliciousdays.comabradneck1@deliciousdays.comabradneck1@deliciousdays.comabradneck1@deliciousdays.comabradneck1@deliciousdays.comabradneck1@deliciousdays.comabradneck1@deliciousdays.comabradneck1@deliciousdays.com',
         gender: 'Male',
         ipAddress: '175.123.105.192',
         isChecked: false,
