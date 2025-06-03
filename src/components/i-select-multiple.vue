@@ -108,7 +108,7 @@
         </template>
       </i-dropdown-options>
     </div>
-    <div v-if="!!errorMessage" class="i-select-multiple-error">
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
@@ -597,13 +597,6 @@ export default defineComponent({
       padding: 4px;
       cursor: pointer;
     }
-  }
-
-  .i-select-multiple-error {
-    padding-top: 8px;
-    font-size: var(--size-xs);
-    line-height: var(--size-sm);
-    color: var(--red-300);
   }
 }
 </style>

@@ -40,7 +40,7 @@
         {{ textLength }}/{{ maxTextLength }}
       </span>
     </div>
-    <div v-if="!!errorMessage" class="i-input-error">
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
@@ -191,36 +191,37 @@ export default {
       font-size: var(--size-xs);
       color: var(--gray-400);
     }
-  }
 
-  .i-input-error {
-    @apply tw:mt-2 tw:text-xs tw:text-red-300;
-  }
-  .textarea {
-    @apply tw:w-full tw:h-[90px] tw:p-0 tw:text-sm tw:text-gray-900 tw:text-ellipsis tw:resize-none tw:border-none;
-
-    &:focus-visible,
-    &:focus {
-      outline: none;
+    &:focus-within {
+      @apply tw:border-gray-700;
     }
 
-    &::placeholder {
-      @apply tw:text-gray-700;
-      opacity: 1; /* Firefox */
-    }
+    .textarea {
+      @apply tw:w-full tw:h-[90px] tw:p-0 tw:text-sm tw:text-gray-900 tw:text-ellipsis tw:resize-none tw:border-none;
 
-    &:-webkit-input-placeholder {
-      /* Internet Explorer 10-11 */
-      @apply tw:text-gray-700;
-    }
+      &:focus-visible,
+      &:focus {
+        outline: none;
+      }
 
-    &::-webkit-input-placeholder {
-      /* Microsoft Edge */
-      @apply tw:text-gray-700;
-    }
+      &::placeholder {
+        @apply tw:text-gray-700;
+        opacity: 1; /* Firefox */
+      }
 
-    &:disabled {
-      @apply tw:text-gray-600 tw:bg-transparent;
+      &:-webkit-input-placeholder {
+        /* Internet Explorer 10-11 */
+        @apply tw:text-gray-700;
+      }
+
+      &::-webkit-input-placeholder {
+        /* Microsoft Edge */
+        @apply tw:text-gray-700;
+      }
+
+      &:disabled {
+        @apply tw:text-gray-600 tw:bg-transparent;
+      }
     }
   }
 }

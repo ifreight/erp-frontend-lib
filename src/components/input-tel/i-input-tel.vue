@@ -1,9 +1,6 @@
 <template>
   <div class="i-input-tel-wrapper">
-    <div
-      class="i-input-tel"
-      :class="classes"
-    >
+    <div class="i-input-tel" :class="classes">
       <div
         ref="selectCountry"
         class="i-input-tel-country-wrapper"
@@ -25,14 +22,8 @@
             </div>
 
             <div>
-              <ic-chevron-up
-                v-if="countryDropdownOpen"
-                class="tw:text-gray-700"
-              />
-              <ic-chevron-down
-                v-else
-                class="tw:text-gray-700"
-              />
+              <ic-chevron-up v-if="countryDropdownOpen" class="tw:text-gray-700" />
+              <ic-chevron-down v-else class="tw:text-gray-700" />
             </div>
           </div>
         </div>
@@ -65,37 +56,21 @@
           :read-only="readOnly"
           @validate="onValidate"
         />
-        <div
-          v-if="clearable && (!disabled || !readOnly)"
-          v-show="filled"
-          class="append-container"
-        >
-          <ic-times-circle
-            class="icon-clear"
-            @click.once="onClear"
-          />
+        <div v-if="clearable && (!disabled || !readOnly)" v-show="filled" class="append-container">
+          <ic-times-circle class="icon-clear" @click.once="onClear" />
         </div>
       </div>
     </div>
-    <div
-      v-if="invalid"
-      class="i-input-tel-error"
-    >
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
 </template>
 
 <script>
-import {
-  computed,
-  nextTick,
-  onMounted,
-  ref,
-  watch,
-} from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
-import InputTel from './index.js'
+import InputTel from './index.js';
 import IcChevronUp from '@/icons/ic-chevron-up.vue';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
 import IcTimesCircle from '@/icons/ic-times-circle.vue';
@@ -157,7 +132,9 @@ export default {
     const countryList = ref([]);
 
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
-    const activeCountry = computed(() => countryList.value.find((country) => country.countryCode === countryCode.value));
+    const activeCountry = computed(() =>
+      countryList.value.find((country) => country.countryCode === countryCode.value),
+    );
     const activeCountryFlagClass = computed(() => {
       if (!activeCountry.value) {
         return '';
@@ -170,15 +147,18 @@ export default {
         readonly: props.readOnly,
         invalid: props.invalid,
         filled: props.filled,
-      }
+      };
     });
-    watch(() => phone.value, (val) => {
-      if (val !== props.modelValue) {
-        emit('update:modelValue', val);
-      }
-    });
+    watch(
+      () => phone.value,
+      (val) => {
+        if (val !== props.modelValue) {
+          emit('update:modelValue', val);
+        }
+      },
+    );
 
-    const onClear = (() => {
+    const onClear = () => {
       let clearedValue;
       if (typeof props.modelValue === 'string') {
         clearedValue = '';
@@ -186,34 +166,34 @@ export default {
       phone.value = clearedValue;
       emit('update:modelValue', clearedValue);
       emit('clear');
-    });
+    };
 
-    const getCountryList = (async () => {
+    const getCountryList = async () => {
       countryList.value = await InputTel.store.getCountryList();
-    });
+    };
 
-    const onValidate = ((value) => {
+    const onValidate = (value) => {
       emit('update:valid', value);
-    });
+    };
 
-    const onSelectCountry = ((country) => {
+    const onSelectCountry = (country) => {
       countryCode.value = country.countryCode;
       selectCountry.value.blur();
-    });
+    };
 
-    const toggleCountryDropdown = (() => {
+    const toggleCountryDropdown = () => {
       if (props.disabled || props.readOnly) {
         return;
       }
       countryDropdownOpen.value = !countryDropdownOpen.value;
-    });
-    const closeCountryDropdown = (async () => {
+    };
+    const closeCountryDropdown = async () => {
       if (!countryDropdownOpen.value) {
         return;
       }
       await nextTick();
       countryDropdownOpen.value = false;
-    });
+    };
 
     onMounted(() => {
       countryCode.value = props.defaultCountryCode;
@@ -240,7 +220,7 @@ export default {
       onSelectCountry,
       toggleCountryDropdown,
       closeCountryDropdown,
-    }
+    };
   },
 };
 </script>
@@ -321,14 +301,15 @@ export default {
     &.invalid {
       border-color: var(--red-300);
     }
+    &:focus-within {
+      border-color: var(--gray-700);
+
+      .i-input-tel-country {
+        border-color: var(--gray-700);
+      }
+    }
   }
 
-  .i-input-tel-error {
-    padding-top: 8px;
-    font-size: var(--size-xs);
-    line-height: var(--size-sm);
-    color: var(--red-300);
-  }
   .i-input-tel-country-icon {
     @apply tw:flex tw:items-center tw:overflow-hidden;
     margin-right: 4px;

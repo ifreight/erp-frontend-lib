@@ -12,26 +12,21 @@
             class="tw:w-1/2"
           />
 
-          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
+          <div class="tw:border-l tw:border-gray-500 tw:h-8" />
+          <!-- add divider itself -->
 
-          <i-input
-            borderless
-            name="text"
-            placeholder="Search..."
-            class="tw:w-1/2"
-          />
+          <i-input borderless name="text" placeholder="Search..." class="tw:w-1/2" />
         </i-multiple-input>
       </div>
     </div>
 
     <!-- Input text + Input text without divider and filled -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Input text + Input text without divider and filled</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">
+        Input text + Input text without divider and filled
+      </div>
       <div class="tw:mt-6">
-        <i-multiple-input
-          :filled="!!modelInputOne"
-          class="tw:w-[650px]"
-        >
+        <i-multiple-input :filled="!!modelInputOne" class="tw:w-[650px]">
           <i-input
             borderless
             name="text"
@@ -54,45 +49,31 @@
 
     <!-- Radio + Input text with divider and disabled (only style) -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Radio + Input text with divider and disabled (only style)</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">
+        Radio + Input text with divider and disabled (only style)
+      </div>
       <div class="tw:mt-6">
-        <i-multiple-input
-          disabled
-          class="tw:w-[400px]"
-        >
+        <i-multiple-input disabled class="tw:w-[400px]">
           <div class="tw:w-1/2">
-            <i-radio
-              v-model="modelRadio"
-              :label-value="false"
-              name="modelRadio"
-            >
-              No
-            </i-radio>
-            <i-radio
-              v-model="modelRadio"
-              :label-value="true"
-              name="modelRadio"
-              class="tw:ml-3"
-            >
+            <i-radio v-model="modelRadio" :label-value="false" name="modelRadio"> No </i-radio>
+            <i-radio v-model="modelRadio" :label-value="true" name="modelRadio" class="tw:ml-3">
               Yes
             </i-radio>
           </div>
 
-          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
+          <div class="tw:border-l tw:border-gray-500 tw:h-8" />
+          <!-- add divider itself -->
 
-          <i-input
-            borderless
-            name="text"
-            placeholder="Search..."
-            class="tw:w-1/2"
-          />
+          <i-input borderless name="text" placeholder="Search..." class="tw:w-1/2" />
         </i-multiple-input>
       </div>
     </div>
 
     <!-- Input text + Button with divider and invalid -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Input text + Button with divider and invalid</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">
+        Input text + Button with divider and invalid
+      </div>
       <div class="tw:mt-6">
         <i-multiple-input
           :invalid="modelInputTwo === ''"
@@ -107,15 +88,11 @@
             class="tw:w-1/2"
           />
 
-          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
+          <div class="tw:border-l tw:border-gray-500 tw:h-8" />
+          <!-- add divider itself -->
 
           <div class="tw:w-1/2 tw:flex tw:justify-center">
-            <i-button
-              class="tw:w-[150px]"
-              @click="clickHandler"
-            >
-              Clear search text!
-            </i-button>
+            <i-button class="tw:w-[150px]" @click="clickHandler"> Clear search text! </i-button>
           </div>
         </i-multiple-input>
       </div>
@@ -123,49 +100,45 @@
 
     <!-- Dropdown + Input text + Input text with divider (more than 2 component) -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Dropdown + Input text + Input text with divider (more than 2 component)</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">
+        Dropdown + Input text + Input text with divider (more than 2 component) + focused slotProps
+      </div>
       <div class="tw:mt-6">
         <i-multiple-input>
-          <i-button
-            text
-            class="tw:w-1/3"
-            @click="modelDropdown = !modelDropdown"
-          >
-            Show dropdown!
-          </i-button>
-          <i-dropdown :visible="modelDropdown">
-            <div>
-              halo 1
-            </div>
-            <div>
-              halo 2
-            </div>
-          </i-dropdown>
+          <template #default="{ focused }">
+            <i-button text class="tw:w-1/3" @click="modelDropdown = !modelDropdown">
+              Show dropdown!
+            </i-button>
+            <i-dropdown :visible="modelDropdown">
+              <div>halo 1</div>
+              <div>halo 2</div>
+            </i-dropdown>
 
-          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
+            <div
+              class="tw:border-l tw:border-gray-500 tw:h-8"
+              :class="{ 'tw:border-gray-700': focused }"
+            />
+            <!-- add divider itself -->
 
-          <i-input
-            borderless
-            name="text"
-            placeholder="Search..."
-            class="tw:w-1/3"
-          />
+            <i-input borderless name="text" placeholder="Search..." class="tw:w-1/3" />
 
-          <div class="tw:border-l tw:border-gray-500 tw:h-8" /> <!-- add divider itself -->
+            <div
+              class="tw:border-l tw:border-gray-500 tw:h-8"
+              :class="{ 'tw:border-gray-700': focused }"
+            />
+            <!-- add divider itself -->
 
-          <i-input
-            borderless
-            name="text"
-            placeholder="Search..."
-            class="tw:w-1/3"
-          />
+            <i-input borderless name="text" placeholder="Search..." class="tw:w-1/3" />
+          </template>
         </i-multiple-input>
       </div>
     </div>
 
     <!-- Select + Input text without divider -->
     <div class="tw:mb-12">
-      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Select + Input text without divider</div>
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">
+        Select + Input text without divider
+      </div>
       <div class="tw:mt-6">
         <i-multiple-input>
           <i-select
@@ -179,12 +152,7 @@
             class="tw:w-1/4"
           />
 
-          <i-input
-            borderless
-            name="text"
-            placeholder="Search..."
-            class="tw:w-3/4"
-          >
+          <i-input borderless name="text" placeholder="Search..." class="tw:w-3/4">
             <template #prepend><ic-search class="tw:text-gray-700" /></template>
           </i-input>
         </i-multiple-input>
@@ -215,21 +183,21 @@ export default {
     IMultipleInput,
     IRadio,
     ISelect,
-    IcSearch
+    IcSearch,
   },
   setup() {
-    const modelCheck = ref(false)
-    const modelInputOne = ref('this input have a icon at the left side')
-    const modelRadio = ref(false)
-    const modelInputTwo = ref('')
+    const modelCheck = ref(false);
+    const modelInputOne = ref('this input have a icon at the left side');
+    const modelRadio = ref(false);
+    const modelInputTwo = ref('');
     const modelDropdown = ref(false);
-    const modelSelect = ref('America')
+    const modelSelect = ref('America');
 
-    const selectOptions = computed(() => ['Asia', 'America', 'Europe', 'Others'])
+    const selectOptions = computed(() => ['Asia', 'America', 'Europe', 'Others']);
 
     const clickHandler = () => {
-      modelInputTwo.value = ''
-    }
+      modelInputTwo.value = '';
+    };
 
     return {
       modelCheck,
@@ -239,8 +207,8 @@ export default {
       modelDropdown,
       modelSelect,
       selectOptions,
-      clickHandler
-    }
-  }
-}
+      clickHandler,
+    };
+  },
+};
 </script>

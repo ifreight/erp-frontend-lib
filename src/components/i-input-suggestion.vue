@@ -51,7 +51,7 @@
         </template>
       </i-dropdown-options>
     </div>
-    <div v-if="!!errorMessage" class="i-suggestion-error">
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
@@ -349,12 +349,6 @@ export default defineComponent({
         border: none;
       }
     }
-  }
-  .i-suggestion-error {
-    padding-top: 8px;
-    font-size: var(--size-xs);
-    line-height: var(--size-sm);
-    color: var(--red-300);
   }
 }
 </style>

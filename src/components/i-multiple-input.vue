@@ -1,34 +1,29 @@
 <template>
-  <div class="i-multiple-input">
-    <div
-      class="i-multiple-input-content"
-      :class="multipleInputContentClasses"
-    >
-      <slot />
+  <div ref="wrapperRef" class="i-multiple-input">
+    <div class="i-multiple-input-content" :class="multipleInputContentClasses">
+      <slot :focused="focused" />
     </div>
 
-    <div
-      v-if="!!errorMessage"
-      class="i-multiple-input-error"
-    >
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref } from 'vue';
+import { useFocusWithin } from '@vueuse/core';
 
 export default {
   name: 'IMultipleInput',
   props: {
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     invalid: {
       type: Boolean,
-      default: false
+      default: false,
     },
     filled: {
       type: Boolean,
@@ -36,33 +31,38 @@ export default {
     },
     errorMessage: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   setup(props) {
+    const wrapperRef = ref();
+    const { focused } = useFocusWithin(wrapperRef);
+
     const multipleInputContentClasses = computed(() => {
-      const classes = ref([])
+      const classes = ref([]);
 
       if (props.filled) {
-        classes.value.push('filled')
+        classes.value.push('filled');
       }
 
       if (props.disabled) {
-        classes.value.push('disabled')
+        classes.value.push('disabled');
       }
 
       if (props.invalid) {
-        classes.value.push('invalid')
+        classes.value.push('invalid');
       }
 
-      return classes.value
-    })
+      return classes.value;
+    });
 
     return {
-      multipleInputContentClasses
-    }
-  }
-}
+      focused,
+      multipleInputContentClasses,
+      wrapperRef,
+    };
+  },
+};
 </script>
 
 <style>
@@ -76,13 +76,11 @@ export default {
       @apply tw:bg-gray-300;
     }
 
-    &:focus-within,
-    &.filled {
-      @apply tw:border-gray-900;
+    &:focus-within {
+      @apply tw:border-gray-700;
     }
 
-    &.invalid,
-    &.invalid.filled {
+    &.invalid {
       @apply tw:border-red-300;
     }
 
@@ -101,10 +99,6 @@ export default {
         }
       }
     }
-  }
-
-  .i-multiple-input-error {
-    @apply tw:pt-2 tw:text-xs tw:leading-3.5 tw:text-red-300;
   }
 }
 </style>

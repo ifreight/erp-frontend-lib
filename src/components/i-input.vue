@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <div v-if="!!errorMessage" class="i-input-error">
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
@@ -397,7 +397,7 @@ export default {
     }
 
     &:focus-within {
-      border-color: var(--gray-900);
+      border-color: var(--gray-700);
     }
 
     &.disabled {
@@ -449,13 +449,6 @@ export default {
         height: 32px;
       }
     }
-  }
-
-  .i-input-error {
-    padding-top: 8px;
-    font-size: var(--size-xs);
-    line-height: var(--size-sm);
-    color: var(--red-300);
   }
 }
 </style>

@@ -51,3 +51,10 @@
   --text-8xl: 3rem; /* 48px */
   --text-9xl: 3.25rem; /* 52px */
 }
+
+.i-error-message {
+  padding-top: 6px;
+  font-size: var(--size-xs);
+  line-height: var(--size-sm);
+  color: var(--red-300);
+}
