@@ -1,15 +1,7 @@
 <template>
   <transition name="i-dialog-fade">
-    <div
-      v-show="show"
-      class="i-dialog-wrapper"
-      @click.self="handleClickSelf"
-    >
-      <transition
-        name="i-dialog-slide"
-        @after-enter="$emit('opened')"
-        @after-leave="afterLeave"
-      >
+    <div v-show="show" class="i-dialog-wrapper" @click.self="handleClickSelf">
+      <transition name="i-dialog-slide" @after-enter="$emit('opened')" @after-leave="afterLeave">
         <div
           v-show="show"
           :key="key"
@@ -19,25 +11,15 @@
           :class="['i-dialog', { 'show-header': showHeader }]"
           :style="dialogStyle"
         >
-          <div
-            v-if="showHeader"
-            class="i-dialog-header"
-          >
+          <div v-if="showHeader" class="i-dialog-header">
             <slot name="header" />
           </div>
 
-          <button
-            v-if="showClose"
-            class="i-dialog-close"
-            @click="handleClose"
-          >
+          <button v-if="showClose" class="i-dialog-close" @click="handleClose">
             <ic-times />
           </button>
 
-          <div
-            class="i-dialog-body"
-            :class="bodyClasses"
-          >
+          <div class="i-dialog-body" :class="bodyClasses">
             <slot />
           </div>
         </div>
@@ -64,6 +46,7 @@ export default {
     destroyOnClose: Boolean,
     ignoreClickOutside: { type: Boolean, default: false },
   },
+  emits: ['update:show', 'close', 'closed', 'open'],
   setup(props, { emit }) {
     const key = ref(0);
     const dialogElement = ref(null);
@@ -100,9 +83,12 @@ export default {
       }
     };
 
-    watch(() => props.show, (val) => {
-      if (val) open();
-    });
+    watch(
+      () => props.show,
+      (val) => {
+        if (val) open();
+      },
+    );
 
     onMounted(() => {
       if (props.show) open();

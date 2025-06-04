@@ -71,6 +71,14 @@ export default defineConfig({
         postcssCustomProperties({
           preserve: false, // Set to false to replace variables with their values
         }),
+        {
+          postcssPlugin: 'fix-tailwind-color-mix',
+          Declaration(decl) {
+            if (decl.value.includes('color-mix') && /#[0-9a-fA-F]{6}\d+%/.test(decl.value)) {
+              decl.value = decl.value.replace(/(#[0-9a-fA-F]{6})(\d+%)/g, '$1 $2');
+            }
+          }
+        }
       ],
     },
   },

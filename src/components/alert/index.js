@@ -6,8 +6,10 @@ export default function IAlert (props) {
     contentProps: {
       message: props.message,
       type: props.type,
-      showIcon: props.showIcon
+      showIcon: props.showIcon,
+      autoHeight: props.autoHeight || true,
     },
+    toastClassName: props.autoHeight ? 'auto-height': '',
     expandCustomProps: true,
     type: props.type,
     autoClose: props.autoClose,

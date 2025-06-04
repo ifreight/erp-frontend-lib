@@ -178,7 +178,6 @@ export default {
           const fileExt = file.name.split('.');
           if (!arrExtension.includes(fileExt[fileExt.length - 1].toLowerCase())) {
             emit('invalidFile', file);
-            break;
           }
         }
 
@@ -190,7 +189,6 @@ export default {
           emit('update:modelValue', selectedFile.value);
         } else {
           emit('invalidSize', file);
-          break;
         }
 
         // Break loop if selected file by drag is multiple and input only accept 1

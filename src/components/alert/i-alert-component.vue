@@ -1,37 +1,22 @@
 <template>
   <div class="tw:flex tw:gap-2.5 tw:min-w-[358px] tw:max-w-[408px] tw:w-fit">
-    <div
-      v-if="showIcon"
-      class="tw:flex tw:items-center"
-    >
-      <ic-alert-error
-        v-if="type === 'error'"
-        class="tw:w-4 tw:h-4 tw:text-white"
-      />
-      <ic-alert-success
-        v-if="type === 'success'"
-        class="tw:w-4 tw:h-4 tw:text-white"
-      />
-      <ic-alert-warning
-        v-if="type === 'warning'"
-        class="tw:w-4 tw:h-4 tw:text-white"
-      />
-      <ic-alert-info
-        v-if="type === 'info'"
-        class="tw:w-4 tw:h-4 tw:text-white"
-      />
+    <div v-if="showIcon" class="icon-wrapper">
+      <ic-alert-error v-if="type === 'error'" />
+      <ic-alert-success v-if="type === 'success'" />
+      <ic-alert-warning v-if="type === 'warning'" />
+      <ic-alert-info v-if="type === 'info'" />
     </div>
-    <div class="tw:text-gray-900 tw:text-sm tw:truncate">
+    <div class="toast-message">
       {{ message }}
     </div>
   </div>
 </template>
 
 <script>
-import IcAlertError from "@/icons/ic-alert-error.vue";
-import IcAlertSuccess from "@/icons/ic-alert-success.vue";
-import IcAlertInfo from "@/icons/ic-alert-info.vue";
-import IcAlertWarning from "@/icons/ic-alert-warning.vue";
+import IcAlertError from '@/icons/ic-alert-error.vue';
+import IcAlertSuccess from '@/icons/ic-alert-success.vue';
+import IcAlertInfo from '@/icons/ic-alert-info.vue';
+import IcAlertWarning from '@/icons/ic-alert-warning.vue';
 
 export default {
   name: 'IAlert',
@@ -39,26 +24,26 @@ export default {
     IcAlertError,
     IcAlertSuccess,
     IcAlertInfo,
-    IcAlertWarning
+    IcAlertWarning,
   },
   props: {
     message: {
       type: String,
-      required: true
+      required: true,
     },
     type: {
       type: String,
       default: 'info',
       validator(value) {
-        return ['error', 'info', 'success', 'warning'].includes(value)
-      }
+        return ['error', 'info', 'success', 'warning'].includes(value);
+      },
     },
     showIcon: {
       type: Boolean,
-      default: true
-    }
-  }
-}
+      default: true,
+    },
+  },
+};
 </script>
 
 <style>
@@ -69,6 +54,28 @@ export default {
 
   .Toastify__toast {
     @apply tw:min-h-0 tw:max-h-none tw:h-10 tw:pl-4 tw:min-w-[400px] tw:max-w-[450px] tw:w-fit tw:cursor-default;
+
+    .toast-message {
+      @apply tw:text-gray-900 tw:text-sm tw:truncate;
+    }
+
+    &.auto-height {
+      @apply tw:h-auto;
+
+      .toast-message {
+        overflow: visible !important;
+        text-overflow: clip !important;
+        white-space: normal !important;
+      }
+    }
+
+    .icon-wrapper {
+      @apply tw:flex tw:items-center;
+
+      svg {
+        @apply tw:w-4 tw:h-4 tw:text-white;
+      }
+    }
 
     &.Toastify__toast-theme--light {
       &.Toastify__toast--info {

@@ -2972,28 +2972,16 @@ const X7 = /* @__PURE__ */ c(W7, [["render", Y7]]), J7 = {
   }
 }, Q7 = { class: "tw:flex tw:gap-2.5 tw:min-w-[358px] tw:max-w-[408px] tw:w-fit" }, e8 = {
   key: 0,
-  class: "tw:flex tw:items-center"
-}, t8 = { class: "tw:text-gray-900 tw:text-sm tw:truncate" };
+  class: "icon-wrapper"
+}, t8 = { class: "toast-message" };
 function n8(t, e, n, r, i, l) {
   const s = j("ic-alert-error"), d = j("ic-alert-success"), u = j("ic-alert-warning"), f = j("ic-alert-info");
   return a(), C("div", Q7, [
     n.showIcon ? (a(), C("div", e8, [
-      n.type === "error" ? (a(), c1(s, {
-        key: 0,
-        class: "tw:w-4 tw:h-4 tw:text-white"
-      })) : W("", !0),
-      n.type === "success" ? (a(), c1(d, {
-        key: 1,
-        class: "tw:w-4 tw:h-4 tw:text-white"
-      })) : W("", !0),
-      n.type === "warning" ? (a(), c1(u, {
-        key: 2,
-        class: "tw:w-4 tw:h-4 tw:text-white"
-      })) : W("", !0),
-      n.type === "info" ? (a(), c1(f, {
-        key: 3,
-        class: "tw:w-4 tw:h-4 tw:text-white"
-      })) : W("", !0)
+      n.type === "error" ? (a(), c1(s, { key: 0 })) : W("", !0),
+      n.type === "success" ? (a(), c1(d, { key: 1 })) : W("", !0),
+      n.type === "warning" ? (a(), c1(u, { key: 2 })) : W("", !0),
+      n.type === "info" ? (a(), c1(f, { key: 3 })) : W("", !0)
     ])) : W("", !0),
     o("div", t8, X(n.message), 1)
   ]);
@@ -3004,8 +2992,10 @@ function cL(t) {
     contentProps: {
       message: t.message,
       type: t.type,
-      showIcon: t.showIcon
+      showIcon: t.showIcon,
+      autoHeight: t.autoHeight || !0
     },
+    toastClassName: t.autoHeight ? "auto-height" : "",
     expandCustomProps: !0,
     type: t.type,
     autoClose: t.autoClose,
@@ -4272,6 +4262,7 @@ const f2 = /* @__PURE__ */ c(me, [["render", ye]]), Me = {
     destroyOnClose: Boolean,
     ignoreClickOutside: { type: Boolean, default: !1 }
   },
+  emits: ["update:show", "close", "closed", "open"],
   setup(t, { emit: e }) {
     const n = k(0), r = k(null), i = b(() => ({
       width: t.width,
@@ -4285,9 +4276,12 @@ const f2 = /* @__PURE__ */ c(me, [["render", ye]]), Me = {
     }, u = () => {
       t.ignoreClickOutside || s();
     };
-    return N(() => t.show, (f) => {
-      f && l();
-    }), u1(() => {
+    return N(
+      () => t.show,
+      (f) => {
+        f && l();
+      }
+    ), u1(() => {
       t.show && l();
     }), Z5(() => {
       document.body.style.overflow = "auto";
@@ -11193,18 +11187,13 @@ const zi = /* @__PURE__ */ c(ji, [["render", qi]]), Z9 = "button", I9 = "drag", 
         for await (const H of Array.from(w.target.files)) {
           if (t.extensions) {
             const I = t.extensions.split(","), Z = H.name.split(".");
-            if (!I.includes(Z[Z.length - 1].toLowerCase())) {
-              e("invalidFile", H);
-              break;
-            }
+            I.includes(Z[Z.length - 1].toLowerCase()) || e("invalidFile", H);
           }
           if (H.size <= t.maxSize * 1024) {
             const I = await h(H);
             l.value.push(I), y.push(I), e("update:modelValue", l.value);
-          } else {
+          } else
             e("invalidSize", H);
-            break;
-          }
           if (!t.isMultiple && l.value.length == 1)
             break;
         }
