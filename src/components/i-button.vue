@@ -1,10 +1,5 @@
 <template>
-  <button
-    class="i-button"
-    :class="buttonClasses"
-    :disabled="disabled"
-    @click.stop="$emit('click')"
-  >
+  <button class="i-button" :class="buttonClasses" :disabled="disabled" @click.stop="$emit('click')">
     <slot name="prepend" />
     <slot />
     <slot name="append" />
@@ -103,7 +98,7 @@ export default {
   }
 
   &.sm {
-    @apply tw:text-sm tw:leading-4 tw:h-[41px];
+    @apply tw:text-sm tw:leading-4 tw:h-[44px];
   }
 
   &.xs {

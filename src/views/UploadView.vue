@@ -60,7 +60,7 @@
     </div>
     <div class="tw:flex tw:justify-between tw:gap-2 tw:mb-5">
       <div class="tw:w-[50%]">
-        <p class="tw:font-bold tw:mb-2 tw:text-left">Upload with Button</p>
+        <p class="tw:font-bold tw:mb-2 tw:text-left">Upload with Button + btnError + btnSize xs</p>
         <i-upload
           upload-type="button"
           name="upload3"
@@ -68,6 +68,8 @@
           v-model="files3"
           :is-multiple="true"
           accept="image/*"
+          :btnError="true"
+          btnSize="xs"
           @invalid-size="displayError"
           @invalid-file="displayErrorFile"
         >
@@ -111,7 +113,7 @@
     </div>
     <div class="tw:flex tw:justify-between tw:gap-2 tw:mb-5">
       <div class="tw:w-[50%]">
-        <p class="tw:font-bold tw:mb-2 tw:text-left">Upload with Button Disabled</p>
+        <p class="tw:font-bold tw:mb-2 tw:text-left">Upload with Button Disabled + btnPlain</p>
         <i-upload
           upload-type="button"
           name="upload5"
@@ -120,6 +122,7 @@
           :is-multiple="true"
           accept="image/*"
           :disabled="true"
+          :btnPlain="true"
           @invalid-size="displayError"
           @invalid-file="displayErrorFile"
         >

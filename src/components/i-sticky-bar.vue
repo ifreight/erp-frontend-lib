@@ -2,7 +2,7 @@
   <div
     class="i-sticky-bar"
     :style="{
-      'width': `calc(100% - ${leftOffset})`
+      width: `calc(100% - ${leftOffset})`,
     }"
   >
     <div class="i-sticky-bar-content">
@@ -19,10 +19,10 @@ export default {
   props: {
     leftOffset: {
       type: String,
-      default: '200px'
-    }
-  }
-}
+      default: '200px',
+    },
+  },
+};
 </script>
 
 <style>

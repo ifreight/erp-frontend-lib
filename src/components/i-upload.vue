@@ -1,7 +1,14 @@
 <template>
   <div>
     <template v-if="uploadType == button">
-      <i-button :disabled="isDisabled" @click="clickButton">
+      <i-button
+        :disabled="isDisabled"
+        :plain="btnPlain"
+        :text="btnText"
+        :error="btnError"
+        :size="btnSize"
+        @click="clickButton"
+      >
         <template #prepend><ic-add /></template>
         <slot>Upload</slot>
       </i-button>
@@ -78,8 +85,18 @@ export default {
     },
     extensions: String,
     disabled: Boolean,
+    btnPlain: Boolean,
+    btnText: Boolean,
+    btnError: Boolean,
+    btnSize: {
+      type: String,
+      default: 'base',
+      validator(value) {
+        return ['xs', 'sm', 'base', 'lg'].includes(value);
+      },
+    },
   },
-  emits: ['update:modelValue', 'invalidSize', 'invalidFile'],
+  emits: ['update:modelValue', 'invalidSize', 'invalidFile', 'change'],
   setup(props, { emit }) {
     const input = useTemplateRef('input');
     const button = uploadTypeButton;
@@ -154,6 +171,7 @@ export default {
       }
 
       // loop all files
+      const inputtedFiles = [];
       for await (const file of Array.from(data.target.files)) {
         if (props.extensions) {
           const arrExtension = props.extensions.split(',');
@@ -168,6 +186,7 @@ export default {
         if (isValidSize) {
           const result = await processingFile(file);
           selectedFile.value.push(result);
+          inputtedFiles.push(result);
           emit('update:modelValue', selectedFile.value);
         } else {
           emit('invalidSize', file);
@@ -178,6 +197,9 @@ export default {
         if (!props.isMultiple && selectedFile.value.length == 1) {
           break;
         }
+      }
+      if (inputtedFiles.length > 0) {
+        emit('change', inputtedFiles, selectedFile.value);
       }
       input.value.value = null;
     };
