@@ -46,7 +46,7 @@ export default {
     destroyOnClose: Boolean,
     ignoreClickOutside: { type: Boolean, default: false },
   },
-  emits: ['update:show', 'close', 'closed', 'open'],
+  emits: ['update:show', 'close', 'closed', 'open', 'opened'],
   setup(props, { emit }) {
     const key = ref(0);
     const dialogElement = ref(null);

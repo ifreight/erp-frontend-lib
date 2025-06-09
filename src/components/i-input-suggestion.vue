@@ -19,7 +19,7 @@
           :clearable="clearable"
           :rounded="rounded"
           @clear="resetInputValue"
-          @keyup="onInputKeyup"
+          @update:modelValue="(val) => onInputKeyup(val)"
           @focus="toggleDropdown"
           @blur="isFocus = false"
         >
@@ -260,9 +260,9 @@ export default defineComponent({
       handleQuery(props.modelValue);
     }, 300);
 
-    const onInputKeyup = (event) => {
-      emit('update:modelValue', event.target.value);
-      if (props.hideAfterInput > 0 && event.target.value.length >= props.hideAfterInput) {
+    const onInputKeyup = (val) => {
+      emit('update:modelValue', val);
+      if (props.hideAfterInput > 0 && val.length >= props.hideAfterInput) {
         isVisible.value = false;
       }
 

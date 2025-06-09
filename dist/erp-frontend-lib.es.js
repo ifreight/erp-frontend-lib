@@ -4262,7 +4262,7 @@ const f2 = /* @__PURE__ */ c(me, [["render", ye]]), Me = {
     destroyOnClose: Boolean,
     ignoreClickOutside: { type: Boolean, default: !1 }
   },
-  emits: ["update:show", "close", "closed", "open"],
+  emits: ["update:show", "close", "closed", "open", "opened"],
   setup(t, { emit: e }) {
     const n = k(0), r = k(null), i = b(() => ({
       width: t.width,
@@ -8106,7 +8106,7 @@ const $2 = /* @__PURE__ */ C2(Jt), Qt = W1({
     }, H = $2(() => {
       y(t.modelValue);
     }, 300), T = (Z) => {
-      e("update:modelValue", Z.target.value), t.hideAfterInput > 0 && Z.target.value.length >= t.hideAfterInput && (r.value = !1), t.remote && typeof H == "function" && (d.value = !0, H());
+      e("update:modelValue", Z), t.hideAfterInput > 0 && Z.length >= t.hideAfterInput && (r.value = !1), t.remote && typeof H == "function" && (d.value = !0, H());
     }, I = (Z) => {
       g(Z), v();
     };
@@ -8165,9 +8165,9 @@ function rn(t, e, n, r, i, l) {
           clearable: t.clearable,
           rounded: t.rounded,
           onClear: t.resetInputValue,
-          onKeyup: t.onInputKeyup,
+          "onUpdate:modelValue": e[0] || (e[0] = (u) => t.onInputKeyup(u)),
           onFocus: t.toggleDropdown,
-          onBlur: e[0] || (e[0] = (u) => t.isFocus = !1)
+          onBlur: e[1] || (e[1] = (u) => t.isFocus = !1)
         }, c5({ _: 2 }, [
           t.$slots.prepend ? {
             name: "prepend",
@@ -8176,12 +8176,12 @@ function rn(t, e, n, r, i, l) {
             ]),
             key: "0"
           } : void 0
-        ]), 1032, ["model-value", "input-id", "name", "placeholder", "disabled", "read-only", "invalid", "dark-mode", "borderless", "size", "clearable", "rounded", "onClear", "onKeyup", "onFocus"])
+        ]), 1032, ["model-value", "input-id", "name", "placeholder", "disabled", "read-only", "invalid", "dark-mode", "borderless", "size", "clearable", "rounded", "onClear", "onFocus"])
       ], 2),
       A(d, {
         ref: "dropdownRef",
         visible: t.isVisible,
-        "onUpdate:visible": e[1] || (e[1] = (u) => t.isVisible = u),
+        "onUpdate:visible": e[2] || (e[2] = (u) => t.isVisible = u),
         "is-hide-on-empty-options": t.isFocus && t.hideAfterInput < 1,
         options: t.dropdownOptions,
         "option-key": t.optionKey,
