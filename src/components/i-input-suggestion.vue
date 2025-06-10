@@ -257,18 +257,21 @@ export default defineComponent({
     };
 
     const debouncedHandleQuery = debounce(() => {
+      console.log(props.modelValue);
       handleQuery(props.modelValue);
     }, 300);
 
     const onInputKeyup = (val) => {
       emit('update:modelValue', val);
-      if (props.hideAfterInput > 0 && val.length >= props.hideAfterInput) {
-        isVisible.value = false;
-      }
+      if (val) {
+        if (props.hideAfterInput > 0 && val.length >= props.hideAfterInput) {
+          isVisible.value = false;
+        }
 
-      if (props.remote && typeof debouncedHandleQuery === 'function') {
-        remoteLoading.value = true;
-        debouncedHandleQuery();
+        if (props.remote && typeof debouncedHandleQuery === 'function') {
+          remoteLoading.value = true;
+          debouncedHandleQuery();
+        }
       }
     };
 

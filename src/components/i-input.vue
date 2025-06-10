@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { computed, watch, ref } from 'vue';
+import { computed, watch, onMounted, ref } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { IMaskComponent } from 'vue-imask';
@@ -133,6 +133,10 @@ export default {
     rounded: {
       type: String,
       default: 'xs',
+    },
+    isNullWhenEmpty: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: ['update:modelValue', 'clear', 'change', 'blur', 'focus', 'keyup'],
@@ -228,8 +232,13 @@ export default {
     });
 
     const onInput = (event) => {
+      console.log('on input', event.target.value);
       if (!props.mask) {
-        emit('update:modelValue', event.target.value);
+        if (props.isNullWhenEmpty) {
+          emit('update:modelValue', event.target.value.length > 0 ? event.target.value : null);
+        } else {
+          emit('update:modelValue', event.target.value);
+        }
       }
     };
 
@@ -248,7 +257,7 @@ export default {
     const onClear = () => {
       let clearedValue;
       if (typeof props.modelValue === 'string') {
-        clearedValue = '';
+        clearedValue = null;
       }
       emit('update:modelValue', clearedValue);
       emit('clear');
@@ -256,20 +265,32 @@ export default {
     };
 
     const onAcceptUnmasked = (unmaskedValue) => {
-      emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
+      emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : null);
     };
 
     watch(
       () => displayModelValue,
       (value) => {
         if (inputRef.value && !props.mask) {
-          inputRef.value.value = value == null ? '' : value;
+          inputRef.value.value = value == null ? null : value;
         }
       },
       {
         immediate: true,
       },
     );
+    onMounted(() => {
+      if (props.isNullWhenEmpty) {
+        if (
+          !props.modelValue &&
+          props.modelValue !== null &&
+          (props.modelValue === undefined || typeof props.modelValue === 'string')
+        ) {
+          emit('update:modelValue', null);
+        }
+      }
+    });
+
     return {
       isShowClearable,
       filled,

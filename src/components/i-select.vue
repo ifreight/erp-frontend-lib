@@ -1,6 +1,6 @@
 <template>
   <div class="i-select-wrapper">
-    <div ref="selectRef" class="i-select">
+    <div ref="selectRef" class="i-select" :class="{ invalid: invalid }">
       <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
         <i-input
           ref="inputRef"
@@ -23,7 +23,7 @@
           </template>
           <template #append>
             <slot name="append">
-              <div class="i-select-arrow-container" :style="{ color: arrowColor }">
+              <div class="i-select-arrow-container">
                 <ic-chevron-down />
               </div>
             </slot>
@@ -127,10 +127,6 @@ export default defineComponent({
     },
     loading: Boolean,
     dark: Boolean,
-    arrowColor: {
-      type: String,
-      default: '#2d2d2d',
-    },
     rounded: {
       type: String,
       default: 'xs',
@@ -232,9 +228,9 @@ export default defineComponent({
 
       if (!option) {
         inputValue.value = '';
-        updateSelectedOption(undefined);
-        emit('update:modelValue', undefined);
-        emit('change', undefined);
+        updateSelectedOption(null);
+        emit('update:modelValue', null);
+        emit('change', null);
         return;
       }
 
@@ -334,7 +330,7 @@ export default defineComponent({
           if (!matchingOption) {
             inputValue.value = '';
             query.value = '';
-            emit('update:modelValue', '');
+            emit('update:modelValue', null);
           }
         }
 
@@ -468,6 +464,12 @@ export default defineComponent({
     .i-select-arrow-container {
       padding: 4px;
       cursor: pointer;
+      color: var(--gray-900);
+    }
+    &.invalid {
+      .i-select-arrow-container {
+        color: var(--red-300);
+      }
     }
   }
 }

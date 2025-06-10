@@ -1,6 +1,13 @@
 <template>
   <div class="container-input-view">
-    <div>Normal + clearable</div>
+    <div>
+      Normal + clearable
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input1 === null">ini null</span>
+        <span v-else>{{ !input1 ? 'empty bkn null' : `${input1}` }}</span>
+      </span>
+    </div>
     <i-input
       v-model="input1"
       input-id="Text1"
@@ -9,7 +16,14 @@
       clearable
       placeholder="max 3"
     />
-    <div>Invalid</div>
+    <div>
+      Contoh Invalid
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input2 === null">ini null</span>
+        <span v-else>{{ !input2 ? 'empty bkn null' : `${input2}` }}</span>
+      </span>
+    </div>
     <i-input
       v-model="input2"
       input-id="Text2"
@@ -27,7 +41,14 @@
       :disabled="true"
       placeholder="disabled placholder"
     />
-    <div>Prepend, append and max length</div>
+    <div>
+      Prepend, append and max length
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input4 === null">ini null</span>
+        <span v-else>{{ !input4 ? 'empty bkn null' : `${input4}` }}</span>
+      </span>
+    </div>
     <i-input
       v-model="input4"
       input-id="Text4"
@@ -40,7 +61,14 @@
       <template #prepend><ic-calendar /></template>
       <template #append><ic-calendar /></template>
     </i-input>
-    <div>Borderless + password type</div>
+    <div>
+      Borderless + password type
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input5 === null">ini null</span>
+        <span v-else>{{ !input5 ? 'empty bkn null' : `${input5}` }}</span>
+      </span>
+    </div>
     <i-input
       v-model="input5"
       input-id="Text5"
@@ -50,7 +78,14 @@
       type="password"
       borderless
     />
-    <div>Decimal type</div>
+    <div>
+      Decimal type
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input6 === null">ini null</span>
+        <span v-else>{{ !input6 ? 'empty bkn null' : `${input6}` }}</span>
+      </span>
+    </div>
     <i-input
       v-model="input6"
       input-id="Text6"
@@ -59,7 +94,14 @@
       clearable
       mask="decimal"
     />
-    <div>Number type + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)</div>
+    <div>
+      Number type + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input7 === null">ini null</span>
+        <span v-else>{{ !input7 ? 'empty bkn null' : `${input7}` }}</span>
+      </span>
+    </div>
     <i-input
       v-model="input7"
       input-id="Text7"
@@ -69,7 +111,14 @@
       mask="number"
       rounded="lg"
     />
-    <div>Date type + readonly + size sm</div>
+    <div>
+      Date type + readonly + size sm
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input8 === null">ini null</span>
+        <span v-else>{{ !input8 ? 'empty bkn null' : `${input8}` }}</span>
+      </span>
+    </div>
     <i-input
       v-model="input8"
       input-id="Text8"
@@ -94,13 +143,15 @@ export default {
   },
   setup() {
     const input1 = ref('999');
-    const input2 = ref('999');
+    const input2 = ref('');
     const input3 = ref('999');
-    const input4 = ref('');
+    const input4 = ref(undefined);
     const input5 = ref('password');
     const input6 = ref(Math.round(123.453 * 100) / 100);
-    const input7 = ref(100000);
+    const input7 = ref(0);
+    // const input7 = ref(null);
     const input8 = ref(new Date());
+    // const input8 = ref(null);
 
     return {
       input1,

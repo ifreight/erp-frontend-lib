@@ -4,7 +4,11 @@
 
     <div>select + filterable + empty value</div>
     <div class="tw:mb-4 tw:flex-1">
-      <span class="tw:text-red-600">v-model: {{ select }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select === null">ini null</span>
+        <span v-else>{{ !select ? 'empty bkn null' : `${select}` }}</span>
+      </span>
       <i-select
         v-model="select"
         input-id="Select-1"
@@ -16,7 +20,11 @@
 
     <div>select + filterable + placeholder + custom empty message</div>
     <div class="tw:mb-4 tw:flex-1">
-      <span class="tw:text-red-600">v-model: {{ select2 }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select2 === null">ini null</span>
+        <span v-else>{{ !select2 ? 'empty bkn null' : `${select2}` }}</span>
+      </span>
       <i-select
         v-model="select2"
         input-id="Select-2"
@@ -102,7 +110,6 @@
         name="select-9"
         size="sm"
         rounded="lg"
-        :arrowColor="customColor"
         :options="selectStaticOptions"
       />
     </div>
