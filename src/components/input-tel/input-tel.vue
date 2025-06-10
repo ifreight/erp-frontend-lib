@@ -15,12 +15,7 @@
 </template>
 
 <script>
-import {
-  nextTick,
-  onMounted,
-  ref,
-  watch,
-} from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import store from './store';
@@ -58,18 +53,18 @@ export default {
     const activeCountry = ref(undefined);
     const activeCountryCode = ref('');
 
-    const onFocus = (() => {
+    const onFocus = () => {
       emit('focus');
-    });
-    const onBlur = (() => {
+    };
+    const onBlur = () => {
       emit('blur');
-    });
+    };
 
-    const testCharacters = ((value) => {
+    const testCharacters = (value) => {
       return /^[()\-+0-9\s]*$/.test(value);
-    });
+    };
 
-    const parseInputValue = ((value) => {
+    const parseInputValue = (value) => {
       let inputValue = value;
       if (inputValue && activeCountry.value) {
         const cleanValue = value.replace(/\s+/g, '');
@@ -81,7 +76,10 @@ export default {
               break;
             }
 
-            if (value.charAt(dialCodeEndIndex) === activeCountry.value.phoneCode.charAt(dialCodeCheckIndex)) {
+            if (
+              value.charAt(dialCodeEndIndex) ===
+              activeCountry.value.phoneCode.charAt(dialCodeCheckIndex)
+            ) {
               dialCodeCheckIndex += 1;
             }
           }
@@ -91,31 +89,31 @@ export default {
       }
 
       return inputValue;
-    });
+    };
 
-    const parseModelValue = ((val) => {
+    const parseModelValue = (val) => {
       let parsedValue = val;
 
       if (parsedValue && parsedValue[0] !== '+' && activeCountry.value) {
         parsedValue = `${activeCountry.value.phoneCode}${val}`;
       }
       return parsedValue;
-    });
+    };
 
-    const findCountry = (async (countryCode) => {
+    const findCountry = async (countryCode) => {
       if (!countryCode) {
         return undefined;
       }
 
       const countryList = await store.getCountryList();
       return countryList.find((country) => country.countryCode === countryCode);
-    });
+    };
 
-    const setActiveCountry = (async () => {
+    const setActiveCountry = async () => {
       activeCountry.value = await findCountry(activeCountryCode.value);
-    });
+    };
 
-    const setPhoneObject = (async () => {
+    const setPhoneObject = async () => {
       let result;
       if (phone.value && phone.value[0] === '+') {
         result = parsePhoneNumberFromString(phone.value);
@@ -154,56 +152,82 @@ export default {
       }
 
       phoneObject.value = obj;
-    });
+    };
 
-    watch(() => props.country, (val) => {
-      if (val) {
-        activeCountryCode.value = val;
-      }
-    });
-    watch(() => activeCountryCode.value, (val) => {
-      if (val !== props.country) {
-        this.$emit('update:country', val);
-      }
-      if (!activeCountry.value || activeCountry.value.countryCode !== val) {
-        setActiveCountry();
-        setPhoneObject();
-      }
-    });
-    watch(() => activeCountry.value, (val, oldVal) => {
-      if (!val && oldVal && oldVal.countryCode) {
-        this.activeCountryCode = oldVal.countryCode;
-      }
-    });
-    watch(() => phoneObject.value.countryCode, (val) => {
-      activeCountryCode.value = val || '';
-    });
-    watch(() => phoneObject.value.valid, (val) => {
-      emit('validate', val);
-    });
-    watch(() => phoneObject.value.formatted, (val) => {
-      nextTick(() => {
-        phone.value = parseInputValue(val);
-      });
-    });
-    watch(() => phoneObject.value.number, (val) => {
-      emit('update:modelValue', val || '');
-
-    });
-    watch(() => phone.value, (val, oldVal) => {
-      if (!testCharacters(val)) {
+    watch(
+      () => props.country,
+      (val) => {
+        if (val) {
+          activeCountryCode.value = val;
+        }
+      },
+    );
+    watch(
+      () => activeCountryCode.value,
+      (val) => {
+        if (val !== props.country) {
+          emit('update:country', val);
+        }
+        if (!activeCountry.value || activeCountry.value.countryCode !== val) {
+          setActiveCountry();
+          setPhoneObject();
+        }
+      },
+    );
+    watch(
+      () => activeCountry.value,
+      (val, oldVal) => {
+        if (!val && oldVal && oldVal.countryCode) {
+          this.activeCountryCode = oldVal.countryCode;
+        }
+      },
+    );
+    watch(
+      () => phoneObject.value.countryCode,
+      (val) => {
+        activeCountryCode.value = val || '';
+      },
+    );
+    watch(
+      () => phoneObject.value.valid,
+      (val) => {
+        emit('validate', val);
+      },
+    );
+    watch(
+      () => phoneObject.value.formatted,
+      (val) => {
         nextTick(() => {
-          phone.value = oldVal;
+          phone.value = parseInputValue(val);
         });
-      } else {
-        setPhoneObject();
-      }
-    });
-    watch(() => props.modelValue, (val) => {
-      if (val !== phoneObject.value.number) {
-        phone.value = val;
-      }
-    });
+      },
+    );
+    watch(
+      () => phoneObject.value.number,
+      (val) => {
+        emit('update:modelValue', val || '');
+      },
+    );
+    watch(
+      () => phone.value,
+      (val, oldVal) => {
+        if (!testCharacters(val)) {
+          nextTick(() => {
+            phone.value = oldVal;
+          });
+        } else {
+          setPhoneObject();
+        }
+      },
+    );
+    watch(
+      () => props.modelValue,
+      (val) => {
+        if (val !== phoneObject.value.number) {
+          phone.value = val;
+        }
+      },
+    );
     onMounted(() => {
       if (props.modelValue) {
         phone.value = props.modelValue;
@@ -220,7 +244,7 @@ export default {
       onFocus,
       onBlur,
       findCountry,
-    }
+    };
   },
 };
 </script>

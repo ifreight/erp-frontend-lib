@@ -256,20 +256,24 @@ export default {
     };
 
     const onAcceptUnmasked = (unmaskedValue) => {
-      emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
+      if (props.mask) {
+        emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
+      }
     };
 
     watch(
-      () => displayModelValue,
-      (value) => {
-        if (inputRef.value && !props.mask) {
-          inputRef.value.value = value == null ? '' : value;
+      () => props.modelValue,
+      () => {
+        if (!props.mask && inputRef.value) {
+          const displayValue = displayModelValue.value;
+          if (inputRef.value.value !== displayValue) {
+            inputRef.value.value = displayValue;
+          }
         }
       },
-      {
-        immediate: true,
-      },
+      { immediate: true },
     );
+
     return {
       isShowClearable,
       filled,
