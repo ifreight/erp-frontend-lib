@@ -3014,24 +3014,25 @@ function n8(t, e, n, r, i, l) {
   ]);
 }
 const r8 = /* @__PURE__ */ c(J7, [["render", n8]]);
-function cL(t) {
-  r1(r8, {
-    contentProps: {
-      message: t.message,
+function cL(t, e) {
+  setTimeout(() => {
+    r1(r8, {
+      contentProps: {
+        message: t.message,
+        type: t.type,
+        showIcon: t.showIcon
+      },
+      toastClassName: t.autoHeight ? "auto-height" : "",
       type: t.type,
-      showIcon: t.showIcon,
-      autoHeight: t.autoHeight || !0
-    },
-    toastClassName: t.autoHeight ? "auto-height" : "",
-    expandCustomProps: !0,
-    type: t.type,
-    autoClose: t.autoClose,
-    closeButton: t.showCloseButton,
-    transition: r1.TRANSITIONS.SLIDE,
-    closeOnClick: !1,
-    hideProgressBar: !0,
-    icon: !1
-  });
+      expandCustomProps: !0,
+      autoClose: 4e3,
+      transition: r1.TRANSITIONS.SLIDE,
+      closeOnClick: !1,
+      hideProgressBar: !0,
+      icon: !1,
+      ...t
+    });
+  }, e || 0);
 }
 const i8 = {
   name: "IButton",
