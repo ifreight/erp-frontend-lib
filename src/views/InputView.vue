@@ -17,6 +17,23 @@
       placeholder="max 3"
     />
     <div>
+      Normal + clearable (not null if empty)
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input10 === null">ini null</span>
+        <span v-else>{{ !input10 ? 'empty bkn null' : `${input10}` }}</span>
+      </span>
+    </div>
+    <i-input
+      v-model="input10"
+      input-id="Text10"
+      name="text"
+      class="tw:flex-1 tw:mb-2"
+      clearable
+      placeholder="max 3"
+      :isNullWhenEmpty="false"
+    />
+    <div>
       Contoh Invalid
       <span class="tw:text-red-400 tw:ml-1">
         v-model:
@@ -33,6 +50,7 @@
       errorMessage="Error Message"
     />
     <div>Disabled</div>
+    <span>v-model: {{ input3 }}</span>
     <i-input
       v-model="input3"
       input-id="Text3"
@@ -128,6 +146,18 @@
       clearable
       readOnly
     />
+
+    <div>Number mask NPWP + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)</div>
+    <span>v-model: {{ input9 }}</span>
+    <i-input
+      v-model="input9"
+      input-id="Text9"
+      name="text"
+      class="tw:flex-1 tw:mb-2"
+      clearable
+      mask="npwp"
+      rounded="lg"
+    />
   </div>
 </template>
 
@@ -152,6 +182,8 @@ export default {
     // const input7 = ref(null);
     const input8 = ref(new Date());
     // const input8 = ref(null);
+    const input9 = ref(null);
+    const input10 = ref('');
 
     return {
       input1,
@@ -162,6 +194,8 @@ export default {
       input6,
       input7,
       input8,
+      input9,
+      input10,
     };
   },
 };

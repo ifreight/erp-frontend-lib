@@ -155,6 +155,8 @@ export default {
       }
       return true;
     });
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
+
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
     const classes = computed(() => {
       return [
@@ -235,7 +237,10 @@ export default {
       console.log('on input', event.target.value);
       if (!props.mask) {
         if (props.isNullWhenEmpty) {
-          emit('update:modelValue', event.target.value.length > 0 ? event.target.value : null);
+          emit(
+            'update:modelValue',
+            event.target.value.length > 0 ? event.target.value : emptyVal.value,
+          );
         } else {
           emit('update:modelValue', event.target.value);
         }
@@ -257,7 +262,7 @@ export default {
     const onClear = () => {
       let clearedValue;
       if (typeof props.modelValue === 'string') {
-        clearedValue = null;
+        clearedValue = emptyVal.value;
       }
       emit('update:modelValue', clearedValue);
       emit('clear');
@@ -265,7 +270,7 @@ export default {
     };
 
     const onAcceptUnmasked = (unmaskedValue) => {
-      emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : null);
+      emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : emptyVal.value);
     };
 
     watch(
@@ -275,10 +280,9 @@ export default {
           inputRef.value.value = value == null ? null : value;
         }
       },
-      {
-        immediate: true,
-      },
+      { immediate: true },
     );
+
     onMounted(() => {
       if (props.isNullWhenEmpty) {
         if (

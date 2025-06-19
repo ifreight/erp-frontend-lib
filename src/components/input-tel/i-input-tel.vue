@@ -89,7 +89,7 @@ export default {
   props: {
     modelValue: {
       type: String,
-      default: '',
+      default: undefined,
     },
     name: {
       type: String,
@@ -122,6 +122,10 @@ export default {
       type: String,
       default: '',
     },
+    isNullWhenEmpty: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['update:modelValue', 'update:valid', 'clear'],
   setup(props, { emit }) {
@@ -135,6 +139,8 @@ export default {
     const activeCountry = computed(() =>
       countryList.value.find((country) => country.countryCode === countryCode.value),
     );
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
+
     const activeCountryFlagClass = computed(() => {
       if (!activeCountry.value) {
         return '';
@@ -152,8 +158,12 @@ export default {
     watch(
       () => phone.value,
       (val) => {
+        console.log('phone val', val);
         if (val !== props.modelValue) {
-          emit('update:modelValue', val);
+          emit('update:modelValue', val ? val : emptyVal.value);
+        } else if (!val) {
+          console.log('kesini ?');
+          emit('update:modelValue', emptyVal.value);
         }
       },
     );
@@ -161,7 +171,7 @@ export default {
     const onClear = () => {
       let clearedValue;
       if (typeof props.modelValue === 'string') {
-        clearedValue = '';
+        clearedValue = emptyVal.value;
       }
       phone.value = clearedValue;
       emit('update:modelValue', clearedValue);
@@ -203,8 +213,16 @@ export default {
       if (props.modelValue) {
         phone.value = props.modelValue;
       }
+      if (props.isNullWhenEmpty) {
+        if (
+          !props.modelValue &&
+          props.modelValue !== null &&
+          (props.modelValue === undefined || typeof props.modelValue === 'string')
+        ) {
+          emit('update:modelValue', null);
+        }
+      }
     });
-
     return {
       phone,
       countryCode,

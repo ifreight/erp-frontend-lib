@@ -1713,29 +1713,56 @@ const o5 = {
         formatted: p.formatInternational()
       })), r.value = w;
     };
-    return N(() => t.country, (p) => {
-      p && (l.value = p);
-    }), N(() => l.value, (p) => {
-      p !== t.country && this.$emit("update:country", p), (!i.value || i.value.countryCode !== p) && (g(), $());
-    }), N(() => i.value, (p, _) => {
-      !p && _ && _.countryCode && (this.activeCountryCode = _.countryCode);
-    }), N(() => r.value.countryCode, (p) => {
-      l.value = p || "";
-    }), N(() => r.value.valid, (p) => {
-      e("validate", p);
-    }), N(() => r.value.formatted, (p) => {
-      m1(() => {
-        n.value = f(p);
-      });
-    }), N(() => r.value.number, (p) => {
-      e("update:modelValue", p || "");
-    }), N(() => n.value, (p, _) => {
-      u(p) ? $() : m1(() => {
-        n.value = _;
-      });
-    }), N(() => t.modelValue, (p) => {
-      p !== r.value.number && (n.value = p);
-    }), u1(() => {
+    return N(
+      () => t.country,
+      (p) => {
+        p && (l.value = p);
+      }
+    ), N(
+      () => l.value,
+      (p) => {
+        p !== t.country && e("update:country", p), (!i.value || i.value.countryCode !== p) && (g(), $());
+      }
+    ), N(
+      () => i.value,
+      (p, _) => {
+        !p && _ && _.countryCode && (this.activeCountryCode = _.countryCode);
+      }
+    ), N(
+      () => r.value.countryCode,
+      (p) => {
+        l.value = p || "";
+      }
+    ), N(
+      () => r.value.valid,
+      (p) => {
+        e("validate", p);
+      }
+    ), N(
+      () => r.value.formatted,
+      (p) => {
+        m1(() => {
+          n.value = f(p);
+        });
+      }
+    ), N(
+      () => r.value.number,
+      (p) => {
+        e("update:modelValue", p || "");
+      }
+    ), N(
+      () => n.value,
+      (p, _) => {
+        u(p) ? $() : m1(() => {
+          n.value = _;
+        });
+      }
+    ), N(
+      () => t.modelValue,
+      (p) => {
+        p !== r.value.number && (n.value = p);
+      }
+    ), u1(() => {
       t.modelValue && (n.value = t.modelValue), t.country && (l.value = t.country);
     }), {
       phone: n,
@@ -2987,24 +3014,25 @@ function n8(t, e, n, r, i, l) {
   ]);
 }
 const r8 = /* @__PURE__ */ c(J7, [["render", n8]]);
-function cL(t) {
-  r1(r8, {
-    contentProps: {
-      message: t.message,
+function cL(t, e) {
+  setTimeout(() => {
+    r1(r8, {
+      contentProps: {
+        message: t.message,
+        type: t.type,
+        showIcon: t.showIcon
+      },
+      toastClassName: t.autoHeight ? "auto-height" : "",
       type: t.type,
-      showIcon: t.showIcon,
-      autoHeight: t.autoHeight || !0
-    },
-    toastClassName: t.autoHeight ? "auto-height" : "",
-    expandCustomProps: !0,
-    type: t.type,
-    autoClose: t.autoClose,
-    closeButton: t.showCloseButton,
-    transition: r1.TRANSITIONS.SLIDE,
-    closeOnClick: !1,
-    hideProgressBar: !0,
-    icon: !1
-  });
+      expandCustomProps: !0,
+      autoClose: 4e3,
+      transition: r1.TRANSITIONS.SLIDE,
+      closeOnClick: !1,
+      hideProgressBar: !0,
+      icon: !1,
+      ...t
+    });
+  }, e || 0);
 }
 const i8 = {
   name: "IButton",
@@ -7306,16 +7334,17 @@ const a3 = /* @__PURE__ */ c(dt, [["render", Ct]]), ut = {
       let H;
       typeof t.modelValue == "string" && (H = ""), n("update:modelValue", H), n("clear"), n("change");
     }, y = (H) => {
-      n("update:modelValue", H ? Number(H) : void 0);
+      t.mask && n("update:modelValue", H ? Number(H) : void 0);
     };
     return N(
-      () => u,
-      (H) => {
-        r.value && !t.mask && (r.value.value = H ?? "");
+      () => t.modelValue,
+      () => {
+        if (!t.mask && r.value) {
+          const H = u.value;
+          r.value.value !== H && (r.value.value = H);
+        }
       },
-      {
-        immediate: !0
-      }
+      { immediate: !0 }
     ), {
       isShowClearable: i,
       filled: l,
