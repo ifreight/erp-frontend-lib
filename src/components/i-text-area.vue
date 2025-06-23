@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { computed, toRefs, useAttrs } from 'vue';
+import { computed, toRefs, useAttrs, onMounted } from 'vue';
 
 export default {
   name: 'ITextArea',
@@ -96,6 +96,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isNullWhenEmpty: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['update:modelValue', 'focus', 'blur', 'pressEnter', 'pressEnterShift'],
   setup(props, { emit }) {
@@ -135,6 +139,7 @@ export default {
     const textLength = computed(() => (modelValue.value || '').length);
 
     const maxTextLength = computed(() => attrs.maxlength);
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
 
     const isTextLimitVisible = computed(
       () => showTextLimit.value && maxTextLength.value && !disabled.value && !readOnly.value,
@@ -143,13 +148,28 @@ export default {
     const isLabelActive = computed(() => filled.value || !!placeholder.value);
 
     const onInput = (event) => {
-      emit('update:modelValue', event.target.value);
+      emit(
+        'update:modelValue',
+        event.target.value.length > 0 ? event.target.value : emptyVal.value,
+      );
     };
 
     const onFocus = () => emit('focus');
     const onBlur = () => emit('blur');
     const pressKeyEnter = () => emit('pressEnter');
     const pressKeyEnterShift = () => emit('pressEnterShift');
+
+    onMounted(() => {
+      if (props.isNullWhenEmpty) {
+        if (
+          !props.modelValue &&
+          props.modelValue !== null &&
+          (props.modelValue === undefined || typeof props.modelValue === 'string')
+        ) {
+          emit('update:modelValue', null);
+        }
+      }
+    });
 
     return {
       filled,

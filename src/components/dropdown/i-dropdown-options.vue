@@ -148,7 +148,7 @@ export default defineComponent({
         return dropdownOptions;
       }
       const filtered = dropdownOptions.filter((option) => {
-        const query = props.query.toLowerCase();
+        const query = props.query !== null && props.query.toLowerCase();
         const label = option[props.optionValue].toLowerCase();
         return label.includes(query);
       });
@@ -162,7 +162,7 @@ export default defineComponent({
       // mask all word characters in city name
       const cityMask = str.replace(/\w/g, '#');
       // string city and query string from any non-word character
-      const queryStripped = query.toLowerCase().replace(/\W/g, '');
+      const queryStripped = props.query !== null && query.toLowerCase().replace(/\W/g, '');
       const stringStripped = str.replace(/\W/g, '');
       // find the index of query string in city name
       const index = stringStripped.toLowerCase().indexOf(queryStripped);

@@ -3,7 +3,36 @@
     <div class="tw:mb-4">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl tw:mb-2">
         small size + dropdown header + clearable
-        <small class="tw:text-red-400">v : {{ suggestion }}</small>
+        <span class="tw:text-red-600">
+          v-model:
+          <span v-if="suggestion === null">ini null</span>
+          <span v-else>{{ !suggestion ? 'empty bkn null' : `${suggestion}` }}</span>
+        </span>
+      </div>
+      <i-input-suggestion
+        v-model="suggestion"
+        input-id="Suggestion1"
+        class="package-input-suggestion"
+        name="packageType"
+        placeholder="Box, Drum, etc"
+        size="sm"
+        :options="suggestionList"
+        dropdown-max-height="290px"
+        clearable
+      >
+        <template #dropdownHeader>
+          <div class="text-xs text-gray-400 text-right">this is header</div>
+        </template>
+      </i-input-suggestion>
+    </div>
+    <div class="tw:mb-4">
+      <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl tw:mb-2">
+        small size + dropdown header + clearable
+        <span class="tw:text-red-600">
+          v-model:
+          <span v-if="suggestion === null">ini null</span>
+          <span v-else>{{ !suggestion ? 'empty bkn null' : `${suggestion}` }}</span>
+        </span>
       </div>
       <i-input-suggestion
         v-model="suggestion"
@@ -24,7 +53,11 @@
     <div class="tw:mb-4">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl tw:mb-2">
         normal size + error example + hide after 3 input
-        <small class="tw:text-red-400">v : {{ suggestion2 }}</small>
+        <span class="tw:text-red-600">
+          v-model:
+          <span v-if="suggestion2 === null">ini null</span>
+          <span v-else>{{ !suggestion2 ? 'empty bkn null' : `${suggestion2}` }}</span>
+        </span>
       </div>
       <i-input-suggestion
         v-model="suggestion2"
@@ -43,7 +76,11 @@
     <div class="tw:mb-4">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl tw:mb-2">
         normal size + init value
-        <small class="tw:text-red-400">v : {{ suggestion3 }}</small>
+        <span class="tw:text-red-600">
+          v-model:
+          <span v-if="suggestion3 === null">ini null</span>
+          <span v-else>{{ !suggestion3 ? 'empty bkn null' : `${suggestion3}` }}</span>
+        </span>
       </div>
       <i-input-suggestion
         v-model="suggestion3"
@@ -76,7 +113,11 @@
     <div class="tw:mb-4">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl tw:mb-2">
         remote + rounded lg
-        <small class="tw:text-red-400">v : {{ suggestion5 }}</small>
+        <span class="tw:text-red-600">
+          v-model:
+          <span v-if="suggestion5 === null">ini null</span>
+          <span v-else>{{ !suggestion5 ? 'empty bkn null' : `${suggestion5}` }}</span>
+        </span>
       </div>
       <i-input-suggestion
         v-model="suggestion5"
@@ -109,6 +150,7 @@ export default {
     const suggestion3 = ref('Carton(s)');
     const suggestion4 = ref();
     const suggestion5 = ref();
+    const suggestion6 = ref();
 
     const suggestionList = computed(() => {
       return ['Box(es)', 'Pallet(s)', 'Drum(s)', 'Crate(s)', 'Carton(s)', 'Case(s)', 'Cargo(s)'];
@@ -136,6 +178,7 @@ export default {
       suggestion3,
       suggestion4,
       suggestion5,
+      suggestion6,
       suggestionList,
       remoteMethod,
     };

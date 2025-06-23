@@ -27,7 +27,7 @@
           </template>
           <template v-if="showInputArrow" #append>
             <slot name="append">
-              <div class="i-select-arrow-container" :style="{ color: arrowColor }">
+              <div class="i-select-arrow-container">
                 <ic-chevron-down />
               </div>
             </slot>
@@ -184,10 +184,6 @@ export default defineComponent({
     },
     loading: Boolean,
     dark: Boolean,
-    arrowColor: {
-      type: String,
-      default: '#2d2d2d',
-    },
     rounded: {
       type: String,
       default: 'xs',

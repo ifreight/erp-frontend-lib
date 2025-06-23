@@ -4,7 +4,11 @@
 
     <div>select + filterable + empty value</div>
     <div class="tw:mb-4 tw:flex-1">
-      <span class="tw:text-red-600">v-model: {{ select }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select === null">ini null</span>
+        <span v-else>{{ !select ? 'empty bkn null' : `${select}` }}</span>
+      </span>
       <i-select
         v-model="select"
         input-id="Select-1"
@@ -16,7 +20,11 @@
 
     <div>select + filterable + placeholder + custom empty message</div>
     <div class="tw:mb-4 tw:flex-1">
-      <span class="tw:text-red-600">v-model: {{ select2 }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select2 === null">ini null</span>
+        <span v-else>{{ !select2 ? 'empty bkn null' : `${select2}` }}</span>
+      </span>
       <i-select
         v-model="select2"
         input-id="Select-2"
@@ -30,7 +38,11 @@
 
     <div>select + filterable + init value</div>
     <div class="tw:mb-4">
-      <span class="tw:text-red-600">v-model: {{ select3 }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select3 === null">ini null</span>
+        <span v-else>{{ !select3 ? 'empty bkn null' : `${select3}` }}</span>
+      </span>
       <i-select
         v-model="select3"
         input-id="Select-3"
@@ -54,7 +66,11 @@
 
     <div>select + empty value + error</div>
     <div class="tw:mb-4">
-      <span class="tw:text-red-600">v-model: {{ select5 }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select5 === null">ini null</span>
+        <span v-else>{{ !select5 ? 'empty bkn null' : `${select5}` }}</span> </span
+      ><br />
       <i-select
         v-model="select5"
         input-id="Select-5"
@@ -68,7 +84,11 @@
 
     <div>select + remote method</div>
     <div class="tw:mb-4">
-      <span class="tw:text-red-600">v-model: {{ select7 }}</span> <br />
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select7 === null">ini null</span>
+        <span v-else>{{ !select7 ? 'empty bkn null' : `${select7}` }}</span> </span
+      ><br />
       <span class="tw:text-red-600">value-option: {{ selectRemote }}</span>
       <i-select
         v-model="select7"
@@ -84,7 +104,11 @@
 
     <div>select without filterable</div>
     <div class="tw:mb-4">
-      <span class="tw:text-red-600">v-model: {{ select8 }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select8 === null">ini null</span>
+        <span v-else>{{ !select8 ? 'empty bkn null' : `${select8}` }}</span>
+      </span>
       <i-select
         v-model="select8"
         input-id="Select-8"
@@ -95,14 +119,17 @@
 
     <div>select with rounded, width, custom arrow color and size sm</div>
     <div class="tw:mb-4 tw:w-[350px]">
-      <span class="tw:text-red-600">v-model: {{ select9 }}</span>
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select9 === null">ini null</span>
+        <span v-else>{{ !select9 ? 'empty bkn null' : `${select9}` }}</span>
+      </span>
       <i-select
         v-model="select9"
         input-id="Select-9"
         name="select-9"
         size="sm"
         rounded="lg"
-        :arrowColor="customColor"
         :options="selectStaticOptions"
       />
     </div>

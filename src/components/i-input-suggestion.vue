@@ -18,6 +18,7 @@
           :size="size"
           :clearable="clearable"
           :rounded="rounded"
+          :isNullWhenEmpty="isNullWhenEmpty"
           @clear="resetInputValue"
           @update:modelValue="(val) => onInputKeyup(val)"
           @focus="toggleDropdown"
@@ -149,6 +150,10 @@ export default defineComponent({
       type: String,
       default: 'No results found.',
     },
+    isNullWhenEmpty: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['update:modelValue', 'blur', 'change', 'focus', 'input'],
   setup(props, { emit }) {
@@ -165,6 +170,7 @@ export default defineComponent({
     const isLoading = computed(() => {
       return props.remote ? remoteLoading.value : props.loading;
     });
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
 
     const dropdownOptions = computed(() => {
       let options = [];
@@ -197,8 +203,8 @@ export default defineComponent({
 
     const changeSelected = (option) => {
       if (!option) {
-        emit('update:modelValue', undefined);
-        emit('change', undefined);
+        emit('update:modelValue', emptyVal.value);
+        emit('change', emptyVal.value);
         return;
       }
 
@@ -214,7 +220,7 @@ export default defineComponent({
     };
 
     const resetInputValue = () => {
-      changeSelected(undefined);
+      changeSelected(emptyVal.value);
     };
 
     const showDropdown = () => {
@@ -262,13 +268,15 @@ export default defineComponent({
 
     const onInputKeyup = (val) => {
       emit('update:modelValue', val);
-      if (props.hideAfterInput > 0 && val.length >= props.hideAfterInput) {
-        isVisible.value = false;
-      }
+      if (val) {
+        if (props.hideAfterInput > 0 && val.length >= props.hideAfterInput) {
+          isVisible.value = false;
+        }
 
-      if (props.remote && typeof debouncedHandleQuery === 'function') {
-        remoteLoading.value = true;
-        debouncedHandleQuery();
+        if (props.remote && typeof debouncedHandleQuery === 'function') {
+          remoteLoading.value = true;
+          debouncedHandleQuery();
+        }
       }
     };
 

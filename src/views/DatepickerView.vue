@@ -1,21 +1,43 @@
 <template>
-  <div class="tw:flex tw:gap-2">
+  <div class="tw:text-center tw:text-red-400">
+    single date picker notes: isNullWhenEmpty true (default) && picklimit {{ '<=' }} 1 any
+    default/init v-model will be converted to null
+  </div>
+  <div class="tw:flex tw:gap-2 tw:items-end">
     <div class="tw:w-1/4">
       <h3 class="tw:font-bold tw:mb-1 tw:text-xl">Default</h3>
+      <span class="tw:text-red-400 tw:text-3xs">
+        v-model: <span v-if="date === null">ini null</span>
+        <span v-else>{{ !date ? 'empty bkn null' : `${date}` }}</span>
+      </span>
       <p class="tw:mb-1 tw:border tw:min-h-[26px] tw:px-1">
         {{ formatDate(date, 'DD-MM-YYYY hh:mm:ss') }}
       </p>
       <i-date-picker v-model="date"></i-date-picker>
     </div>
     <div class="tw:w-1/4">
-      <h3 class="tw:font-bold tw:mb-1 tw:text-xl">With Disabled</h3>
+      <h3 class="tw:font-bold tw:mb-1 tw:text-xl">
+        With Disabled <span class="tw:text-3xs tw:font-normal">(isNullWhenEmpty false)</span>
+      </h3>
+      <span class="tw:text-red-400 tw:text-3xs">
+        v-model: <span v-if="date2 === null">ini null</span>
+        <span v-else>{{ !date2 ? 'empty bkn null' : `${date2}` }}</span>
+      </span>
       <p class="tw:mb-1 tw:border tw:min-h-[26px] tw:px-1">
         {{ formatDate(date2, 'DD-MM-YYYY hh:mm:ss') }}
       </p>
-      <i-date-picker v-model="date2" :disabled-date="afterToday"></i-date-picker>
+      <i-date-picker
+        v-model="date2"
+        :disabled-date="afterToday"
+        :isNullWhenEmpty="false"
+      ></i-date-picker>
     </div>
     <div class="tw:w-1/4">
       <h3 class="tw:font-bold tw:mb-1 tw:text-xl">With Intial Date</h3>
+      <span class="tw:text-red-400 tw:text-3xs">
+        v-model: <span v-if="date3 === null">ini null</span>
+        <span v-else>{{ !date3 ? 'empty bkn null' : `${date3}` }}</span>
+      </span>
       <p class="tw:mb-1 tw:border tw:min-h-[26px] tw:px-1">
         {{ formatDate(date3, 'DD-MM-YYYY hh:mm:ss') }}
       </p>
@@ -26,7 +48,13 @@
       ></i-date-picker>
     </div>
     <div class="tw:w-1/4">
-      <h3 class="tw:font-bold tw:mb-1 tw:text-xl">With Pick Limit</h3>
+      <h3 class="tw:font-bold tw:mb-1 tw:text-xl">
+        With Pick Limit <span class="tw:text-3xs tw:font-normal">(picklimit 2)</span>
+      </h3>
+      <span class="tw:text-red-400 tw:text-3xs">
+        v-model: <span v-if="date4 === null">ini null</span>
+        <span v-else>{{ !date4 ? 'empty bkn null' : `${date4}` }}</span>
+      </span>
       <p class="tw:mb-1 tw:border tw:min-h-[26px] tw:px-1">
         {{ formatDate(date4, 'DD-MM-YYYY') }}
       </p>
@@ -45,6 +73,10 @@
   <div class="tw:flex tw:gap-2">
     <div class="tw:w-1/2">
       <h3 class="tw:font-bold tw:mb-1 tw:text-xl">Default</h3>
+      <span class="tw:text-red-400 tw:text-3xs">
+        v-model: <span v-if="date5 === null">ini null</span>
+        <span v-else>{{ !date5 ? 'empty bkn null' : `${date5}` }}</span>
+      </span>
       <p class="tw:mb-1 tw:border tw:min-h-[26px] tw:px-1">
         {{ formatDate(date5, 'DD-MM-YYYY') }}
       </p>
@@ -53,6 +85,10 @@
     </div>
     <div class="tw:w-1/2">
       <h3 class="tw:font-bold tw:mb-1 tw:text-xl">With Initial Date & Disabled Date</h3>
+      <span class="tw:text-red-400 tw:text-3xs">
+        v-model: <span v-if="date6 === null">ini null</span>
+        <span v-else>{{ !date6 ? 'empty bkn null' : `${date6}` }}</span>
+      </span>
       <p class="tw:mb-1 tw:border tw:min-h-[26px] tw:px-1">
         {{ formatDate(date6, 'DD-MM-YYYY') }}
       </p>

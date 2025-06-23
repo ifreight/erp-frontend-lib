@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { computed, watch, ref } from 'vue';
+import { computed, watch, onMounted, ref } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { IMaskComponent } from 'vue-imask';
@@ -134,6 +134,10 @@ export default {
       type: String,
       default: 'xs',
     },
+    isNullWhenEmpty: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['update:modelValue', 'clear', 'change', 'blur', 'focus', 'keyup'],
   setup(props, { slots, emit }) {
@@ -151,6 +155,8 @@ export default {
       }
       return true;
     });
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
+
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
     const classes = computed(() => {
       return [
@@ -229,7 +235,10 @@ export default {
 
     const onInput = (event) => {
       if (!props.mask) {
-        emit('update:modelValue', event.target.value);
+        emit(
+          'update:modelValue',
+          event.target.value.length > 0 ? event.target.value : emptyVal.value,
+        );
       }
     };
 
@@ -248,7 +257,7 @@ export default {
     const onClear = () => {
       let clearedValue;
       if (typeof props.modelValue === 'string') {
-        clearedValue = '';
+        clearedValue = emptyVal.value;
       }
       emit('update:modelValue', clearedValue);
       emit('clear');
@@ -256,23 +265,30 @@ export default {
     };
 
     const onAcceptUnmasked = (unmaskedValue) => {
-      if (props.mask) {
-        emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : undefined);
-      }
+      emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : emptyVal.value);
     };
 
     watch(
-      () => props.modelValue,
-      () => {
-        if (!props.mask && inputRef.value) {
-          const displayValue = displayModelValue.value;
-          if (inputRef.value.value !== displayValue) {
-            inputRef.value.value = displayValue;
-          }
+      () => displayModelValue,
+      (value) => {
+        if (inputRef.value && !props.mask) {
+          inputRef.value.value = value == null ? null : value;
         }
       },
       { immediate: true },
     );
+
+    onMounted(() => {
+      if (props.isNullWhenEmpty) {
+        if (
+          !props.modelValue &&
+          props.modelValue !== null &&
+          (props.modelValue === undefined || typeof props.modelValue === 'string')
+        ) {
+          emit('update:modelValue', null);
+        }
+      }
+    });
 
     return {
       isShowClearable,
