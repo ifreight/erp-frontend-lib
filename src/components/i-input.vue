@@ -234,16 +234,11 @@ export default {
     });
 
     const onInput = (event) => {
-      console.log('on input', event.target.value);
       if (!props.mask) {
-        if (props.isNullWhenEmpty) {
-          emit(
-            'update:modelValue',
-            event.target.value.length > 0 ? event.target.value : emptyVal.value,
-          );
-        } else {
-          emit('update:modelValue', event.target.value);
-        }
+        emit(
+          'update:modelValue',
+          event.target.value.length > 0 ? event.target.value : emptyVal.value,
+        );
       }
     };
 

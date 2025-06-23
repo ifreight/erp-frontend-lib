@@ -158,11 +158,9 @@ export default {
     watch(
       () => phone.value,
       (val) => {
-        console.log('phone val', val);
         if (val !== props.modelValue) {
           emit('update:modelValue', val ? val : emptyVal.value);
         } else if (!val) {
-          console.log('kesini ?');
           emit('update:modelValue', emptyVal.value);
         }
       },

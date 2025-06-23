@@ -10,7 +10,7 @@
       <i-input-tel v-model="input1" placeholder="input 1 placeholder" clearable />
     </div>
     <div>
-      <div>Normal + clearable (not null when empty)</div>
+      <div>Normal + clearable (not null when empty isNullWhenEmpty: false)</div>
       <span class="tw:text-red-600">
         v-model:
         <span v-if="input5 === null">ini null</span>

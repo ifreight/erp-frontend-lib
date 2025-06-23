@@ -17,7 +17,7 @@
       placeholder="max 3"
     />
     <div>
-      Normal + clearable (not null if empty)
+      Normal + clearable (not null when empty isNullWhenEmpty: false)
       <span class="tw:text-red-400 tw:ml-1">
         v-model:
         <span v-if="input10 === null">ini null</span>
@@ -148,7 +148,11 @@
     />
 
     <div>Number mask NPWP + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)</div>
-    <span>v-model: {{ input9 }}</span>
+    <span class="tw:text-red-400 tw:ml-1">
+      v-model:
+      <span v-if="input9 === null">ini null</span>
+      <span v-else>{{ !input9 ? 'empty bkn null' : `${input9}` }}</span>
+    </span>
     <i-input
       v-model="input9"
       input-id="Text9"
@@ -178,8 +182,8 @@ export default {
     const input4 = ref(undefined);
     const input5 = ref('password');
     const input6 = ref(Math.round(123.453 * 100) / 100);
-    const input7 = ref(0);
-    // const input7 = ref(null);
+    // const input7 = ref(0);
+    const input7 = ref(null);
     const input8 = ref(new Date());
     // const input8 = ref(null);
     const input9 = ref(null);

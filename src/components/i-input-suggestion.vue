@@ -263,7 +263,6 @@ export default defineComponent({
     };
 
     const debouncedHandleQuery = debounce(() => {
-      console.log(props.modelValue);
       handleQuery(props.modelValue);
     }, 300);
 

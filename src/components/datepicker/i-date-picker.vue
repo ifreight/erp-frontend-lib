@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { ref, watch, onMounted, nextTick } from 'vue';
+import { computed, ref, watch, onMounted, nextTick } from 'vue';
 import dayjs from 'dayjs';
 
 import DatePickerHeader from '@/components/datepicker/date-picker-header.vue';
@@ -46,12 +46,18 @@ export default {
       type: Function,
       default: null,
     },
+    isNullWhenEmpty: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['selectDate', 'update:modelValue'],
   setup(props, { emit }) {
     let activeDate = ref(undefined);
     let selectedDate = ref([]);
     let isLoaded = ref(false);
+
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
 
     watch(
       () => props.modelValue,
@@ -75,7 +81,7 @@ export default {
         if (isLoaded.value) {
           const filteredVal = val.filter((item) => !!item);
           if (filteredVal.length === 0) {
-            emit('update:modelValue', props.pickLimit > 1 ? [] : undefined);
+            emit('update:modelValue', props.pickLimit > 1 ? [] : emptyVal.value);
             return;
           }
 
@@ -150,7 +156,13 @@ export default {
           activeDate.value = dayjs(props.modelValue ? props.modelValue.toString() : null).toDate();
           selectedDate.value.push(activeDate.value);
         }
-
+        if (
+          props.isNullWhenEmpty &&
+          props.pickLimit === 1 &&
+          ((!isArr && !props.modelValue) || (isArr && props.modelValue.length === 0))
+        ) {
+          emit('update:modelValue', null);
+        }
         // have to set this.isLoaded to true with extra nexttick to make the watcher work as expected
         nextTick().then(() => {
           isLoaded.value = true;
