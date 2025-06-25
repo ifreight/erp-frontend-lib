@@ -23,8 +23,14 @@
           </template>
           <template #append>
             <slot name="append">
-              <div class="i-select-arrow-container">
-                <ic-chevron-down />
+              <div class="i-select-append-icon">
+                <ic-times
+                  v-if="clearable && (!disabled || !readOnly)"
+                  v-show="filled"
+                  class="icon-clear"
+                  @click.stop="onClear"
+                />
+                <ic-chevron-down v-else-if="!filterable && !remote" />
               </div>
             </slot>
           </template>
@@ -64,9 +70,11 @@
 <script>
 import { computed, defineComponent, onBeforeUnmount, ref, watch } from 'vue';
 import debounce from 'lodash/debounce';
-import IcChevronDown from '@/icons/ic-chevron-down.vue';
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
 import IInput from './i-input.vue';
+
+import IcChevronDown from '@/icons/ic-chevron-down.vue';
+import IcTimes from '@/icons/ic-times.vue';
 
 export default defineComponent({
   name: 'ISelect',
@@ -74,6 +82,7 @@ export default defineComponent({
     IInput,
     IDropdownOptions,
     IcChevronDown,
+    IcTimes,
   },
   props: {
     modelValue: {
@@ -154,8 +163,13 @@ export default defineComponent({
       type: String,
       default: 'No results found.',
     },
+    isNullWhenEmpty: {
+      type: Boolean,
+      default: true,
+    },
+    clearable: Boolean,
   },
-  emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
+  emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur', 'clear'],
   setup(props, { emit }) {
     const isVisible = ref(false);
     const remoteLoading = ref(false);
@@ -169,6 +183,8 @@ export default defineComponent({
     const isLoading = computed(() => {
       return props.remote ? remoteLoading.value : props.loading;
     });
+    const filled = computed(() => !!props.modelValue);
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
 
     const dropdownOptions = computed(() => {
       let options = [];
@@ -228,9 +244,9 @@ export default defineComponent({
 
       if (!option) {
         inputValue.value = '';
-        updateSelectedOption(null);
-        emit('update:modelValue', null);
-        emit('change', null);
+        updateSelectedOption(emptyVal.value);
+        emit('update:modelValue', emptyVal.value);
+        emit('change', emptyVal.value);
         return;
       }
 
@@ -330,12 +346,17 @@ export default defineComponent({
           if (!matchingOption) {
             inputValue.value = '';
             query.value = '';
-            emit('update:modelValue', null);
+            emit('update:modelValue', emptyVal.value);
           }
         }
 
         hideDropdown();
       }
+    };
+
+    const onClear = () => {
+      changeSelected(undefined);
+      emit('clear');
     };
 
     watch(
@@ -424,6 +445,8 @@ export default defineComponent({
       handleSelected,
       onInputKeyup,
       isLoading,
+      filled,
+      onClear,
     };
   },
 });
@@ -461,13 +484,13 @@ export default defineComponent({
       }
     }
 
-    .i-select-arrow-container {
+    .i-select-append-icon {
       padding: 4px;
       cursor: pointer;
       color: var(--gray-900);
     }
     &.invalid {
-      .i-select-arrow-container {
+      .i-select-append-icon {
         color: var(--red-300);
       }
     }

@@ -27,16 +27,16 @@
     </div>
     <div class="tw:mb-4">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl tw:mb-2">
-        small size + dropdown header + clearable
+        small size + dropdown header + clearable + isNullWhenEmpty false
         <span class="tw:text-red-600">
           v-model:
-          <span v-if="suggestion === null">ini null</span>
-          <span v-else>{{ !suggestion ? 'empty bkn null' : `${suggestion}` }}</span>
+          <span v-if="suggestion6 === null">ini null</span>
+          <span v-else>{{ !suggestion6 ? 'empty bkn null' : `${suggestion6}` }}</span>
         </span>
       </div>
       <i-input-suggestion
-        v-model="suggestion"
-        input-id="Suggestion1"
+        v-model="suggestion6"
+        input-id="Suggestion6"
         class="package-input-suggestion"
         name="packageType"
         placeholder="Box, Drum, etc"
@@ -44,6 +44,7 @@
         :options="suggestionList"
         dropdown-max-height="290px"
         clearable
+        :isNullWhenEmpty="false"
       >
         <template #dropdownHeader>
           <div class="text-xs text-gray-400 text-right">this is header</div>

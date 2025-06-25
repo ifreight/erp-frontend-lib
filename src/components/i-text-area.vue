@@ -7,7 +7,7 @@
         :id="inputId"
         ref="textAreaRef"
         :name="name"
-        :value="modelValue || ''"
+        v-model="localModel"
         :disabled="disabled"
         :placeholder="placeholder"
         :readonly="readOnly"
@@ -25,7 +25,7 @@
         :id="inputId"
         ref="textAreaRef"
         :name="name"
-        :value="modelValue || ''"
+        v-model="localModel"
         :disabled="disabled"
         :placeholder="placeholder"
         :readonly="readOnly"
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { computed, toRefs, useAttrs, onMounted } from 'vue';
+import { computed, toRefs, useAttrs, ref } from 'vue';
 
 export default {
   name: 'ITextArea',
@@ -105,7 +105,6 @@ export default {
   setup(props, { emit }) {
     const attrs = useAttrs();
     const {
-      modelValue,
       size,
       disabled,
       readOnly,
@@ -117,7 +116,9 @@ export default {
       showTextLimit,
     } = toRefs(props);
 
-    const filled = computed(() => modelValue.value != null && modelValue.value !== '');
+    const localModel = ref(props.modelValue);
+
+    const filled = computed(() => props.modelValue != null && props.modelValue !== '');
 
     const classes = computed(() => {
       const classObject = {
@@ -136,7 +137,7 @@ export default {
       return classObject;
     });
 
-    const textLength = computed(() => (modelValue.value || '').length);
+    const textLength = computed(() => (props.modelValue || '').length);
 
     const maxTextLength = computed(() => attrs.maxlength);
     const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
@@ -148,28 +149,27 @@ export default {
     const isLabelActive = computed(() => filled.value || !!placeholder.value);
 
     const onInput = (event) => {
-      emit(
-        'update:modelValue',
-        event.target.value.length > 0 ? event.target.value : emptyVal.value,
-      );
+      let val = event.target.value;
+      if (val.length > 0) {
+        val = event.target.value.trimStart();
+      }
+      emit('update:modelValue', val.length > 0 ? val : emptyVal.value);
+
+      if (event.target.value.length > 0) {
+        localModel.value = event.target.value.trimStart();
+      }
     };
 
     const onFocus = () => emit('focus');
-    const onBlur = () => emit('blur');
+    const onBlur = () => {
+      if (props.modelValue) {
+        emit('update:modelValue', props.modelValue.trim());
+        localModel.value = localModel.value.trim();
+      }
+      emit('blur');
+    };
     const pressKeyEnter = () => emit('pressEnter');
     const pressKeyEnterShift = () => emit('pressEnterShift');
-
-    onMounted(() => {
-      if (props.isNullWhenEmpty) {
-        if (
-          !props.modelValue &&
-          props.modelValue !== null &&
-          (props.modelValue === undefined || typeof props.modelValue === 'string')
-        ) {
-          emit('update:modelValue', null);
-        }
-      }
-    });
 
     return {
       filled,
@@ -178,6 +178,7 @@ export default {
       maxTextLength,
       isTextLimitVisible,
       isLabelActive,
+      localModel,
       onInput,
       onFocus,
       onBlur,

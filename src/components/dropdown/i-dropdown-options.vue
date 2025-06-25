@@ -24,8 +24,11 @@
       <li
         v-for="(option, idx) in filteredOptions"
         :key="`option-${idx}`"
-        :class="currentValue === option[optionKey] && 'selected'"
-        @click="$emit('selectedValue', option)"
+        :class="{
+          selected: currentValue === option[optionKey],
+          disabled: option.disabled,
+        }"
+        @click="onSelectHandler(option)"
       >
         <slot name="optionsPrepend" :option="option" />
         <slot name="options" :option="option" :make-bold="makeBold">
@@ -191,7 +194,12 @@ export default defineComponent({
       }
       return str;
     };
-
+    const onSelectHandler = (option) => {
+      if (option.disabled) {
+        return false;
+      }
+      emit('selectedValue', option);
+    };
     watch(
       () => filteredOptions.value,
       (val) => {
@@ -205,6 +213,7 @@ export default defineComponent({
       bodyClasses,
       filteredOptions,
       makeBold,
+      onSelectHandler,
     };
   },
 });
@@ -258,6 +267,11 @@ export default defineComponent({
 
       &:hover {
         background-color: var(--yellow-200);
+      }
+
+      &.disabled {
+        color: var(--gray-700);
+        cursor: not-allowed;
       }
     }
 

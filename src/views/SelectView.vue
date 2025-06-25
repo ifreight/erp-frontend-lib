@@ -2,7 +2,7 @@
   <div>
     <div class="tw:mb-5">Select Types</div>
 
-    <div>select + filterable + empty value</div>
+    <div>select + filterable + empty value + clearable</div>
     <div class="tw:mb-4 tw:flex-1">
       <span class="tw:text-red-600">
         v-model:
@@ -15,10 +15,14 @@
         name="select-1"
         filterable
         :options="selectStaticOptions"
+        clearable
       />
     </div>
 
-    <div>select + filterable + placeholder + custom empty message</div>
+    <div>
+      select + filterable + placeholder + custom empty message + isNullWhenEmpty false (tpi initnya
+      null)
+    </div>
     <div class="tw:mb-4 tw:flex-1">
       <span class="tw:text-red-600">
         v-model:
@@ -33,10 +37,11 @@
         filterable
         :options="selectStaticOptions"
         no-data-text="contoh custom no data text"
+        :isNullWhenEmpty="false"
       />
     </div>
 
-    <div>select + filterable + init value</div>
+    <div>select + filterable + init value + disabled option(s)</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">
         v-model:
@@ -48,7 +53,7 @@
         input-id="Select-3"
         name="select-3"
         filterable
-        :options="selectStaticOptions"
+        :options="selectStaticOptions2"
       />
     </div>
 
@@ -82,7 +87,7 @@
       />
     </div>
 
-    <div>select + remote method</div>
+    <div>select + remote method + isNullWhenEmpty false</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">
         v-model:
@@ -99,10 +104,32 @@
         remote
         :remote-method="selectRemoteMethod"
         :remote-text="'Contoh Remote Text Custom'"
+        :isNullWhenEmpty="false"
       />
     </div>
 
-    <div>select without filterable</div>
+    <div>select + remote method + clearable</div>
+    <div class="tw:mb-4">
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select10 === null">ini null</span>
+        <span v-else>{{ !select10 ? 'empty bkn null' : `${select10}` }}</span> </span
+      ><br />
+      <span class="tw:text-red-600"> value-option: {{ selectRemote2 }} </span>
+      <i-select
+        v-model="select10"
+        v-model:value-option="selectRemote2"
+        input-id="Select-10"
+        name="select-10"
+        :options="selectStaticOptions"
+        remote
+        :remote-method="selectRemoteMethod"
+        :remote-text="'Contoh Remote Text Custom'"
+        clearable
+      />
+    </div>
+
+    <div>select without filterable + clearable</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">
         v-model:
@@ -114,10 +141,11 @@
         input-id="Select-8"
         name="select-8"
         :options="selectStaticOptions"
+        clearable
       />
     </div>
 
-    <div>select with rounded, width, custom arrow color and size sm</div>
+    <div>select with rounded, width and size sm</div>
     <div class="tw:mb-4 tw:w-[350px]">
       <span class="tw:text-red-600">
         v-model:
@@ -151,23 +179,35 @@ export default {
     const select3 = ref('America');
     const select4 = ref('Others');
     const select5 = ref(null);
-    const select7 = ref(null);
+    const select7 = ref(undefined);
     const select8 = ref(null);
     const select9 = ref(null);
+    const select10 = ref(undefined);
+
     const selectRemote = ref(null);
+    const selectRemote2 = ref(null);
 
     const selectStaticOptions = computed(() => {
       return ['Asia', 'America', 'Europe', 'Others'];
+    });
+
+    const selectStaticOptions2 = computed(() => {
+      return [
+        { id: 1, name: 'Asia', disabled: false },
+        { id: 2, name: 'America', disabled: true },
+        { id: 3, name: 'Europe', disabled: false },
+        { id: 4, name: 'Others', disabled: false },
+      ];
     });
 
     const selectRemoteMethod = async () => {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve([
-            { id: 1, name: 'Asia' },
-            { id: 2, name: 'America' },
-            { id: 3, name: 'Europe' },
-            { id: 4, name: 'Others' },
+            { id: 1, name: 'Asia', disabled: false },
+            { id: 2, name: 'America', disabled: true },
+            { id: 3, name: 'Europe', disabled: false },
+            { id: 4, name: 'Others', disabled: false },
           ]);
         }, 1000);
       });
@@ -183,8 +223,11 @@ export default {
       select7,
       select8,
       select9,
+      select10,
       selectRemote,
+      selectRemote2,
       selectStaticOptions,
+      selectStaticOptions2,
       selectRemoteMethod,
     };
   },

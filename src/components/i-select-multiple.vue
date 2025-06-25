@@ -5,7 +5,13 @@
       class="i-select-multiple"
       :class="!isNormalSelectMode ? 'fixed-options-select' : ''"
     >
-      <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
+      <span v-if="!isNormalSelectMode && !filterable"></span>
+      <div
+        v-else
+        class="i-select-container"
+        :class="isVisible ? 'visible' : ''"
+        @click="toggleDropdown"
+      >
         <i-input
           ref="inputRef"
           class="i-select-input"
@@ -25,10 +31,16 @@
           <template v-if="$slots.prepend" #prepend>
             <slot name="prepend" />
           </template>
-          <template v-if="showInputArrow" #append>
+          <template #append>
             <slot name="append">
               <div class="i-select-arrow-container">
-                <ic-chevron-down />
+                <ic-times
+                  v-if="isNormalSelectMode && clearable && filled && (!disabled || !readOnly)"
+                  v-show="!isVisible"
+                  class="icon-clear tw:w-2.5 tw:h-2.5"
+                  @click.stop="clearSelection"
+                />
+                <ic-chevron-down v-else-if="!filterable && !remote" />
               </div>
             </slot>
           </template>
@@ -53,7 +65,7 @@
         @selectedValue="handleSelected"
       >
         <template v-if="!remote" #header>
-          <div class="select-header">
+          <div class="select-header" :class="{ 'tw:pt-0': !isNormalSelectMode && !filterable }">
             <i-checkbox
               v-model="modelCheckAll"
               :checkbox-rounded="checkboxRounded"
@@ -95,6 +107,10 @@
             <div class="tw:absolute tw:z-2 tw:w-full tw:h-full tw:top-0"></div>
           </div>
         </template>
+
+        <template v-if="$slots.options" #options="{ option, makeBold }">
+          <slot name="options" :option="option" :make-bold="makeBold"></slot>
+        </template>
         <template #optionsPlaceholder>
           <div class="tw:px-2">
             <template v-if="isLoading"> Loading </template>
@@ -117,20 +133,24 @@
 <script>
 import { computed, defineComponent, onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
 import debounce from 'lodash/debounce';
-import IcChevronDown from '@/icons/ic-chevron-down.vue';
+
 import IButton from '@/components/i-button.vue';
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
 import IInput from './i-input.vue';
 
+import IcChevronDown from '@/icons/ic-chevron-down.vue';
+import IcTimes from '@/icons/ic-times.vue';
+
 export default defineComponent({
   name: 'ISelectMultiple',
   components: {
-    IcChevronDown,
     IButton,
     ICheckbox,
     IDropdownOptions,
     IInput,
+    IcChevronDown,
+    IcTimes,
   },
   props: {
     modelValue: {
@@ -217,10 +237,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    showInputArrow: {
-      type: Boolean,
-      default: true,
-    },
     remoteText: {
       type: String,
       default: 'Type to search.',
@@ -229,6 +245,7 @@ export default defineComponent({
       type: String,
       default: 'No results found.',
     },
+    clearable: Boolean,
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
   setup(props, { emit }) {
@@ -246,6 +263,7 @@ export default defineComponent({
     const isLoading = computed(() => {
       return props.remote ? remoteLoading.value : props.loading;
     });
+    const filled = computed(() => props.modelValue.length > 0);
 
     const dropdownOptions = computed(() => {
       const rawOptions = props.remote ? remoteOptions.value : props.options || [];
@@ -532,6 +550,7 @@ export default defineComponent({
       selectedOption,
       onInputKeyup,
       inputTextValue,
+      filled,
     };
   },
 });

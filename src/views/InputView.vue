@@ -1,21 +1,23 @@
 <template>
   <div class="container-input-view">
-    <div>
-      Normal + clearable
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input1 === null">ini null</span>
-        <span v-else>{{ !input1 ? 'empty bkn null' : `${input1}` }}</span>
-      </span>
-    </div>
-    <i-input
-      v-model="input1"
-      input-id="Text1"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      placeholder="max 3"
-    />
+    <form @submit.prevent="submitHandler">
+      <div>
+        Normal + clearable + form example
+        <span class="tw:text-red-400 tw:ml-1">
+          v-model:
+          <span v-if="input1 === null">ini null</span>
+          <span v-else>{{ !input1 ? 'empty bkn null' : `${input1}` }}</span>
+        </span>
+      </div>
+      <i-input
+        v-model="input1"
+        input-id="Text1"
+        name="text"
+        class="tw:flex-1 tw:mb-2"
+        clearable
+        placeholder="max 3"
+      />
+    </form>
     <div>
       Normal + clearable (not null when empty isNullWhenEmpty: false)
       <span class="tw:text-red-400 tw:ml-1">
@@ -189,6 +191,11 @@ export default {
     const input9 = ref(null);
     const input10 = ref('');
 
+    const submitHandler = () => {
+      const data = { halo: input1.value };
+      alert(data);
+    };
+
     return {
       input1,
       input2,
@@ -200,6 +207,7 @@ export default {
       input8,
       input9,
       input10,
+      submitHandler,
     };
   },
 };

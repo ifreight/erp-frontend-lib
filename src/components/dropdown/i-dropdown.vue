@@ -5,7 +5,6 @@
     <div v-show="visible && isShowArrow" class="i-dropdown-arrow">
       <span class="i-dropdown-arrow-icon"></span>
     </div>
-
     <div
       ref="dropdownRef"
       v-show="visible"
