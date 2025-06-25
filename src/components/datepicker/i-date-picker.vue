@@ -57,7 +57,7 @@ export default {
     let selectedDate = ref([]);
     let isLoaded = ref(false);
 
-    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : ''));
+    const emptyVal = computed(() => (props.isNullWhenEmpty ? null : undefined));
 
     watch(
       () => props.modelValue,
@@ -156,13 +156,7 @@ export default {
           activeDate.value = dayjs(props.modelValue ? props.modelValue.toString() : null).toDate();
           selectedDate.value.push(activeDate.value);
         }
-        if (
-          props.isNullWhenEmpty &&
-          props.pickLimit === 1 &&
-          ((!isArr && !props.modelValue) || (isArr && props.modelValue.length === 0))
-        ) {
-          emit('update:modelValue', null);
-        }
+
         // have to set this.isLoaded to true with extra nexttick to make the watcher work as expected
         nextTick().then(() => {
           isLoaded.value = true;

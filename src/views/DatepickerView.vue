@@ -1,7 +1,7 @@
 <template>
   <div class="tw:text-center tw:text-red-400">
-    single date picker notes: isNullWhenEmpty true (default) && picklimit {{ '<=' }} 1 any
-    default/init v-model will be converted to null
+    single date picker notes: isNullWhenEmpty true (default) && only works when picklimit
+    {{ '<=' }} 1 any
   </div>
   <div class="tw:flex tw:gap-2 tw:items-end">
     <div class="tw:w-1/4">

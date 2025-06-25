@@ -24,10 +24,11 @@
         @focus="onFocus"
         @blur="onBlur"
         @accept:unmasked="onAcceptUnmasked"
+        @keydown.enter.exact="onEnterKeyHandler"
       />
 
       <div v-if="isShowClearable" v-show="filled" class="append-container">
-        <ic-times-circle class="icon-clear" @click="onClear" />
+        <ic-times class="icon-clear" @click="onClear" />
       </div>
       <div v-if="!!$slots.append" class="append-container">
         <slot name="append" />
@@ -46,12 +47,12 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { IMaskComponent } from 'vue-imask';
 
-import IcTimesCircle from '@/icons/ic-times-circle.vue';
+import IcTimes from '@/icons/ic-times.vue';
 
 export default {
   name: 'IInput',
   components: {
-    IcTimesCircle,
+    IcTimes,
     'imask-input': IMaskComponent,
   },
   props: {
@@ -251,6 +252,9 @@ export default {
     };
 
     const onBlur = () => {
+      if (props.modelValue) {
+        emit('update:modelValue', props.modelValue.trim() || emptyVal.value);
+      }
       emit('blur');
     };
 
@@ -268,6 +272,12 @@ export default {
       emit('update:modelValue', unmaskedValue ? Number(unmaskedValue) : emptyVal.value);
     };
 
+    const onEnterKeyHandler = () => {
+      if (props.modelValue) {
+        emit('update:modelValue', props.modelValue.trim() || emptyVal.value);
+      }
+    };
+
     watch(
       () => displayModelValue,
       (value) => {
@@ -277,18 +287,6 @@ export default {
       },
       { immediate: true },
     );
-
-    onMounted(() => {
-      if (props.isNullWhenEmpty) {
-        if (
-          !props.modelValue &&
-          props.modelValue !== null &&
-          (props.modelValue === undefined || typeof props.modelValue === 'string')
-        ) {
-          emit('update:modelValue', null);
-        }
-      }
-    });
 
     return {
       isShowClearable,
@@ -306,6 +304,7 @@ export default {
       onBlur,
       onClear,
       onAcceptUnmasked,
+      onEnterKeyHandler,
     };
   },
 };
@@ -409,7 +408,7 @@ export default {
       margin-left: 12px;
 
       .icon-clear {
-        color: var(--gray-600);
+        color: var(--gray-900);
         cursor: pointer;
         height: 12px;
         width: 12px;

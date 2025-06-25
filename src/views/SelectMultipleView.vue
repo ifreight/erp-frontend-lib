@@ -22,7 +22,6 @@
               :options="selectStaticOptions"
               :filterable="true"
               :multiple="true"
-              :showInputArrow="false"
               noDataText="Custom no data text"
               @change="changeHandler"
             >
@@ -36,8 +35,8 @@
           <span class="tw:text-red-600 tw:text-xs">v-model: {{ select11 }}</span>
           <div class="tw:text-xs">selectedOptions: {{ selectedOptions11 }}</div>
 
-          <i-button @click="dropdownVisible3 = !dropdownVisible3">Click Me</i-button>
-          <i-dropdown :visible="dropdownVisible3" :isShowArrow="false" rounded="lg">
+          <i-button @click="dropdownVisible2 = !dropdownVisible2">Click Me</i-button>
+          <i-dropdown :visible="dropdownVisible2" :isShowArrow="false" rounded="lg">
             <i-select-multiple
               v-model="select11"
               v-model:value-option="selectedOptions11"
@@ -50,16 +49,42 @@
               dropdown-max-height="128px"
               :options="selectStaticOptions"
               :filterable="true"
-              :showInputArrow="false"
             >
               <template #prepend><ic-search class="tw:text-gray-700" /></template>
+            </i-select-multiple>
+          </i-dropdown>
+        </div>
+
+        <div>Slot options + non filterable</div>
+        <div class="tw:mb-4 tw:w-[275px] tw:relative">
+          <span class="tw:text-red-600 tw:text-xs">v-model: {{ select15 }}</span>
+          <div class="tw:text-xs">selectedOptions: {{ selectedOptions15 }}</div>
+
+          <i-button @click="dropdownVisible3 = !dropdownVisible3">Click Me</i-button>
+          <i-dropdown :visible="dropdownVisible3" :isShowArrow="false" rounded="lg" padding="none">
+            <i-select-multiple
+              v-model="select15"
+              v-model:value-option="selectedOptions15"
+              inputId="Select-15"
+              name="select-15"
+              size="sm"
+              rounded="lg"
+              checkbox-color="gray-500"
+              placeholder="Cari..."
+              dropdown-max-height="128px"
+              :options="selectStaticOptions2"
+            >
+              <template #prepend><ic-search class="tw:text-gray-700" /></template>
+              <template #options="{ option }">
+                <i-chip :text="option.name" :status="option.status" />
+              </template>
             </i-select-multiple>
           </i-dropdown>
         </div>
       </div>
       <div class="tw:w-1/2">
         <div class="tw:bg-yellow-800">is-normal-select-mode = true</div>
-        <div>Multiple Normal Select + Filterable + init value</div>
+        <div>Filterable + init value + clearable</div>
         <span class="tw:text-red-600 tw:text-xs">v-model: {{ select12 }}</span>
         <div class="tw:text-xs">selectedOptions: {{ selectedOptions12 }}</div>
 
@@ -77,11 +102,12 @@
             :options="selectStaticOptions2"
             :filterable="true"
             :is-normal-select-mode="true"
+            clearable
           >
           </i-select-multiple>
         </div>
 
-        <div>Multiple Normal Select Without Filter</div>
+        <div>NON Filterable + clearable</div>
         <span class="tw:text-red-600">v-model: {{ select13 }}</span>
         <div class="tw:text-xs">selectedOptions: {{ selectedOptions13 }}</div>
 
@@ -99,6 +125,7 @@
             dropdown-max-height="128px"
             :options="selectStaticOptions"
             :is-normal-select-mode="true"
+            clearable
           >
           </i-select-multiple>
         </div>
@@ -139,6 +166,7 @@ import IcSearch from '@/icons/ic-search.vue';
 import IButton from '@/components/i-button.vue';
 import IDropdown from '@/components/dropdown/i-dropdown.vue';
 
+import IChip from '@/components/i-chip.vue';
 import ISelectMultiple from '@/components/i-select-multiple.vue';
 
 export default {
@@ -146,6 +174,7 @@ export default {
     IcSearch,
     IButton,
     IDropdown,
+    IChip,
     ISelectMultiple,
   },
   setup() {
@@ -154,13 +183,16 @@ export default {
     const select12 = ref([1, 2, 3, 4, 5, 6, 7, 8]);
     const select13 = ref([]);
     const select14 = ref([1, 2, 3, 4]);
+    const select15 = ref([]);
 
     const selectedOptions10 = ref([]);
     const selectedOptions11 = ref([]);
     const selectedOptions12 = ref([]);
     const selectedOptions13 = ref([]);
     const selectedOptions14 = ref([]);
+    const selectedOptions15 = ref([]);
 
+    const dropdownVisible2 = ref(false);
     const dropdownVisible3 = ref(false);
 
     const selectStaticOptions = computed(() => {
@@ -172,34 +204,42 @@ export default {
         {
           id: 1,
           name: 'Asia',
+          status: 'error',
         },
         {
           id: 2,
           name: 'America',
+          status: 'error',
         },
         {
           id: 3,
           name: 'Europe',
+          status: 'info',
         },
         {
           id: 4,
           name: 'Indonesia',
+          status: 'neutral',
         },
         {
           id: 5,
           name: 'India',
+          status: 'neutral',
         },
         {
           id: 6,
           name: 'Japan',
+          status: 'success',
         },
         {
           id: 7,
           name: 'England',
+          status: 'info',
         },
         {
           id: 8,
           name: 'Uganda',
+          status: 'success',
         },
       ];
     });
@@ -227,14 +267,17 @@ export default {
       select12,
       select13,
       select14,
+      select15,
       selectedOptions10,
       selectedOptions11,
       selectedOptions12,
       selectedOptions13,
       selectedOptions14,
+      selectedOptions15,
       selectRemoteMethod,
       selectStaticOptions,
       selectStaticOptions2,
+      dropdownVisible2,
       dropdownVisible3,
       changeHandler,
     };

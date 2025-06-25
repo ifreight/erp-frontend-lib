@@ -57,7 +57,7 @@
           @validate="onValidate"
         />
         <div v-if="clearable && (!disabled || !readOnly)" v-show="filled" class="append-container">
-          <ic-times-circle class="icon-clear" @click.once="onClear" />
+          <ic-times class="icon-clear" @click.once="onClear" />
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import InputTel from './index.js';
 import IcChevronUp from '@/icons/ic-chevron-up.vue';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
-import IcTimesCircle from '@/icons/ic-times-circle.vue';
+import IcTimes from '@/icons/ic-times.vue';
 
 import IDropdownOptions from '@/components/dropdown/i-dropdown-options.vue';
 
@@ -83,7 +83,7 @@ export default {
     InputTel: InputTel.component,
     IcChevronUp,
     IcChevronDown,
-    IcTimesCircle,
+    IcTimes,
     IDropdownOptions,
   },
   props: {
@@ -171,7 +171,7 @@ export default {
       if (typeof props.modelValue === 'string') {
         clearedValue = emptyVal.value;
       }
-      phone.value = clearedValue;
+      phone.value = '';
       emit('update:modelValue', clearedValue);
       emit('clear');
     };
@@ -210,15 +210,6 @@ export default {
 
       if (props.modelValue) {
         phone.value = props.modelValue;
-      }
-      if (props.isNullWhenEmpty) {
-        if (
-          !props.modelValue &&
-          props.modelValue !== null &&
-          (props.modelValue === undefined || typeof props.modelValue === 'string')
-        ) {
-          emit('update:modelValue', null);
-        }
       }
     });
     return {
@@ -282,7 +273,7 @@ export default {
       margin-right: 16px;
 
       .icon-clear {
-        color: var(--gray-600);
+        color: var(--gray-900);
         cursor: pointer;
         height: 12px;
         width: 12px;
