@@ -2,7 +2,7 @@
   <div>
     <div class="tw:mb-5">Select Types</div>
 
-    <div>select + filterable + empty value + clearable</div>
+    <div>select + filterable + empty value + clearable + prepend content</div>
     <div class="tw:mb-4 tw:flex-1">
       <span class="tw:text-red-600">
         v-model:
@@ -16,7 +16,9 @@
         filterable
         :options="selectStaticOptions"
         clearable
-      />
+      >
+        <template #prepend><ic-search class="tw:text-gray-700" /></template>
+      </i-select>
     </div>
 
     <div>
@@ -41,7 +43,7 @@
       />
     </div>
 
-    <div>select + filterable + init value + disabled option(s)</div>
+    <div>select + filterable + init value + disabled option(s) + borderless</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">
         v-model:
@@ -54,6 +56,8 @@
         name="select-3"
         filterable
         :options="selectStaticOptions2"
+        borderless
+        placeholder="borderlesss...."
       />
     </div>
 
@@ -167,10 +171,12 @@
 <script>
 import { ref, computed } from 'vue';
 import ISelect from '@/components/i-select.vue';
+import IcSearch from '@/icons/ic-search.vue';
 
 export default {
   components: {
     ISelect,
+    IcSearch,
   },
   setup() {
     let customColor = 'red';

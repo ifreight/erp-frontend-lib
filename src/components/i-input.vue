@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { computed, watch, onMounted, ref } from 'vue';
+import { computed, watch, ref } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/id';
 import { IMaskComponent } from 'vue-imask';
@@ -253,7 +253,11 @@ export default {
 
     const onBlur = () => {
       if (props.modelValue) {
-        emit('update:modelValue', props.modelValue.trim() || emptyVal.value);
+        let val = props.modelValue;
+        if (typeof props.modelValue === 'string') {
+          val = props.modelValue.trim();
+        }
+        emit('update:modelValue', val || emptyVal.value);
       }
       emit('blur');
     };
@@ -274,7 +278,11 @@ export default {
 
     const onEnterKeyHandler = () => {
       if (props.modelValue) {
-        emit('update:modelValue', props.modelValue.trim() || emptyVal.value);
+        let val = props.modelValue;
+        if (typeof props.modelValue === 'string') {
+          val = props.modelValue.trim();
+        }
+        emit('update:modelValue', val || emptyVal.value);
       }
     };
 

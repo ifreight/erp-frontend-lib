@@ -13,7 +13,7 @@
           :disabled="disabled"
           :read-only="readOnly"
           :invalid="invalid"
-          :dark-mode="darkMode"
+          :dark="dark"
           :borderless="borderless"
           :size="size"
           :clearable="clearable"
@@ -123,7 +123,7 @@ export default defineComponent({
     readOnly: Boolean,
     invalid: Boolean,
     borderless: Boolean,
-    darkMode: Boolean,
+    dark: Boolean,
     clearable: Boolean,
     rounded: {
       type: String,

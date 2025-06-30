@@ -10,10 +10,8 @@
         v-model: <span v-if="date === null">ini null</span>
         <span v-else>{{ !date ? 'empty bkn null' : `${date}` }}</span>
       </span>
-      <p class="tw:mb-1 tw:border tw:min-h-[26px] tw:px-1">
-        {{ formatDate(date, 'DD-MM-YYYY hh:mm:ss') }}
-      </p>
-      <i-date-picker v-model="date"></i-date-picker>
+      <i-input v-model="date" name="date" readOnly />
+      <i-date-picker v-model="date" @selectDate="selectDateHandler"></i-date-picker>
     </div>
     <div class="tw:w-1/4">
       <h3 class="tw:font-bold tw:mb-1 tw:text-xl">
@@ -30,6 +28,7 @@
         v-model="date2"
         :disabled-date="afterToday"
         :isNullWhenEmpty="false"
+        @filled="filledHandler"
       ></i-date-picker>
     </div>
     <div class="tw:w-1/4">
@@ -67,6 +66,8 @@
           }
         "
         :initial-date="initialDate"
+        @selectDate="selectDateHandler"
+        @filled="filledHandler"
       ></i-date-picker>
     </div>
   </div>
@@ -81,10 +82,16 @@
         {{ formatDate(date5, 'DD-MM-YYYY') }}
       </p>
       <i-button text @click="clearDate5()"> Clear </i-button>
-      <i-date-range-picker v-model="date5"></i-date-range-picker>
+      <i-date-range-picker
+        v-model="date5"
+        @selectDate="selectDateRangeHandler"
+        @filled="filledRangeHandler"
+      ></i-date-range-picker>
     </div>
     <div class="tw:w-1/2">
-      <h3 class="tw:font-bold tw:mb-1 tw:text-xl">With Initial Date & Disabled Date</h3>
+      <h3 class="tw:font-bold tw:mb-1 tw:text-xl">
+        With Initial Date & Disabled Date & select handler
+      </h3>
       <span class="tw:text-red-400 tw:text-3xs">
         v-model: <span v-if="date6 === null">ini null</span>
         <span v-else>{{ !date6 ? 'empty bkn null' : `${date6}` }}</span>
@@ -97,6 +104,8 @@
         v-model="date6"
         :disabled-date="beforeToday"
         :initial-date="initialDate"
+        @selectDate="selectDateRangeHandler"
+        @filled="filledRangeHandler"
       ></i-date-range-picker>
     </div>
   </div>
@@ -108,9 +117,10 @@ import dayjs from 'dayjs';
 import IDatePicker from '@/components/datepicker/i-date-picker.vue';
 import IDateRangePicker from '@/components/datepicker/i-date-range-picker.vue';
 import IButton from '@/components/i-button.vue';
+import IInput from '@/components/i-input.vue';
 
 export default {
-  components: { IDatePicker, IDateRangePicker, IButton },
+  components: { IDatePicker, IDateRangePicker, IButton, IInput },
   setup() {
     const today = new Date();
     const initialDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -156,6 +166,21 @@ export default {
     const clearDate6 = () => {
       date6.value = [];
     };
+
+    const filledHandler = (val) => {
+      console.log('filled is pick limit = v-model.length', val);
+    };
+    const filledRangeHandler = (val) => {
+      console.log('filled range when v-model.length === 2', val);
+    };
+
+    const selectDateHandler = (val) => {
+      console.log('selected is every date selected', val);
+    };
+    const selectDateRangeHandler = (val) => {
+      console.log('selected date handler is', val);
+    };
+
     return {
       initialDate,
       date,
@@ -169,6 +194,10 @@ export default {
       formatDate,
       clearDate5,
       clearDate6,
+      filledHandler,
+      filledRangeHandler,
+      selectDateHandler,
+      selectDateRangeHandler,
     };
   },
 };

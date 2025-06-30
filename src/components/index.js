@@ -8,6 +8,7 @@ export { default as IChip } from './i-chip.vue';
 export { default as IDatePicker } from './datepicker/i-date-picker.vue';
 export { default as IDateRangePicker } from './datepicker/i-date-range-picker.vue';
 export { default as IDialog } from './i-dialog.vue';
+export { default as IDrawer } from './i-drawer.vue';
 export { default as IDropdown } from './dropdown/i-dropdown.vue';
 export { default as IFileList } from './i-file-list.vue';
 export { default as IInput } from './i-input.vue';

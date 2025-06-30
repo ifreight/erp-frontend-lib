@@ -51,7 +51,7 @@ export default {
       default: true,
     },
   },
-  emits: ['selectDate', 'update:modelValue'],
+  emits: ['selectDate', 'update:modelValue', 'filled'],
   setup(props, { emit }) {
     let activeDate = ref(undefined);
     let selectedDate = ref([]);
@@ -127,6 +127,10 @@ export default {
         emit('selectDate', date.toDate());
       } else {
         selectedDate.value.splice(findMatchIndex, 1);
+      }
+
+      if (typeof props.pickLimit === 'number' && selectedDate.value.length === props.pickLimit) {
+        emit('filled', selectedDate.value);
       }
 
       if (param === 'prev') {

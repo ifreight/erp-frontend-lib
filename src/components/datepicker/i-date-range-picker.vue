@@ -69,7 +69,7 @@ export default {
       default: null,
     },
   },
-  emits: ['update:modelValue', 'selectDate'],
+  emits: ['update:modelValue', 'selectDate', 'filled'],
   setup(props, { emit }) {
     let activeDate = ref(undefined);
     let activeDateNext = ref(undefined);
@@ -133,7 +133,7 @@ export default {
       activeDate.value = dayjs(date.toString()).subtract(1, 'month').toDate();
     };
 
-    const clickDate = (date) => {
+    const clickDate = async (date) => {
       if (selectedDate.value.length === 2) {
         selectedDate.value = [];
         selectedDate.value.push(dayjs(date).second(0).toDate());
@@ -143,8 +143,10 @@ export default {
         } else {
           selectedDate.value.push(dayjs(date).second(0).toDate());
         }
-
-        emit('selectDate', date.toDate());
+      }
+      emit('selectDate', date.toDate());
+      if (selectedDate.value.length === 2) {
+        emit('filled', selectedDate.value);
       }
     };
 
@@ -154,9 +156,9 @@ export default {
         activeDateNext.value = dayjs(props.initialDate).add(1, 'month').toDate();
 
         if (props.modelValue && props.modelValue.length > 0) {
-          const [first] = this.value;
+          const [first] = props.modelValue;
           activeDate.value = dayjs(first ? first.toString() : undefined).toDate();
-          activeDateNext.value = dayjs(this.activeDate).add(1, 'month').toDate();
+          activeDateNext.value = dayjs(activeDate.value).add(1, 'month').toDate();
           selectedDate.value = props.modelValue.map((date) =>
             date ? dayjs(date.toString()).toDate() : undefined,
           );

@@ -436,21 +436,6 @@ export default defineComponent({
     const handleClickOutside = (event) => {
       const isClickInside = event.composedPath().includes(selectRef.value);
       if (!isClickInside) {
-        const typedValue = typeof inputValue.value === 'string' ? inputValue.value.trim() : '';
-
-        if (typedValue) {
-          const matchingOption = dropdownOptions.value.find(
-            (option) =>
-              option[props.optionValue]?.toString().toLowerCase() === typedValue.toLowerCase(),
-          );
-
-          if (!matchingOption) {
-            inputValue.value = '';
-            query.value = '';
-            emit('update:modelValue', '');
-          }
-        }
-
         hideDropdown();
       }
     };

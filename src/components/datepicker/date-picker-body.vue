@@ -96,6 +96,7 @@
 <script>
 import { computed } from 'vue';
 import dayjs from 'dayjs';
+import 'dayjs/locale/id';
 import isBetween from 'dayjs/plugin/isBetween';
 
 import IcCheckCircle from '@/icons/ic-check-circle.vue';
@@ -131,9 +132,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    dateLocale: {
+      type: String,
+      default: 'id',
+    },
   },
   emits: ['clickDate', 'update:hoverTemporaryDate'],
   setup(props, { emit }) {
+    dayjs.locale(props.dateLocale);
+
     const listDays = computed(() =>
       Array.from(Array(7), (v, i) =>
         dayjs()
