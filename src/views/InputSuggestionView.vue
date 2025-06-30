@@ -91,6 +91,7 @@
         placeholder="Box, Drum, etc"
         :options="suggestionList"
         dropdown-max-height="290px"
+        borderless
       >
       </i-input-suggestion>
     </div>

@@ -15,6 +15,7 @@
           :invalid="invalid"
           :dark="dark"
           :rounded="rounded"
+          :borderless="borderless"
           :size="size"
           @keyup="onInputKeyup"
         >
@@ -122,6 +123,7 @@ export default defineComponent({
       default: 'name',
     },
     disabled: Boolean,
+    borderless: Boolean,
     remote: Boolean,
     remoteMethod: {
       type: Function,

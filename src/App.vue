@@ -10,6 +10,7 @@
         <router-link to="/chip">chip</router-link>
         <router-link to="/datepicker">date picker</router-link>
         <router-link to="/dialog">dialog</router-link>
+        <router-link to="/drawer">drawer</router-link>
         <router-link to="/dropdown">dropdown</router-link>
         <router-link to="/file-list">file list</router-link>
         <router-link to="/icons">icons</router-link>

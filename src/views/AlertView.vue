@@ -31,7 +31,7 @@
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Alert after router push</div>
       <div class="tw:mt-6 tw:flex tw:gap-5">
         <i-button class="tw:w-fit" @click="showAlertAfterPush">
-          alert not dissapear after router push
+          alert not disappear after router push
         </i-button>
         <i-button class="tw:w-fit" @click="showAlertAfterPush2"> using other setting </i-button>
       </div>
