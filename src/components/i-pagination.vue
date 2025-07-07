@@ -16,6 +16,7 @@
 
     <div class="i-pagination-container">
       <button
+        type="button"
         class="button-left"
         :class="{
           disabled: activePage === 1
@@ -26,6 +27,7 @@
       </button>
 
       <button
+        type="button"
         class="button-number"
         :class="{
           active: activePage === 1
@@ -43,6 +45,7 @@
         v-for="page in middlePage"
         :key="`button-${page}`"
         class="button-number"
+        type="button"
         :class="{
           active: activePage === page
         }"
@@ -57,6 +60,7 @@
 
       <button
         v-if="lastNumber"
+        type="button"
         class="button-number"
         :class="{
           active: activePage === lastNumber
@@ -67,6 +71,7 @@
       </button>
 
       <button
+        type="button"
         class="button-right"
         :class="{
           disabled: activePage === lastNumber || !lastNumber
