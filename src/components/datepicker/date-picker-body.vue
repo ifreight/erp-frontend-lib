@@ -1,17 +1,25 @@
 <template>
   <div class="i-datepicker--body">
     <div class="i-datepicker--list-day-wrapper">
-      <div v-for="(day, key) in listDays" :key="day" :class="['list-day', key !== 0 || 'sunday']">
+      <div
+        v-for="(day, key) in listDays"
+        :key="day"
+        :class="['list-day', key !== 0 || 'sunday']"
+      >
         {{ day }}
       </div>
     </div>
-    <div ref="refCurrentPick" class="i-datepicker--date-list">
+    <div
+      ref="refCurrentPick"
+      class="i-datepicker--date-list"
+    >
       <div
         v-for="date in previousPicker"
         :key="`${date.date.date()}${date.date.month()}${date.date.year()}-previous`"
         class="each-date"
       >
         <button
+          type="button"
           class="i-datepicker-pick previous-date"
           :class="{
             selected: isSelectedDate(date.date),
@@ -38,6 +46,7 @@
         class="each-date"
       >
         <button
+          type="button"
           class="i-datepicker-pick current"
           :class="[
             dateRangeSelectedMarker(date.date),
@@ -69,6 +78,7 @@
         class="each-date"
       >
         <button
+          type="button"
           class="i-datepicker-pick next-date"
           :class="{
             selected: isSelectedDate(date.date),

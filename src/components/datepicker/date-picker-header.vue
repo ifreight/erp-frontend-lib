@@ -2,6 +2,7 @@
   <div class="i-datepicker--header">
     <template v-if="!hideLeftArrow">
       <button
+        type="button"
         class="i-datepicker--header--nav-btn"
         :class="{ disabled: disabledPreviousMonth }"
         :disabled="disabledPreviousMonth"
@@ -10,6 +11,7 @@
         <ic-chevrons-left />
       </button>
       <button
+        type="button"
         class="i-datepicker--header--nav-btn"
         :class="{ disabled: disabledPreviousMonth }"
         :disabled="disabledPreviousMonth"
@@ -23,6 +25,7 @@
     </div>
     <template v-if="!hideRightArrow">
       <button
+        type="button"
         class="i-datepicker--header--nav-btn"
         :class="{ disabled: disabledNextMonth }"
         :disabled="disabledNextMonth"
@@ -31,6 +34,7 @@
         <ic-chevron-right />
       </button>
       <button
+        type="button"
         class="i-datepicker--header--nav-btn"
         :class="{ disabled: disabledNextMonth }"
         :disabled="disabledNextMonth"
