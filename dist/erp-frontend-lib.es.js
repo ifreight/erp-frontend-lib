@@ -4107,6 +4107,7 @@ const r3 = /* @__PURE__ */ c(le, [["render", ve]]), $e = {
             const g = $.map((v) => A(v).toDate());
             e("update:modelValue", g);
           }
+          typeof t.pickLimit == "number" && h.length === t.pickLimit && e("filled", h);
         }
       },
       { deep: !0 }
@@ -4120,7 +4121,7 @@ const r3 = /* @__PURE__ */ c(le, [["render", ve]]), $e = {
       const g = r.value.findIndex(
         (v) => A(h).isSame(A(v), "day")
       );
-      g === -1 ? (t.pickLimit === "any" || r.value.length < t.pickLimit || r.value.shift(), r.value.push(A(h).second(0).toDate()), e("selectDate", h.toDate())) : r.value.splice(g, 1), typeof t.pickLimit == "number" && r.value.length === t.pickLimit && e("filled", r.value), $ === "prev" ? n.value = A(n.value.toString()).subtract(1, "month").toDate() : $ === "next" && (n.value = A(n.value.toString()).add(1, "month").toDate());
+      g === -1 ? (t.pickLimit === "any" || r.value.length < t.pickLimit || r.value.shift(), r.value.push(A(h).second(0).toDate()), e("selectDate", h.toDate())) : r.value.splice(g, 1), $ === "prev" ? n.value = A(n.value.toString()).subtract(1, "month").toDate() : $ === "next" && (n.value = A(n.value.toString()).add(1, "month").toDate());
     }, f = (h) => {
       n.value = h;
     };

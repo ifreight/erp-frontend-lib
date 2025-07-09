@@ -92,6 +92,9 @@ export default {
             const extractedDate = filteredVal.map((d) => dayjs(d).toDate());
             emit('update:modelValue', extractedDate);
           }
+          if (typeof props.pickLimit === 'number' && val.length === props.pickLimit) {
+            emit('filled', val);
+          }
         }
       },
       { deep: true },
@@ -127,10 +130,6 @@ export default {
         emit('selectDate', date.toDate());
       } else {
         selectedDate.value.splice(findMatchIndex, 1);
-      }
-
-      if (typeof props.pickLimit === 'number' && selectedDate.value.length === props.pickLimit) {
-        emit('filled', selectedDate.value);
       }
 
       if (param === 'prev') {
