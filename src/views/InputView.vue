@@ -19,7 +19,7 @@
       />
     </form>
     <div>
-      Normal + clearable (not null when empty isNullWhenEmpty: false)
+      Normal + clearable + height 48px (not null when empty isNullWhenEmpty: false)
       <span class="tw:text-red-400 tw:ml-1">
         v-model:
         <span v-if="input10 === null">ini null</span>
@@ -33,6 +33,7 @@
       class="tw:flex-1 tw:mb-2"
       clearable
       placeholder="max 3"
+      height="48px"
       :isNullWhenEmpty="false"
     />
     <div>
@@ -132,7 +133,7 @@
       rounded="lg"
     />
     <div>
-      Date type + readonly + size sm
+      Date type + readonly + size sm + height 32px
       <span class="tw:text-red-400 tw:ml-1">
         v-model:
         <span v-if="input8 === null">ini null</span>
@@ -145,6 +146,7 @@
       name="text"
       class="tw:flex-1 tw:mb-2"
       size="sm"
+      height="32px"
       clearable
       readOnly
     />
@@ -164,6 +166,31 @@
       mask="npwp"
       rounded="lg"
     />
+    <div>readonly datepicker + dropdown</div>
+    <span class="tw:text-red-400 tw:ml-1">
+      v-model:
+      <span v-if="input11 === null">ini null</span>
+      <span v-else>{{ !input11 ? 'empty bkn null' : `${input11}` }}</span>
+    </span>
+    <i-input
+      v-model="input11"
+      input-id="Text11"
+      name="text"
+      class="tw:flex-1 tw:mb-2"
+      readOnly
+      clearable
+      rounded="lg"
+      @click="dateVisible = true"
+      @clear="dateExample = []"
+    />
+    <div class="tw:relative">
+      <i-dropdown v-model:visible="dateVisible" :isShowArrow="false" rounded="lg" width="720px">
+        <i-date-range-picker
+          v-model="dateExample"
+          @filled="onDateFilledHandler"
+        ></i-date-range-picker>
+      </i-dropdown>
+    </div>
   </div>
 </template>
 
@@ -171,11 +198,15 @@
 import { ref } from 'vue';
 import IInput from '@/components/i-input.vue';
 import IcCalendar from '@/icons/ic-calendar.vue';
+import IDropdown from '@/components/dropdown/i-dropdown.vue';
+import IDateRangePicker from '@/components/datepicker/i-date-range-picker.vue';
 
 export default {
   components: {
     IInput,
     IcCalendar,
+    IDropdown,
+    IDateRangePicker,
   },
   setup() {
     const input1 = ref('999');
@@ -184,16 +215,22 @@ export default {
     const input4 = ref(undefined);
     const input5 = ref('password');
     const input6 = ref(Math.round(123.453 * 100) / 100);
-    // const input7 = ref(0);
     const input7 = ref(null);
     const input8 = ref(new Date());
-    // const input8 = ref(null);
     const input9 = ref(null);
     const input10 = ref('');
+    const input11 = ref('');
+
+    const dateVisible = ref(false);
+    const dateExample = ref([]);
 
     const submitHandler = () => {
       const data = { halo: input1.value };
       alert(data);
+    };
+    const onDateFilledHandler = (date) => {
+      input11.value = date;
+      dateVisible.value = false;
     };
 
     return {
@@ -207,7 +244,11 @@ export default {
       input8,
       input9,
       input10,
+      input11,
+      dateVisible,
+      dateExample,
       submitHandler,
+      onDateFilledHandler,
     };
   },
 };

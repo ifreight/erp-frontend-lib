@@ -112,7 +112,7 @@
       />
     </div>
 
-    <div>select + remote method + clearable</div>
+    <div>select + remote method + clearable + value awal</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">
         v-model:
@@ -154,22 +154,24 @@
       <span class="tw:text-red-600">
         v-model:
         <span v-if="select9 === null">ini null</span>
-        <span v-else>{{ !select9 ? 'empty bkn null' : `${select9}` }}</span>
-      </span>
+        <span v-else>{{ !select9 ? 'empty bkn null' : `${select9}` }}</span> </span
+      ><br />
+      <span class="tw:text-red-600"> value-option: {{ selectOptNonRemote }} </span>
       <i-select
         v-model="select9"
+        v-model:value-option="selectOptNonRemote"
         input-id="Select-9"
         name="select-9"
         size="sm"
         rounded="lg"
-        :options="selectStaticOptions"
+        :options="selectStaticOptions2"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import ISelect from '@/components/i-select.vue';
 import IcSearch from '@/icons/ic-search.vue';
 
@@ -192,6 +194,7 @@ export default {
 
     const selectRemote = ref(null);
     const selectRemote2 = ref(null);
+    const selectOptNonRemote = ref(null);
 
     const selectStaticOptions = computed(() => {
       return ['Asia', 'America', 'Europe', 'Others'];
@@ -218,7 +221,13 @@ export default {
         }, 1000);
       });
     };
+    onMounted(() => {
+      select10.value = 1;
+      selectRemote2.value = { id: 1, name: 'Asia', disabled: false };
 
+      select9.value = 3;
+      selectOptNonRemote.value = { id: 3, name: 'Europe', disabled: false };
+    });
     return {
       customColor,
       select,
@@ -234,6 +243,7 @@ export default {
       selectRemote2,
       selectStaticOptions,
       selectStaticOptions2,
+      selectOptNonRemote,
       selectRemoteMethod,
     };
   },

@@ -102,6 +102,7 @@ export default {
           } else if (val.length === 2) {
             const extractedDate = val.map((d) => dayjs(d).toDate());
             emit('update:modelValue', extractedDate);
+            emit('filled', extractedDate);
           }
         }
       },
@@ -145,9 +146,6 @@ export default {
         }
       }
       emit('selectDate', date.toDate());
-      if (selectedDate.value.length === 2) {
-        emit('filled', selectedDate.value);
-      }
     };
 
     onMounted(() => {

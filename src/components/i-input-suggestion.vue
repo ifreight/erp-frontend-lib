@@ -19,6 +19,7 @@
           :clearable="clearable"
           :rounded="rounded"
           :isNullWhenEmpty="isNullWhenEmpty"
+          :height="height"
           @clear="resetInputValue"
           @update:modelValue="(val) => onInputKeyup(val)"
           @focus="toggleDropdown"
@@ -104,7 +105,7 @@ export default defineComponent({
       type: String,
       default: 'base',
       validator(value) {
-        return ['sm', 'base'].includes(value);
+        return ['sm', 'base', 'lg'].includes(value);
       },
     },
     hideAfterInput: {
@@ -153,6 +154,10 @@ export default defineComponent({
     isNullWhenEmpty: {
       type: Boolean,
       default: true,
+    },
+    height: {
+      type: [String, Number],
+      default: '41px',
     },
   },
   emits: ['update:modelValue', 'blur', 'change', 'focus', 'input'],

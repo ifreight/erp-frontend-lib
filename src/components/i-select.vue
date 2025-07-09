@@ -17,6 +17,7 @@
           :rounded="rounded"
           :borderless="borderless"
           :size="size"
+          :height="height"
           @keyup="onInputKeyup"
         >
           <template v-if="$slots.prepend" #prepend>
@@ -146,7 +147,7 @@ export default defineComponent({
       type: String,
       default: 'base',
       validator(value) {
-        return ['sm', 'base'].includes(value);
+        return ['sm', 'base', 'lg'].includes(value);
       },
     },
     dropdownWidth: {
@@ -170,6 +171,10 @@ export default defineComponent({
       default: true,
     },
     clearable: Boolean,
+    height: {
+      type: [String, Number],
+      default: '41px',
+    },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur', 'clear'],
   setup(props, { emit }) {
@@ -378,16 +383,25 @@ export default defineComponent({
       (newValue) => {
         if (newValue !== inputValue.value) {
           inputValue.value = newValue;
-        }
 
-        if (!selectedOption.value || selectedOption.value[props.optionKey] !== newValue) {
-          const newSelectedOption = dropdownOptions.value.find(
-            (item) => item[props.optionKey] === newValue,
-          );
-          updateSelectedOption(newSelectedOption);
+          if (selectedOptionValue.value !== newValue) {
+            if (props.remote) {
+              if (!newValue) {
+                updateSelectedOption(undefined);
+              }
+
+              remoteLoading.value = true;
+              handleQuery(newValue);
+            } else {
+              const newSelectedOption = dropdownOptions.value.find(
+                (item) => item[props.optionKey] === newValue,
+              );
+
+              updateSelectedOption(newSelectedOption);
+            }
+          }
         }
       },
-      { immediate: true },
     );
 
     watch(

@@ -26,6 +26,7 @@
           :dark="dark"
           :rounded="rounded"
           :size="size"
+          :height="height"
           @keyup="onInputKeyup"
         >
           <template v-if="$slots.prepend" #prepend>
@@ -226,7 +227,7 @@ export default defineComponent({
       type: String,
       default: 'base',
       validator(value) {
-        return ['sm', 'base'].includes(value);
+        return ['sm', 'base', 'lg'].includes(value);
       },
     },
     dropdownWidth: {
@@ -246,6 +247,10 @@ export default defineComponent({
       default: 'No results found.',
     },
     clearable: Boolean,
+    height: {
+      type: [String, Number],
+      default: '41px',
+    },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
   setup(props, { emit }) {

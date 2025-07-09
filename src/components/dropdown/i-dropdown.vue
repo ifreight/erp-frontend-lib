@@ -1,5 +1,9 @@
 <template>
-  <div class="i-dropdown" :class="openDirection">
+  <div
+    class="i-dropdown"
+    :class="[openDirection, xPosition]"
+    :style="{ visibility: show ? 'visible' : 'hidden' }"
+  >
     <div ref="reference" class="i-dropdown-reference" />
 
     <div v-show="visible && isShowArrow" class="i-dropdown-arrow">
@@ -54,7 +58,9 @@ export default {
   },
   emits: ['update:visible'],
   setup(props, { emit }) {
+    const show = ref(false);
     const openDirection = ref('below');
+    const xPosition = ref('left');
     const reference = ref();
     const dropdownRef = ref();
 
@@ -69,17 +75,27 @@ export default {
       () => props.visible,
       async (value) => {
         if (value && reference.value) {
-          const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
-          if (spaceBelow > 250) {
-            openDirection.value = 'below';
-          } else {
-            openDirection.value = 'above';
-          }
-          requestAnimationFrame(() => {
-            document.addEventListener('click', handleClickOutside);
-          });
+          setTimeout(() => {
+            const spaceRight = window.innerWidth - dropdownRef.value.getBoundingClientRect().right;
+            if (spaceRight < 0) {
+              xPosition.value = 'right';
+            }
+
+            const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
+            if (spaceBelow > 250) {
+              openDirection.value = 'below';
+            } else {
+              openDirection.value = 'above';
+            }
+            requestAnimationFrame(() => {
+              document.addEventListener('click', handleClickOutside);
+              show.value = true;
+            });
+          }, 10);
         } else {
+          xPosition.value = 'left';
           document.removeEventListener('click', handleClickOutside);
+          show.value = false;
         }
       },
     );
@@ -97,14 +113,17 @@ export default {
         {
           relative: props.relativeBox,
           borderless: props.borderless,
+          'hidden-arrow': !props.isShowArrow,
         },
       ];
     });
     return {
       dropdownRef,
       openDirection,
+      xPosition,
       reference,
       boxClasses,
+      show,
     };
   },
 };
@@ -124,13 +143,11 @@ export default {
   .i-dropdown-arrow {
     position: absolute;
     width: 100%;
-    left: 15%;
     z-index: 4;
   }
 
   .i-dropdown-box {
     position: absolute;
-    left: 0;
     z-index: 2;
     overflow: hidden;
     background-color: var(--white);
@@ -168,7 +185,22 @@ export default {
       padding: 8px;
     }
   }
-
+  &.left {
+    .i-dropdown-box {
+      left: 0;
+    }
+    .i-dropdown-arrow {
+      left: 15%;
+    }
+  }
+  &.right {
+    .i-dropdown-box {
+      right: 0;
+    }
+    .i-dropdown-arrow {
+      left: 85%;
+    }
+  }
   &.below {
     .i-dropdown-arrow-icon {
       position: absolute;
@@ -194,6 +226,10 @@ export default {
 
     .i-dropdown-box {
       top: calc(100% + 9px);
+
+      &.hidden-arrow {
+        top: calc(100% + 4px);
+      }
     }
   }
 
@@ -222,6 +258,10 @@ export default {
     }
     .i-dropdown-box {
       bottom: calc(100% + 9px);
+
+      &.hidden-arrow {
+        bottom: calc(100% + 4px);
+      }
     }
   }
 }

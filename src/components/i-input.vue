@@ -1,6 +1,6 @@
 <template>
   <div class="i-input">
-    <div class="i-input-container" :class="classes">
+    <div class="i-input-container" :class="classes" :style="heightStyle">
       <div v-if="$slots.prepend" class="prepend-container">
         <slot name="prepend" />
       </div>
@@ -27,7 +27,7 @@
         @keydown.enter.exact="onEnterKeyHandler"
       />
 
-      <div v-if="isShowClearable" v-show="filled" class="append-container">
+      <div v-if="isShowClearable" @click.stop v-show="filled" class="append-container">
         <ic-times class="icon-clear" @click="onClear" />
       </div>
       <div v-if="!!$slots.append" class="append-container">
@@ -123,7 +123,7 @@ export default {
       type: String,
       default: 'base',
       validator(value) {
-        return ['sm', 'base'].includes(value);
+        return ['sm', 'base', 'lg'].includes(value);
       },
     },
     maxlength: {
@@ -139,19 +139,17 @@ export default {
       type: Boolean,
       default: true,
     },
+    height: {
+      type: [String, Number],
+      default: '41px',
+    },
   },
   emits: ['update:modelValue', 'clear', 'change', 'blur', 'focus', 'keyup'],
   setup(props, { slots, emit }) {
     const inputRef = ref();
 
     const isShowClearable = computed(() => {
-      if (!props.clearable) {
-        return false;
-      }
-      if (props.disabled && (props.readOnly || !props.readOnly)) {
-        return false;
-      }
-      if (props.readOnly && (props.disabled || !props.disabled)) {
+      if (!props.clearable || props.disabled) {
         return false;
       }
       return true;
@@ -234,6 +232,12 @@ export default {
       return props.mask ? 'imask-input' : 'input';
     });
 
+    const heightStyle = computed(() => {
+      const height = typeof props.height === 'number' ? `${props.height}px` : props.height;
+
+      return { height: height };
+    });
+
     const onInput = (event) => {
       if (!props.mask) {
         emit(
@@ -306,6 +310,7 @@ export default {
       inputClasses,
       inputComponent,
       inputRef,
+      heightStyle,
       onInput,
       onChange,
       onFocus,
@@ -323,23 +328,27 @@ export default {
 
 .i-input {
   .i-input-container {
-    height: 41px;
     padding: 0 12px;
     color: var(--gray-900);
     background-color: var(--white);
     border: 1px solid var(--gray-500);
 
+    &.sm {
+      .input {
+        font-size: 12px;
+        line-height: 14px;
+      }
+    }
     &.base {
       .input {
         font-size: 14px;
         line-height: 16px;
       }
     }
-    &.sm {
-      height: 32px;
+    &.lg {
       .input {
-        font-size: 12px;
-        line-height: 14px;
+        font-size: 16px;
+        line-height: 18px;
       }
     }
     &.rounded-xs {
