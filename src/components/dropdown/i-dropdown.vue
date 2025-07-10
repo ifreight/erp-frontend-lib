@@ -58,7 +58,7 @@ export default {
   },
   emits: ['update:visible'],
   setup(props, { emit }) {
-    const show = ref(false);
+    const show = ref(props.visible);
     const openDirection = ref('below');
     const xPosition = ref('left');
     const reference = ref();

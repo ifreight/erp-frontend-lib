@@ -4653,7 +4653,7 @@ const yL = /* @__PURE__ */ c(ke, [["render", Be], ["__scopeId", "data-v-139c06b1
   },
   emits: ["update:visible"],
   setup(t, { emit: e }) {
-    const n = V(!1), r = V("below"), i = V("left"), l = V(), s = V(), d = (f) => {
+    const n = V(t.visible), r = V("below"), i = V("left"), l = V(), s = V(), d = (f) => {
       f.composedPath().includes(s.value) || e("update:visible", !1);
     };
     U(
