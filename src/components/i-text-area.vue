@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { computed, toRefs, useAttrs, ref } from 'vue';
+import { computed, toRefs, useAttrs, ref, onMounted, nextTick } from 'vue';
 
 export default {
   name: 'ITextArea',
@@ -116,7 +116,7 @@ export default {
       showTextLimit,
     } = toRefs(props);
 
-    const localModel = ref(props.modelValue);
+    const localModel = ref(null);
 
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
 
@@ -171,6 +171,10 @@ export default {
     const pressKeyEnter = () => emit('pressEnter');
     const pressKeyEnterShift = () => emit('pressEnterShift');
 
+    onMounted(async () => {
+      await nextTick();
+      localModel.value = props.modelValue;
+    });
     return {
       filled,
       classes,

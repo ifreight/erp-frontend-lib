@@ -11,12 +11,20 @@
       <i-file-list type="list" :files="mapData"></i-file-list>
     </div>
     <div>
-      <p>Example `type:boxList` with default</p>
-      <i-file-list type="boxList" :files="mapData"></i-file-list>
+      <p class="mb-1">Example `type:list` with listClass</p>
+      <i-file-list
+        type="list"
+        :files="mapData"
+        listClass="tw:border tw:py-0 tw:px-4 tw:border-gray-500 tw:rounded-sm"
+      ></i-file-list>
     </div>
     <div>
-      <p>Example `type:boxList` with default</p>
-      <i-file-list type="boxList" :files="mapData" :show-progress-bar="true"></i-file-list>
+      <p>Example `type:progressList` with default</p>
+      <i-file-list :files="mapData"></i-file-list>
+    </div>
+    <div>
+      <p>Example `type:progressList` with default</p>
+      <i-file-list :files="mapData" :show-progress-bar="true"></i-file-list>
     </div>
     <div>
       <p>Example with custom slot</p>
@@ -31,7 +39,7 @@
     </div>
     <div>
       <p>Example with custom slot</p>
-      <i-file-list type="boxList" :files="exampleData">
+      <i-file-list :files="exampleData">
         <template v-slot:default="{ file }">
           <div
             class="tw:border tw:border-(--brown-600) tw:rounded-b-2xl tw:rounded-r-2xl tw:p-4 tw:flex tw:align-middle tw:gap-2"

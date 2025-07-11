@@ -1,12 +1,10 @@
 <template>
-  <div>
+  <div class="i-file-list">
     <transition-group name="list" tag="div">
       <div class="tw:mb-1" v-for="(file, index) in files" :key="index">
-        <slot :file="file">
-          <template v-if="type == boxList">
-            <div
-              class="tw:relative tw:border-(--gray-500) tw:border tw:rounded-sm tw:h-[46px] tw:p-2 tw:flex tw:justify-between tw:align-middle tw:overflow-hidden"
-            >
+        <slot :file="file" :index="index" :isProgressFinish="isProgressFinish">
+          <template v-if="type === 'progressList'">
+            <div class="each-progress-list-wrapper" :class="listClass">
               <p class="tw:text-sm tw:self-center" @click="viewFile(file)">{{ file.name }}</p>
               <i-button
                 v-if="isProgressFinish.includes(`${index}-${file.name}`)"
@@ -28,16 +26,12 @@
                 :progress="file.progressBarValue"
                 :timeout-value="file.timeoutValue"
                 :color="color"
-                @finish="
-                  () => {
-                    isProgressFinish.push(`${index}-${file.name}`);
-                  }
-                "
+                @finish="finishHandler"
               ></i-progress-bar>
             </div>
           </template>
-          <template v-if="type == list">
-            <div class="tw:p-1 tw:pb-0 tw:flex tw:justify-between tw:align-middle">
+          <template v-if="type === 'list'">
+            <div class="each-file-list-wrapper" :class="listClass">
               <i-button
                 :disabled="!readOnly"
                 :text="true"
@@ -49,7 +43,7 @@
               <i-button
                 v-if="!readOnly"
                 :text="true"
-                class="tw:self-center tw:w-fit"
+                class="tw:self-center tw:w-fit tw:h-fit"
                 @click="remove(index)"
               >
                 <ic-times></ic-times>
@@ -63,13 +57,10 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import IcTimes from '@/icons/ic-times.vue';
 import IProgressBar from '@/components/i-progress-bar.vue';
 import IButton from '@/components/i-button.vue';
-
-const typeBoxList = 'boxList';
-const typeList = 'list';
 
 export default {
   name: 'IFileList',
@@ -85,10 +76,14 @@ export default {
     },
     type: {
       type: String,
-      default: typeBoxList,
+      default: 'progressList',
       validator(value) {
-        return [typeBoxList, typeList].includes(value);
+        return ['progressList', 'list'].includes(value);
       },
+    },
+    listClass: {
+      type: [Object, Array, String],
+      default: null,
     },
     readOnly: Boolean,
     showProgressBar: Boolean,
@@ -96,16 +91,7 @@ export default {
   },
   emits: ['update:files', 'remove', 'click'],
   setup(props, { emit }) {
-    const boxList = typeBoxList;
-    const list = typeList;
     let isProgressFinish = ref([]);
-
-    const showRemoveButton = computed(() => {
-      if (props.showProgressBar) {
-        return isProgressFinish.value;
-      }
-      return !props.readOnly;
-    });
 
     const remove = (index) => {
       emit('remove', props.files[index]);
@@ -117,12 +103,18 @@ export default {
         emit('click', file);
       }
     };
-    return { boxList, list, isProgressFinish, showRemoveButton, remove, viewFile };
+    const finishHandler = (index, file) => {
+      isProgressFinish.value.push(`${index}-${file.name}`);
+    };
+
+    return { isProgressFinish, finishHandler, remove, viewFile };
   },
 };
 </script>
 
 <style>
+@reference "@/assets/global.css";
+
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
@@ -141,5 +133,13 @@ export default {
 .progress-border-radius {
   border-end-end-radius: 4px;
   border-end-start-radius: 4px;
+}
+.i-file-list {
+  .each-progress-list-wrapper {
+    @apply tw:relative tw:border-(--gray-500) tw:border tw:rounded-sm tw:h-[46px] tw:p-2 tw:flex tw:justify-between tw:align-middle tw:overflow-hidden;
+  }
+  .each-file-list-wrapper {
+    @apply tw:p-1 tw:pb-0 tw:flex tw:justify-between tw:align-middle tw:h-[46px];
+  }
 }
 </style>

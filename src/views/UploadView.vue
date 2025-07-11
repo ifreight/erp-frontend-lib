@@ -4,10 +4,10 @@
       <h1 class="tw:font-bold tw:text-xl tw:mb-2">Upload</h1>
       <p class="tw:p-2 tw:bg-blue-100 tw:border tw:border-blue-500 tw:rounded-s tw:mb-2">
         To show selected files in upload use `FileList` components. `FileList` have 2 type `List` &
-        `BoxList`.
+        `ProgressList`.
       </p>
       <p class="tw:p-2 tw:bg-cyan-100 tw:border tw:border-cyan-500 tw:rounded-s tw:mb-2">
-        `FileList` component with type `Box List` can use option from `ProgressBar` to show
+        `FileList` component with type `Progress List` can use option from `ProgressBar` to show
         progress. Use `ShowProgressBar` props, `ProgressBarValue` or `TimeoutValue` for progress bar
         need to be added into `v-model:files`. More detail is
         <router-link to="/progress-bar" class="tw:text-(--brown-600)">here</router-link>.

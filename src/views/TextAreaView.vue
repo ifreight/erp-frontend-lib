@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ITextArea from '@/components/i-text-area.vue';
 
 export default {
@@ -85,6 +85,9 @@ export default {
     const textArea3 = ref(null);
     const valueDisabled = ref('text3 disabled');
 
+    onMounted(() => {
+      textArea2.value = 'zzzz';
+    });
     return {
       textArea1,
       textArea2,
