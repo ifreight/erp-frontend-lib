@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { computed, toRefs, useAttrs, ref, onMounted, nextTick } from 'vue';
+import { computed, toRefs, useAttrs, ref, watch } from 'vue';
 
 export default {
   name: 'ITextArea',
@@ -116,7 +116,9 @@ export default {
       showTextLimit,
     } = toRefs(props);
 
-    const localModel = ref(null);
+    // using localModel to make trim process at onInput and onBlur works properly
+    const localModel = ref(props.modelValue || null);
+    const isInternalUpdate = ref(false);
 
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
 
@@ -153,6 +155,8 @@ export default {
       if (val.length > 0) {
         val = event.target.value.trimStart();
       }
+      isInternalUpdate.value = true;
+
       emit('update:modelValue', val.length > 0 ? val : emptyVal.value);
 
       if (event.target.value.length > 0) {
@@ -163,6 +167,8 @@ export default {
     const onFocus = () => emit('focus');
     const onBlur = () => {
       if (props.modelValue) {
+        isInternalUpdate.value = true;
+
         emit('update:modelValue', props.modelValue.trim());
         localModel.value = localModel.value.trim();
       }
@@ -171,10 +177,16 @@ export default {
     const pressKeyEnter = () => emit('pressEnter');
     const pressKeyEnterShift = () => emit('pressEnterShift');
 
-    onMounted(async () => {
-      await nextTick();
-      localModel.value = props.modelValue;
-    });
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        if (!isInternalUpdate.value) {
+          localModel.value = newValue || null;
+        }
+        isInternalUpdate.value = false;
+      },
+      { immediate: true },
+    );
     return {
       filled,
       classes,

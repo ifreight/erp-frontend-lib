@@ -26,7 +26,11 @@
                 :progress="file.progressBarValue"
                 :timeout-value="file.timeoutValue"
                 :color="color"
-                @finish="finishHandler"
+                @finish="
+                  () => {
+                    finishHandler(`${index}-${file.name}`);
+                  }
+                "
               ></i-progress-bar>
             </div>
           </template>
@@ -103,8 +107,8 @@ export default {
         emit('click', file);
       }
     };
-    const finishHandler = (index, file) => {
-      isProgressFinish.value.push(`${index}-${file.name}`);
+    const finishHandler = (data) => {
+      isProgressFinish.value.push(data);
     };
 
     return { isProgressFinish, finishHandler, remove, viewFile };
