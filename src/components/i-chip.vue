@@ -1,17 +1,13 @@
 <template>
   <div class="i-chip-wrapper">
-    <div
-      class="i-chip"
-      :class="status"
-    >
-      <span class="status-dot tw:mr-2"></span>
+    <div class="i-chip" :class="status">
+      <span v-if="showDot" class="status-dot tw:mr-2"></span>
       <span class="tw:text-xs">{{ text }}</span>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'IChip',
   props: {
@@ -25,6 +21,10 @@ export default {
       validator(value) {
         return ['error', 'success', 'info', 'neutral'].includes(value);
       },
+    },
+    showDot: {
+      type: Boolean,
+      default: true,
     },
   },
 };

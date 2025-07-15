@@ -76,7 +76,7 @@
             >
               <template #prepend><ic-search class="tw:text-gray-700" /></template>
               <template #options="{ option }">
-                <i-chip :text="option.name" :status="option.status" />
+                <i-chip :showDot="false" :text="option.name" :status="option.status" />
               </template>
             </i-select-multiple>
           </i-dropdown>

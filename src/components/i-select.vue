@@ -409,7 +409,8 @@ export default defineComponent({
       () => {
         if (
           inputValue.value &&
-          (selectedOptionValue.value !== inputValue.value) & dropdownOptions.value.length
+          selectedOptionValue.value !== inputValue.value &&
+          dropdownOptions.value.length
         ) {
           updateSelectedOption(
             dropdownOptions.value.find((item) => item[props.optionKey] === props.inputValue),

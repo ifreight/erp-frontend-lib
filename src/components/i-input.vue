@@ -419,6 +419,11 @@ export default {
 
     &.prepend .prepend-container {
       margin-right: 12px;
+
+      .i-input-container {
+        padding-left: 0px !important;
+        border-left: 0px !important;
+      }
     }
 
     &.append .append-container {
@@ -429,6 +434,10 @@ export default {
         cursor: pointer;
         height: 12px;
         width: 12px;
+      }
+      .i-input-container {
+        padding-right: 0px !important;
+        border-right: 0px !important;
       }
     }
 

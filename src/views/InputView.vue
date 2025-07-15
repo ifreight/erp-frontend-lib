@@ -83,6 +83,38 @@
       <template #append><ic-calendar /></template>
     </i-input>
     <div>
+      Prepend / append i-select
+      <span class="tw:text-red-400 tw:ml-1">
+        v-model:
+        <span v-if="input4 === null">ini null</span>
+        <span v-else>{{ !input4 ? 'empty bkn null' : `${input4}` }}</span>
+      </span>
+    </div>
+    <i-input
+      v-model="input12"
+      input-id="Text12"
+      name="text"
+      class="tw:flex-1 tw:mb-2"
+      clearable
+      placeholder="With select Prepend"
+    >
+      <template #prepend>
+        <i-select class="tw:w-[82px]" name="selecta" v-model="selectModel" :options="selOptions" />
+      </template>
+    </i-input>
+    <i-input
+      v-model="input12"
+      input-id="Text123"
+      name="text"
+      class="tw:flex-1 tw:mb-2"
+      clearable
+      placeholder="With select Prepend"
+    >
+      <template #append>
+        <i-select class="tw:w-[82px]" name="selecta" v-model="selectModel" :options="selOptions" />
+      </template>
+    </i-input>
+    <div>
       Borderless + password type
       <span class="tw:text-red-400 tw:ml-1">
         v-model:
@@ -197,6 +229,7 @@
 <script>
 import { ref } from 'vue';
 import IInput from '@/components/i-input.vue';
+import ISelect from '@/components/i-select.vue';
 import IcCalendar from '@/icons/ic-calendar.vue';
 import IDropdown from '@/components/dropdown/i-dropdown.vue';
 import IDateRangePicker from '@/components/datepicker/i-date-range-picker.vue';
@@ -204,6 +237,7 @@ import IDateRangePicker from '@/components/datepicker/i-date-range-picker.vue';
 export default {
   components: {
     IInput,
+    ISelect,
     IcCalendar,
     IDropdown,
     IDateRangePicker,
@@ -220,9 +254,12 @@ export default {
     const input9 = ref(null);
     const input10 = ref('');
     const input11 = ref('');
+    const input12 = ref(null);
 
     const dateVisible = ref(false);
     const dateExample = ref([]);
+    const selOptions = ['USD', 'IDR'];
+    const selectModel = ref('USD');
 
     const submitHandler = () => {
       const data = { halo: input1.value };
@@ -245,10 +282,13 @@ export default {
       input9,
       input10,
       input11,
+      input12,
       dateVisible,
       dateExample,
       submitHandler,
       onDateFilledHandler,
+      selOptions,
+      selectModel,
     };
   },
 };

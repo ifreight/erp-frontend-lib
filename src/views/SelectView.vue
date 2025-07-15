@@ -43,7 +43,7 @@
       />
     </div>
 
-    <div>select + filterable + init value + disabled option(s) + borderless</div>
+    <div>select + init value + borderless</div>
     <div class="tw:mb-4">
       <span class="tw:text-red-600">
         v-model:
@@ -54,8 +54,7 @@
         v-model="select3"
         input-id="Select-3"
         name="select-3"
-        filterable
-        :options="selectStaticOptions2"
+        :options="selectStaticOptions"
         borderless
         placeholder="borderlesss...."
       />
@@ -167,6 +166,22 @@
         :options="selectStaticOptions2"
       />
     </div>
+    <div>select with rounded, width and size sm</div>
+    <div class="tw:mb-4 tw:w-[350px]">
+      <span class="tw:text-red-600">
+        v-model:
+        <span v-if="select11 === null">ini null</span>
+        <span v-else>{{ !select11 ? 'empty bkn null' : `${select11}` }}</span> </span
+      ><br />
+      <i-select
+        v-model="select11"
+        input-id="Select-11"
+        name="select-11"
+        size="sm"
+        rounded="lg"
+        :options="selectStaticOptions2"
+      />
+    </div>
   </div>
 </template>
 
@@ -191,6 +206,7 @@ export default {
     const select8 = ref(null);
     const select9 = ref(null);
     const select10 = ref(undefined);
+    const select11 = ref(null);
 
     const selectRemote = ref(null);
     const selectRemote2 = ref(null);
@@ -239,6 +255,7 @@ export default {
       select8,
       select9,
       select10,
+      select11,
       selectRemote,
       selectRemote2,
       selectStaticOptions,
