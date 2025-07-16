@@ -96,6 +96,10 @@ export default {
       .i-input {
         .i-input-container {
           @apply tw:h-8 tw:rounded-lg;
+
+          .input {
+            @apply tw:text-xs;
+          }
         }
       }
     }

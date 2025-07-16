@@ -74,9 +74,12 @@ export default {
         return ['base', 'lg'].includes(value);
       },
     },
-    light: {
-      type: Boolean,
-      default: false,
+    themeStyle: {
+      type: String,
+      default: 'base',
+      validator(value) {
+        return ['base', 'gray', 'light'].includes(value);
+      },
     },
     checkboxRounded: {
       type: String,
@@ -116,8 +119,8 @@ export default {
       if (props.size !== 'base') {
         classes.push(props.size);
       }
-      if (props.light) {
-        classes.push('light');
+      if (props.themeStyle !== 'base') {
+        classes.push(props.themeStyle);
       }
 
       return classes;
@@ -129,8 +132,8 @@ export default {
       if (props.size !== 'base') {
         classes.value.push(`${props.size}`);
       }
-      if (props.light) {
-        classes.value.push('light');
+      if (props.themeStyle !== 'base') {
+        classes.value.push(`${props.themeStyle}`);
       }
 
       return classes.value;
@@ -139,7 +142,7 @@ export default {
     const spanClass = computed(() => {
       const classes = ref([]);
 
-      if (props.size == 'base') {
+      if (props.size === 'base') {
         classes.value.push('tw:ml-2.5', {
           'tw:text-gray-700': props.disabled,
         });
@@ -222,6 +225,10 @@ export default {
       &.light {
         @apply tw:text-gray-700 tw:bg-transparent;
       }
+
+      &.gray {
+        @apply tw:text-gray-600 tw:bg-gray-300;
+      }
     }
 
     &.lg {
@@ -229,6 +236,10 @@ export default {
     }
 
     &.light {
+      @apply tw:bg-transparent tw:text-gray-900;
+    }
+
+    &.gray {
       @apply tw:bg-transparent tw:text-gray-900;
     }
   }
@@ -281,6 +292,12 @@ export default {
             @apply tw:opacity-100 tw:text-gray-900 tw:rounded-xs tw:p-0.5 tw:border tw:border-gray-700 tw:bg-transparent;
           }
         }
+
+        &.gray {
+          + .i-checkbox-icon {
+            @apply tw:opacity-100 tw:text-gray-900 tw:rounded-xs tw:p-0.5 tw:border tw:border-gray-500 tw:bg-transparent;
+          }
+        }
       }
 
       &:disabled {
@@ -291,6 +308,12 @@ export default {
         &.light {
           + .i-checkbox-icon {
             @apply tw:text-gray-700 tw:bg-transparent;
+          }
+        }
+
+        &.gray {
+          + .i-checkbox-icon {
+            @apply tw:text-gray-600 tw:bg-gray-300;
           }
         }
       }
@@ -305,8 +328,14 @@ export default {
       @apply tw:cursor-not-allowed tw:bg-transparent tw:border-gray-700;
     }
 
+    &.disabled,
+    &.disabled.gray {
+      @apply tw:cursor-not-allowed tw:bg-gray-300 tw:border-gray-500;
+    }
+
     &.invalid,
-    &.invalid.light {
+    &.invalid.light,
+    &.invalid.gray {
       @apply tw:border-red-300;
     }
 
@@ -316,6 +345,10 @@ export default {
 
     &.light {
       @apply tw:border-gray-700;
+    }
+
+    &.gray {
+      @apply tw:border-gray-500;
     }
   }
 

@@ -80,11 +80,20 @@
         <i-checkbox v-model="modelStyleA" name="modelStyleA" label="Dark and default size" />
         <i-checkbox
           v-model="modelStyleB"
-          light
+          theme-style="light"
           size="lg"
           name="modelStyleB"
           label="Light and large size"
         />
+        <i-checkbox
+          v-model="modelStyleE"
+          theme-style="gray"
+          size="lg"
+          name="modelStyleE"
+          label="Gray and large size"
+        />
+      </div>
+      <div class="tw:flex tw:gap-16 tw:mt-6">
         <i-checkbox
           v-model="modelStyleC"
           disabled
@@ -95,9 +104,27 @@
         <i-checkbox
           v-model="modelStyleD"
           disabled
-          light
+          theme-style="light"
           name="modelStyleD"
           label="Light and default size (disabled)"
+        />
+        <i-checkbox
+          v-model="modelStyleF"
+          disabled
+          theme-style="gray"
+          size="lg"
+          name="modelStyleF"
+          label="Gray and large size (disabled)"
+        />
+      </div>
+      <div class="tw:flex tw:gap-16 tw:mt-6">
+        <i-checkbox
+          v-model="modelStyleG"
+          disabled
+          theme-style="gray"
+          size="lg"
+          name="modelStyleG"
+          label="Gray and large size (disabled) if unchecked"
         />
       </div>
     </div>
@@ -134,6 +161,9 @@ export default {
     const modelStyleB = ref(true);
     const modelStyleC = ref(true);
     const modelStyleD = ref(true);
+    const modelStyleE = ref(true);
+    const modelStyleF = ref(true);
+    const modelStyleG = ref(false);
 
     const changeCheckAllHandler = () => {
       checkedList.value = modelCheckAll.value ? checkboxOptions.value : [];
@@ -166,6 +196,9 @@ export default {
       modelStyleB,
       modelStyleC,
       modelStyleD,
+      modelStyleE,
+      modelStyleF,
+      modelStyleG,
       checkedList,
       changeCheckAllHandler,
       changeCheckedHandler,
