@@ -468,6 +468,15 @@ export default {
     &.invalid.filled,
     &.invalid.dark {
       border-color: var(--red-300);
+
+      &.prepend .prepend-container,
+      &.append .append-container {
+        .i-input-container {
+          border-top-color: var(--red-300);
+          border-bottom-color: var(--red-300);
+          border-radius: 0px;
+        }
+      }
     }
 
     &.invalid {

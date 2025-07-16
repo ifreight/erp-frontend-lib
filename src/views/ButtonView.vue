@@ -1,39 +1,22 @@
 <template>
   <div class="container-button-view">
     <div class="tw:flex tw:gap-2 tw:mb-5">
-      <i-button>
-        Default Button
-      </i-button>
-      <i-button disabled>
-        Button Disabled
-      </i-button>
-      <i-button text>
-        Button Text
-      </i-button>
-      <i-button plain>
-        Plain Button
-      </i-button>
+      <i-button> Default Button </i-button>
+      <i-button disabled> Button Disabled </i-button>
+      <i-button text> Button Text </i-button>
+      <i-button text disabled> Disabled Text </i-button>
+      <i-button plain> Plain Button </i-button>
     </div>
     <div class="tw:flex tw:gap-2 tw:mb-5">
-      <i-button :error="true">
-        Error Button
-      </i-button>
+      <i-button :error="true"> Error Button </i-button>
     </div>
     <div class="tw:mb-5">
       By Size
       <div class="tw:flex tw:gap-2">
-        <i-button>
-          Normal Size
-        </i-button>
-        <i-button size="lg">
-          Large Size
-        </i-button>
-        <i-button size="sm">
-          Small Size
-        </i-button>
-        <i-button size="xs">
-          Extra Small Size
-        </i-button>
+        <i-button> Normal Size </i-button>
+        <i-button size="lg"> Large Size </i-button>
+        <i-button size="sm"> Small Size </i-button>
+        <i-button size="xs"> Extra Small Size </i-button>
       </div>
     </div>
     <div>
@@ -54,7 +37,6 @@
         </i-button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -67,7 +49,7 @@ export default {
     IButton,
     IcCalendar,
   },
-}
+};
 </script>
 
 <style scss>

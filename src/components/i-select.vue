@@ -25,7 +25,7 @@
           </template>
           <template #append>
             <slot name="append">
-              <div class="i-select-append-icon">
+              <div class="i-select-append-icon" :class="appendIconClass">
                 <ic-times
                   v-if="clearable && (!disabled || !readOnly)"
                   v-show="filled"
@@ -174,6 +174,10 @@ export default defineComponent({
     height: {
       type: [String, Number],
       default: '41px',
+    },
+    appendIconClass: {
+      type: String,
+      default: '',
     },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur', 'clear'],
@@ -504,7 +508,7 @@ export default defineComponent({
     .i-select-append-icon {
       padding: 4px;
       cursor: pointer;
-      color: var(--gray-900);
+      color: var(--gray-700);
     }
     &.invalid {
       .i-select-append-icon {

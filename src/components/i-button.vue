@@ -110,7 +110,7 @@ export default {
   @apply tw:flex tw:justify-center tw:items-center tw:p-0 tw:border-0 tw:text-gray-900 tw:font-medium tw:bg-transparent tw:cursor-pointer;
 
   &.disabled {
-    @apply tw:bg-transparent tw:text-gray-400 tw:pointer-events-none;
+    @apply tw:bg-transparent tw:text-gray-700 tw:pointer-events-none;
   }
 
   &.lg {

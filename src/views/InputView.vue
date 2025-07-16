@@ -109,6 +109,7 @@
       class="tw:flex-1 tw:mb-2"
       clearable
       placeholder="With select Prepend"
+      invalid
     >
       <template #append>
         <i-select class="tw:w-[82px]" name="selecta" v-model="selectModel" :options="selOptions" />
