@@ -77,36 +77,45 @@
     <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Style Checkbox</div>
       <div class="tw:flex tw:gap-16 tw:mt-6">
-        <i-checkbox v-model="modelStyleA" name="modelStyleA" label="Dark and default size" />
+        <i-checkbox v-model="modelStyleA" name="modelStyleA" label="Light and default size" />
+        <i-checkbox
+          v-model="modelStyleC"
+          disabled
+          size="lg"
+          name="modelStyleC"
+          label="Light and large size (disabled)"
+        />
+      </div>
+      <div class="tw:flex tw:gap-16 tw:mt-6">
         <i-checkbox
           v-model="modelStyleB"
-          theme-style="light"
+          theme-style="dark"
           size="lg"
           name="modelStyleB"
-          label="Light and large size"
+          label="Dark and large size"
         />
+        <i-checkbox
+          v-model="modelStyleD"
+          disabled
+          theme-style="dark"
+          name="modelStyleD"
+          label="Dark and default size (disabled)"
+        />
+        <i-checkbox
+          v-model="modelStyleH"
+          disabled
+          theme-style="dark"
+          name="modelStyleH"
+          label="Dark and default size (disabled) if unchecked"
+        />
+      </div>
+      <div class="tw:flex tw:gap-16 tw:mt-6">
         <i-checkbox
           v-model="modelStyleE"
           theme-style="gray"
           size="lg"
           name="modelStyleE"
           label="Gray and large size"
-        />
-      </div>
-      <div class="tw:flex tw:gap-16 tw:mt-6">
-        <i-checkbox
-          v-model="modelStyleC"
-          disabled
-          size="lg"
-          name="modelStyleC"
-          label="Dark and large size (disabled)"
-        />
-        <i-checkbox
-          v-model="modelStyleD"
-          disabled
-          theme-style="light"
-          name="modelStyleD"
-          label="Light and default size (disabled)"
         />
         <i-checkbox
           v-model="modelStyleF"
@@ -116,8 +125,6 @@
           name="modelStyleF"
           label="Gray and large size (disabled)"
         />
-      </div>
-      <div class="tw:flex tw:gap-16 tw:mt-6">
         <i-checkbox
           v-model="modelStyleG"
           disabled
@@ -164,6 +171,7 @@ export default {
     const modelStyleE = ref(true);
     const modelStyleF = ref(true);
     const modelStyleG = ref(false);
+    const modelStyleH = ref(false);
 
     const changeCheckAllHandler = () => {
       checkedList.value = modelCheckAll.value ? checkboxOptions.value : [];
@@ -199,6 +207,7 @@ export default {
       modelStyleE,
       modelStyleF,
       modelStyleG,
+      modelStyleH,
       checkedList,
       changeCheckAllHandler,
       changeCheckedHandler,
