@@ -210,7 +210,7 @@ export default {
   @apply tw:flex tw:items-center tw:relative tw:cursor-pointer tw:m-0 tw:z-1;
 
   .i-checkbox-dash-icon {
-    @apply tw:opacity-100 tw:bg-transparent tw:border tw:border-gray-900 tw:text-gray-900 tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5 tw:absolute;
+    @apply tw:opacity-100 tw:bg-transparent tw:text-gray-900 tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5 tw:absolute;
 
     &.disabled {
       @apply tw:bg-transparent;

@@ -174,7 +174,7 @@ export default {
     const modelStyleH = ref(false);
 
     const changeCheckAllHandler = () => {
-      checkedList.value = modelCheckAll.value ? checkboxOptions.value : [];
+      checkedList.value = modelCheckAll.value ? [...checkboxOptions.value] : [];
       isIndeterminate.value = false;
     };
 
