@@ -3146,9 +3146,12 @@ const c8 = /* @__PURE__ */ c(a8, [["render", u8]]), f8 = {
         return ["base", "lg"].includes(t);
       }
     },
-    light: {
-      type: Boolean,
-      default: !1
+    themeStyle: {
+      type: String,
+      default: null,
+      validator(t) {
+        return ["gray", "dark"].includes(t);
+      }
     },
     checkboxRounded: {
       type: String,
@@ -3172,13 +3175,13 @@ const c8 = /* @__PURE__ */ c(a8, [["render", u8]]), f8 = {
         `rounded-${t.checkboxRounded}`,
         `border-color-${t.checkboxBorderColor}`
       ];
-      return n.value && f.push("checked"), t.disabled && f.push("disabled"), t.invalid && f.push("invalid"), t.size !== "base" && f.push(t.size), t.light && f.push("light"), f;
+      return n.value && f.push("checked"), t.disabled && f.push("disabled"), t.invalid && f.push("invalid"), f.push(t.size), f.push(t.themeStyle), f;
     }), l = y(() => {
       const f = V([]);
-      return t.size !== "base" && f.value.push(`${t.size}`), t.light && f.value.push("light"), f.value;
+      return f.value.push(t.size), f.value.push(t.themeStyle), f.value;
     }), s = y(() => {
       const f = V([]);
-      return t.size == "base" ? f.value.push("tw:ml-2.5", {
+      return t.size === "base" ? f.value.push("tw:ml-2.5", {
         "tw:text-gray-700": t.disabled
       }) : f.value.push("tw:ml-3", {
         "tw:text-gray-700": t.disabled
