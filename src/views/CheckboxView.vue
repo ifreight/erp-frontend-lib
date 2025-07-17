@@ -77,27 +77,61 @@
     <div class="tw:mb-12">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">Style Checkbox</div>
       <div class="tw:flex tw:gap-16 tw:mt-6">
-        <i-checkbox v-model="modelStyleA" name="modelStyleA" label="Dark and default size" />
-        <i-checkbox
-          v-model="modelStyleB"
-          light
-          size="lg"
-          name="modelStyleB"
-          label="Light and large size"
-        />
+        <i-checkbox v-model="modelStyleA" name="modelStyleA" label="Light and default size" />
         <i-checkbox
           v-model="modelStyleC"
           disabled
           size="lg"
           name="modelStyleC"
-          label="Dark and large size (disabled)"
+          label="Light and large size (disabled)"
+        />
+      </div>
+      <div class="tw:flex tw:gap-16 tw:mt-6">
+        <i-checkbox
+          v-model="modelStyleB"
+          theme-style="dark"
+          size="lg"
+          name="modelStyleB"
+          label="Dark and large size"
         />
         <i-checkbox
           v-model="modelStyleD"
           disabled
-          light
+          theme-style="dark"
           name="modelStyleD"
-          label="Light and default size (disabled)"
+          label="Dark and default size (disabled)"
+        />
+        <i-checkbox
+          v-model="modelStyleH"
+          disabled
+          theme-style="dark"
+          name="modelStyleH"
+          label="Dark and default size (disabled) if unchecked"
+        />
+      </div>
+      <div class="tw:flex tw:gap-16 tw:mt-6">
+        <i-checkbox
+          v-model="modelStyleE"
+          theme-style="gray"
+          size="lg"
+          name="modelStyleE"
+          label="Gray and large size"
+        />
+        <i-checkbox
+          v-model="modelStyleF"
+          disabled
+          theme-style="gray"
+          size="lg"
+          name="modelStyleF"
+          label="Gray and large size (disabled)"
+        />
+        <i-checkbox
+          v-model="modelStyleG"
+          disabled
+          theme-style="gray"
+          size="lg"
+          name="modelStyleG"
+          label="Gray and large size (disabled) if unchecked"
         />
       </div>
     </div>
@@ -134,9 +168,13 @@ export default {
     const modelStyleB = ref(true);
     const modelStyleC = ref(true);
     const modelStyleD = ref(true);
+    const modelStyleE = ref(true);
+    const modelStyleF = ref(true);
+    const modelStyleG = ref(false);
+    const modelStyleH = ref(false);
 
     const changeCheckAllHandler = () => {
-      checkedList.value = modelCheckAll.value ? checkboxOptions.value : [];
+      checkedList.value = modelCheckAll.value ? [...checkboxOptions.value] : [];
       isIndeterminate.value = false;
     };
 
@@ -166,6 +204,10 @@ export default {
       modelStyleB,
       modelStyleC,
       modelStyleD,
+      modelStyleE,
+      modelStyleF,
+      modelStyleG,
+      modelStyleH,
       checkedList,
       changeCheckAllHandler,
       changeCheckedHandler,

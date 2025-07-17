@@ -54,7 +54,7 @@
       </div>
       <div class="tw:mt-6">
         <i-multiple-input disabled class="tw:w-[400px]">
-          <div class="tw:w-1/2">
+          <div class="tw:w-1/2 tw:flex">
             <i-radio v-model="modelRadio" :label-value="false" name="modelRadio"> No </i-radio>
             <i-radio v-model="modelRadio" :label-value="true" name="modelRadio" class="tw:ml-3">
               Yes

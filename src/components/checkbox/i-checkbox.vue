@@ -74,9 +74,12 @@ export default {
         return ['base', 'lg'].includes(value);
       },
     },
-    light: {
-      type: Boolean,
-      default: false,
+    themeStyle: {
+      type: String,
+      default: null,
+      validator(value) {
+        return ['gray', 'dark'].includes(value);
+      },
     },
     checkboxRounded: {
       type: String,
@@ -113,12 +116,9 @@ export default {
       if (props.invalid) {
         classes.push('invalid');
       }
-      if (props.size !== 'base') {
-        classes.push(props.size);
-      }
-      if (props.light) {
-        classes.push('light');
-      }
+
+      classes.push(props.size);
+      classes.push(props.themeStyle);
 
       return classes;
     });
@@ -126,12 +126,8 @@ export default {
     const elementInputClass = computed(() => {
       const classes = ref([]);
 
-      if (props.size !== 'base') {
-        classes.value.push(`${props.size}`);
-      }
-      if (props.light) {
-        classes.value.push('light');
-      }
+      classes.value.push(props.size);
+      classes.value.push(props.themeStyle);
 
       return classes.value;
     });
@@ -139,7 +135,7 @@ export default {
     const spanClass = computed(() => {
       const classes = ref([]);
 
-      if (props.size == 'base') {
+      if (props.size === 'base') {
         classes.value.push('tw:ml-2.5', {
           'tw:text-gray-700': props.disabled,
         });
@@ -214,13 +210,17 @@ export default {
   @apply tw:flex tw:items-center tw:relative tw:cursor-pointer tw:m-0 tw:z-1;
 
   .i-checkbox-dash-icon {
-    @apply tw:opacity-100 tw:bg-gray-900 tw:text-white tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5 tw:absolute;
+    @apply tw:opacity-100 tw:bg-transparent tw:text-gray-900 tw:w-3.5 tw:h-3.5 tw:rounded-xs tw:p-0.5 tw:absolute;
 
     &.disabled {
-      @apply tw:bg-gray-700;
+      @apply tw:bg-transparent;
 
-      &.light {
-        @apply tw:text-gray-700 tw:bg-transparent;
+      &.dark {
+        @apply tw:text-white tw:bg-gray-900;
+      }
+
+      &.gray {
+        @apply tw:text-gray-600 tw:bg-gray-300;
       }
     }
 
@@ -228,8 +228,12 @@ export default {
       @apply tw:w-5 tw:h-5;
     }
 
-    &.light {
-      @apply tw:bg-transparent tw:text-gray-900;
+    &.dark {
+      @apply tw:bg-gray-900 tw:text-white;
+    }
+
+    &.gray {
+      @apply tw:bg-transparent tw:text-gray-900 tw:border-gray-50;
     }
   }
 
@@ -273,24 +277,36 @@ export default {
 
       &:checked {
         + .i-checkbox-icon {
-          @apply tw:opacity-100 tw:text-white tw:bg-gray-900 tw:rounded-xs tw:p-0.5;
+          @apply tw:opacity-100 tw:text-gray-900 tw:bg-transparent tw:border tw:border-gray-900 tw:rounded-xs tw:p-0.5;
         }
 
-        &.light {
+        &.dark {
           + .i-checkbox-icon {
-            @apply tw:opacity-100 tw:text-gray-900 tw:rounded-xs tw:p-0.5 tw:border tw:border-gray-700 tw:bg-transparent;
+            @apply tw:opacity-100 tw:text-white tw:rounded-xs tw:p-0.5 tw:bg-gray-900;
+          }
+        }
+
+        &.gray {
+          + .i-checkbox-icon {
+            @apply tw:opacity-100 tw:text-gray-900 tw:rounded-xs tw:p-0.5 tw:border tw:border-gray-500 tw:bg-transparent;
           }
         }
       }
 
       &:disabled {
         + .i-checkbox-icon {
-          @apply tw:bg-gray-700;
+          @apply tw:text-gray-700 tw:bg-transparent tw:border-gray-700;
         }
 
-        &.light {
+        &.dark {
           + .i-checkbox-icon {
-            @apply tw:text-gray-700 tw:bg-transparent;
+            @apply tw:bg-gray-700;
+          }
+        }
+
+        &.gray {
+          + .i-checkbox-icon {
+            @apply tw:text-gray-600 tw:bg-gray-300;
           }
         }
       }
@@ -300,13 +316,21 @@ export default {
       @apply tw:border-none;
     }
 
-    &.disabled,
-    &.disabled.light {
+    &.disabled {
       @apply tw:cursor-not-allowed tw:bg-transparent tw:border-gray-700;
     }
 
+    &.disabled.dark {
+      @apply tw:cursor-not-allowed;
+    }
+
+    &.disabled.gray {
+      @apply tw:cursor-not-allowed tw:bg-gray-300 tw:border-gray-500;
+    }
+
     &.invalid,
-    &.invalid.light {
+    &.invalid.gray,
+    &.invalid.dark {
       @apply tw:border-red-300;
     }
 
@@ -314,13 +338,13 @@ export default {
       @apply tw:w-5 tw:h-5;
     }
 
-    &.light {
-      @apply tw:border-gray-700;
+    &.gray {
+      @apply tw:border-gray-500;
     }
   }
 
   &.disabled {
-    @apply tw:cursor-not-allowed tw:bg-transparent;
+    @apply tw:cursor-not-allowed tw:bg-transparent tw:border-gray-700;
   }
 }
 </style>
