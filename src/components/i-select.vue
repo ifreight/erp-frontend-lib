@@ -419,11 +419,6 @@ export default defineComponent({
           updateSelectedOption(
             dropdownOptions.value.find((item) => item[props.optionKey] === props.inputValue),
           );
-
-          const matchedOption = dropdownOptions.value.find(
-            (item) => item[props.optionKey] === inputValue.value,
-          );
-          updateSelectedOption(matchedOption);
         }
       },
       { deep: true, immediate: true },
