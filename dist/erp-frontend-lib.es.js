@@ -3343,12 +3343,12 @@ function Q9() {
         var k = String(E);
         return !k || k.length >= w ? E : "" + Array(w + 1 - k.length).join(L) + E;
       }, Z = { s: D, z: function(E) {
-        var w = -E.utcOffset(), L = Math.abs(w), k = Math.floor(L / 60), x = L % 60;
-        return (w <= 0 ? "+" : "-") + D(k, 2, "0") + ":" + D(x, 2, "0");
+        var w = -E.utcOffset(), L = Math.abs(w), k = Math.floor(L / 60), H = L % 60;
+        return (w <= 0 ? "+" : "-") + D(k, 2, "0") + ":" + D(H, 2, "0");
       }, m: function E(w, L) {
         if (w.date() < L.date()) return -E(L, w);
-        var k = 12 * (L.year() - w.year()) + (L.month() - w.month()), x = w.clone().add(k, $), T = L - x < 0, O = w.clone().add(k + (T ? -1 : 1), $);
-        return +(-(k + (L - x) / (T ? x - O : O - x)) || 0);
+        var k = 12 * (L.year() - w.year()) + (L.month() - w.month()), H = w.clone().add(k, $), T = L - H < 0, O = w.clone().add(k + (T ? -1 : 1), $);
+        return +(-(k + (L - H) / (T ? H - O : O - H)) || 0);
       }, a: function(E) {
         return E < 0 ? Math.ceil(E) || 0 : Math.floor(E);
       }, p: function(E) {
@@ -3360,18 +3360,18 @@ function Q9() {
       var q = "$isDayjsObject", W = function(E) {
         return E instanceof s1 || !(!E || !E[q]);
       }, K = function E(w, L, k) {
-        var x;
+        var H;
         if (!w) return S;
         if (typeof w == "string") {
           var T = w.toLowerCase();
-          I[T] && (x = T), L && (I[T] = L, x = T);
+          I[T] && (H = T), L && (I[T] = L, H = T);
           var O = w.split("-");
-          if (!x && O.length > 1) return E(O[0]);
+          if (!H && O.length > 1) return E(O[0]);
         } else {
           var Q = w.name;
-          I[Q] = w, x = Q;
+          I[Q] = w, H = Q;
         }
-        return !k && x && (S = x), x || !k && S;
+        return !k && H && (S = H), H || !k && S;
       }, B = function(E, w) {
         if (W(E)) return E.clone();
         var L = typeof w == "object" ? w : {};
@@ -3387,18 +3387,18 @@ function Q9() {
         var w = E.prototype;
         return w.parse = function(L) {
           this.$d = function(k) {
-            var x = k.date, T = k.utc;
-            if (x === null) return /* @__PURE__ */ new Date(NaN);
-            if (N.u(x)) return /* @__PURE__ */ new Date();
-            if (x instanceof Date) return new Date(x);
-            if (typeof x == "string" && !/Z$/i.test(x)) {
-              var O = x.match(m);
+            var H = k.date, T = k.utc;
+            if (H === null) return /* @__PURE__ */ new Date(NaN);
+            if (N.u(H)) return /* @__PURE__ */ new Date();
+            if (H instanceof Date) return new Date(H);
+            if (typeof H == "string" && !/Z$/i.test(H)) {
+              var O = H.match(m);
               if (O) {
                 var Q = O[2] - 1 || 0, t1 = (O[7] || "0").substring(0, 3);
                 return T ? new Date(Date.UTC(O[1], Q, O[3] || 1, O[4] || 0, O[5] || 0, O[6] || 0, t1)) : new Date(O[1], Q, O[3] || 1, O[4] || 0, O[5] || 0, O[6] || 0, t1);
               }
             }
-            return new Date(x);
+            return new Date(H);
           }(L), this.init();
         }, w.init = function() {
           var L = this.$d;
@@ -3408,24 +3408,24 @@ function Q9() {
         }, w.isValid = function() {
           return this.$d.toString() !== _;
         }, w.isSame = function(L, k) {
-          var x = B(L);
-          return this.startOf(k) <= x && x <= this.endOf(k);
+          var H = B(L);
+          return this.startOf(k) <= H && H <= this.endOf(k);
         }, w.isAfter = function(L, k) {
           return B(L) < this.startOf(k);
         }, w.isBefore = function(L, k) {
           return this.endOf(k) < B(L);
-        }, w.$g = function(L, k, x) {
-          return N.u(L) ? this[k] : this.set(x, L);
+        }, w.$g = function(L, k, H) {
+          return N.u(L) ? this[k] : this.set(H, L);
         }, w.unix = function() {
           return Math.floor(this.valueOf() / 1e3);
         }, w.valueOf = function() {
           return this.$d.getTime();
         }, w.startOf = function(L, k) {
-          var x = this, T = !!N.u(k) || k, O = N.p(L), Q = function(k1, C1) {
-            var Z1 = N.w(x.$u ? Date.UTC(x.$y, C1, k1) : new Date(x.$y, C1, k1), x);
+          var H = this, T = !!N.u(k) || k, O = N.p(L), Q = function(k1, C1) {
+            var Z1 = N.w(H.$u ? Date.UTC(H.$y, C1, k1) : new Date(H.$y, C1, k1), H);
             return T ? Z1 : Z1.endOf(f);
           }, t1 = function(k1, C1) {
-            return N.w(x.toDate()[k1].apply(x.toDate("s"), (T ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(C1)), x);
+            return N.w(H.toDate()[k1].apply(H.toDate("s"), (T ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(C1)), H);
           }, o1 = this.$W, i1 = this.$M, l1 = this.$D, x1 = "set" + (this.$u ? "UTC" : "");
           switch (O) {
             case v:
@@ -3450,7 +3450,7 @@ function Q9() {
         }, w.endOf = function(L) {
           return this.startOf(L, !1);
         }, w.$set = function(L, k) {
-          var x, T = N.p(L), O = "set" + (this.$u ? "UTC" : ""), Q = (x = {}, x[f] = O + "Date", x[p] = O + "Date", x[$] = O + "Month", x[v] = O + "FullYear", x[u] = O + "Hours", x[a] = O + "Minutes", x[s] = O + "Seconds", x[l] = O + "Milliseconds", x)[T], t1 = T === f ? this.$D + (k - this.$W) : k;
+          var H, T = N.p(L), O = "set" + (this.$u ? "UTC" : ""), Q = (H = {}, H[f] = O + "Date", H[p] = O + "Date", H[$] = O + "Month", H[v] = O + "FullYear", H[u] = O + "Hours", H[a] = O + "Minutes", H[s] = O + "Seconds", H[l] = O + "Milliseconds", H)[T], t1 = T === f ? this.$D + (k - this.$W) : k;
           if (T === $ || T === v) {
             var o1 = this.clone().set(p, 1);
             o1.$d[Q](t1), o1.init(), this.$d = o1.set(p, Math.min(this.$D, o1.daysInMonth())).$d;
@@ -3461,7 +3461,7 @@ function Q9() {
         }, w.get = function(L) {
           return this[N.p(L)]();
         }, w.add = function(L, k) {
-          var x, T = this;
+          var H, T = this;
           L = Number(L);
           var O = N.p(k), Q = function(i1) {
             var l1 = B(T);
@@ -3471,14 +3471,14 @@ function Q9() {
           if (O === v) return this.set(v, this.$y + L);
           if (O === f) return Q(1);
           if (O === h) return Q(7);
-          var t1 = (x = {}, x[a] = r, x[u] = i, x[s] = n, x)[O] || 1, o1 = this.$d.getTime() + L * t1;
+          var t1 = (H = {}, H[a] = r, H[u] = i, H[s] = n, H)[O] || 1, o1 = this.$d.getTime() + L * t1;
           return N.w(o1, this);
         }, w.subtract = function(L, k) {
           return this.add(-1 * L, k);
         }, w.format = function(L) {
-          var k = this, x = this.$locale();
-          if (!this.isValid()) return x.invalidDate || _;
-          var T = L || "YYYY-MM-DDTHH:mm:ssZ", O = N.z(this), Q = this.$H, t1 = this.$m, o1 = this.$M, i1 = x.weekdays, l1 = x.months, x1 = x.meridiem, H1 = function(C1, Z1, Q1, s5) {
+          var k = this, H = this.$locale();
+          if (!this.isValid()) return H.invalidDate || _;
+          var T = L || "YYYY-MM-DDTHH:mm:ssZ", O = N.z(this), Q = this.$H, t1 = this.$m, o1 = this.$M, i1 = H.weekdays, l1 = H.months, x1 = H.meridiem, H1 = function(C1, Z1, Q1, s5) {
             return C1 && (C1[Z1] || C1(k, T)) || Q1[Z1].slice(0, s5);
           }, L1 = function(C1) {
             return N.s(Q % 12 || 12, C1, "0");
@@ -3498,7 +3498,7 @@ function Q9() {
                 case "MM":
                   return N.s(o1 + 1, 2, "0");
                 case "MMM":
-                  return H1(x.monthsShort, o1, l1, 3);
+                  return H1(H.monthsShort, o1, l1, 3);
                 case "MMMM":
                   return H1(l1, o1);
                 case "D":
@@ -3508,9 +3508,9 @@ function Q9() {
                 case "d":
                   return String(k.$W);
                 case "dd":
-                  return H1(x.weekdaysMin, k.$W, i1, 2);
+                  return H1(H.weekdaysMin, k.$W, i1, 2);
                 case "ddd":
-                  return H1(x.weekdaysShort, k.$W, i1, 3);
+                  return H1(H.weekdaysShort, k.$W, i1, 3);
                 case "dddd":
                   return i1[k.$W];
                 case "H":
@@ -3543,7 +3543,7 @@ function Q9() {
           });
         }, w.utcOffset = function() {
           return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
-        }, w.diff = function(L, k, x) {
+        }, w.diff = function(L, k, H) {
           var T, O = this, Q = N.p(k), t1 = B(L), o1 = (t1.utcOffset() - this.utcOffset()) * r, i1 = this - t1, l1 = function() {
             return N.m(O, t1);
           };
@@ -3575,15 +3575,15 @@ function Q9() {
             default:
               T = i1;
           }
-          return x ? T : N.a(T);
+          return H ? T : N.a(T);
         }, w.daysInMonth = function() {
           return this.endOf($).$D;
         }, w.$locale = function() {
           return I[this.$L];
         }, w.locale = function(L, k) {
           if (!L) return this.$L;
-          var x = this.clone(), T = K(L, k, !0);
-          return T && (x.$L = T), x;
+          var H = this.clone(), T = K(L, k, !0);
+          return T && (H.$L = T), H;
         }, w.clone = function() {
           return N.w(this.$d, this);
         }, w.toDate = function() {
@@ -3595,9 +3595,9 @@ function Q9() {
         }, w.toString = function() {
           return this.$d.toUTCString();
         }, E;
-      }(), H = s1.prototype;
-      return B.prototype = H, [["$ms", l], ["$s", s], ["$m", a], ["$H", u], ["$W", f], ["$M", $], ["$y", v], ["$D", p]].forEach(function(E) {
-        H[E[1]] = function(w) {
+      }(), x = s1.prototype;
+      return B.prototype = x, [["$ms", l], ["$s", s], ["$m", a], ["$H", u], ["$W", f], ["$M", $], ["$y", v], ["$D", p]].forEach(function(E) {
+        x[E[1]] = function(w) {
           return this.$g(w, E[0], E[1]);
         };
       }), B.extend = function(E, w) {
@@ -8222,29 +8222,29 @@ function Yt() {
     if (typeof a != "function")
       throw new TypeError(r);
     u = n(u) || 0, t(f) && (M = !!f.leading, b = "maxWait" in f, g = b ? i(n(f.maxWait) || 0, u) : g, D = "trailing" in f ? !!f.trailing : D);
-    function Z(H) {
+    function Z(x) {
       var E = h, w = $;
-      return h = $ = void 0, m = H, v = a.apply(w, E), v;
+      return h = $ = void 0, m = x, v = a.apply(w, E), v;
     }
-    function S(H) {
-      return m = H, p = setTimeout(W, u), M ? Z(H) : v;
+    function S(x) {
+      return m = x, p = setTimeout(W, u), M ? Z(x) : v;
     }
-    function I(H) {
-      var E = H - _, w = H - m, L = u - E;
+    function I(x) {
+      var E = x - _, w = x - m, L = u - E;
       return b ? l(L, g - w) : L;
     }
-    function q(H) {
-      var E = H - _, w = H - m;
+    function q(x) {
+      var E = x - _, w = x - m;
       return _ === void 0 || E >= u || E < 0 || b && w >= g;
     }
     function W() {
-      var H = e();
-      if (q(H))
-        return K(H);
-      p = setTimeout(W, I(H));
+      var x = e();
+      if (q(x))
+        return K(x);
+      p = setTimeout(W, I(x));
     }
-    function K(H) {
-      return p = void 0, D && h ? Z(H) : (h = $ = void 0, v);
+    function K(x) {
+      return p = void 0, D && h ? Z(x) : (h = $ = void 0, v);
     }
     function B() {
       p !== void 0 && clearTimeout(p), m = 0, h = _ = $ = p = void 0;
@@ -8253,8 +8253,8 @@ function Yt() {
       return p === void 0 ? v : K(e());
     }
     function s1() {
-      var H = e(), E = q(H);
-      if (h = arguments, $ = this, _ = H, E) {
+      var x = e(), E = q(x);
+      if (h = arguments, $ = this, _ = x, E) {
         if (p === void 0)
           return S(_);
         if (b)
@@ -8855,7 +8855,7 @@ const ML = /* @__PURE__ */ c(_n, [["render", Ln]]), yn = J1({
         (k) => typeof k == "object" ? k : { [t.optionKey]: k, [t.optionValue]: k }
       );
       return h.value.forEach((k) => {
-        L.some((x) => x[t.optionKey] === k[t.optionKey]) || L.unshift(k);
+        L.some((H) => H[t.optionKey] === k[t.optionKey]) || L.unshift(k);
       }), !t.remote && t.filterable && a.value ? L.filter(
         (k) => String(k[t.optionValue]).toLowerCase().includes(a.value.toLowerCase())
       ) : L;
@@ -8902,7 +8902,7 @@ const ML = /* @__PURE__ */ c(_n, [["render", Ln]]), yn = J1({
       if (!t.isNormalSelectMode)
         return !1;
       n.value ? B() : K();
-    }, H = (w) => {
+    }, x = (w) => {
       w.composedPath().includes(f.value) || B();
     }, E = (w) => {
       a.value = w.target.value;
@@ -8928,15 +8928,15 @@ const ML = /* @__PURE__ */ c(_n, [["render", Ln]]), yn = J1({
     ), U(
       () => n.value,
       (w) => {
-        w ? document.addEventListener("click", H) : document.removeEventListener("click", H);
+        w ? document.addEventListener("click", x) : document.removeEventListener("click", x);
       }
     ), c1(async () => {
       if (await g1(), $.value.length > 0 && (t.valueOption.length === 0 && e("update:valueOption", [...h.value]), !t.remote)) {
-        const w = h.value.map((T) => T[t.optionKey]), L = t.options, x = D(L).map((T) => T[t.optionKey]);
-        i.value = x.every((T) => w.includes(T));
+        const w = h.value.map((T) => T[t.optionKey]), L = t.options, H = D(L).map((T) => T[t.optionKey]);
+        i.value = H.every((T) => w.includes(T));
       }
     }), U1(() => {
-      n.value && document.removeEventListener("click", H);
+      n.value && document.removeEventListener("click", x);
     }), {
       selectRef: f,
       inputRef: u,
@@ -9691,8 +9691,8 @@ function V2(t, e) {
   if (h === m5 && K) {
     var B = K[i];
     Object.keys(W).forEach(function(N) {
-      var s1 = [O1, D1].indexOf(N) >= 0 ? 1 : -1, H = [M1, D1].indexOf(N) >= 0 ? "y" : "x";
-      W[N] += B[H] * s1;
+      var s1 = [O1, D1].indexOf(N) >= 0 ? 1 : -1, x = [M1, D1].indexOf(N) >= 0 ? "y" : "x";
+      W[N] += B[x] * s1;
     });
   }
   return W;
@@ -9965,10 +9965,10 @@ function Er(t) {
   };
   if (I) {
     if (l || a) {
-      var N = Z === "y" ? M1 : V1, s1 = Z === "y" ? D1 : O1, H = Z === "y" ? "height" : "width", E = I[Z], w = I[Z] + m[N], L = I[Z] - m[s1], k = v ? -W[H] / 2 : 0, x = b === $5 ? q[H] : W[H], T = b === $5 ? -W[H] : -q[H], O = e.elements.arrow, Q = v && O ? L2(O) : {
+      var N = Z === "y" ? M1 : V1, s1 = Z === "y" ? D1 : O1, x = Z === "y" ? "height" : "width", E = I[Z], w = I[Z] + m[N], L = I[Z] - m[s1], k = v ? -W[x] / 2 : 0, H = b === $5 ? q[x] : W[x], T = b === $5 ? -W[x] : -q[x], O = e.elements.arrow, Q = v && O ? L2(O) : {
         width: 0,
         height: 0
-      }, t1 = e.modifiersData["arrow#persistent"] ? e.modifiersData["arrow#persistent"].padding : $3(), o1 = t1[N], i1 = t1[s1], l1 = J5(0, q[H], Q[H]), x1 = D ? q[H] / 2 - k - l1 - o1 - K : x - l1 - o1 - K, H1 = D ? -q[H] / 2 + k + l1 + i1 + K : T + l1 + i1 + K, L1 = e.elements.arrow && A5(e.elements.arrow), k1 = L1 ? Z === "y" ? L1.clientTop || 0 : L1.clientLeft || 0 : 0, C1 = e.modifiersData.offset ? e.modifiersData.offset[e.placement][Z] : 0, Z1 = I[Z] + x1 - C1 - k1, Q1 = I[Z] + H1 - C1;
+      }, t1 = e.modifiersData["arrow#persistent"] ? e.modifiersData["arrow#persistent"].padding : $3(), o1 = t1[N], i1 = t1[s1], l1 = J5(0, q[x], Q[x]), x1 = D ? q[x] / 2 - k - l1 - o1 - K : H - l1 - o1 - K, H1 = D ? -q[x] / 2 + k + l1 + i1 + K : T + l1 + i1 + K, L1 = e.elements.arrow && A5(e.elements.arrow), k1 = L1 ? Z === "y" ? L1.clientTop || 0 : L1.clientLeft || 0 : 0, C1 = e.modifiersData.offset ? e.modifiersData.offset[e.placement][Z] : 0, Z1 = I[Z] + x1 - C1 - k1, Q1 = I[Z] + H1 - C1;
       if (l) {
         var s5 = J5(v ? I5(w, Z1) : w, E, v ? n5(L, Q1) : L);
         I[Z] = s5, B[Z] = s5 - E;
@@ -10046,16 +10046,16 @@ function Pr(t) {
         allowedAutoPlacements: _
       }) : l1);
     }, []), S = e.rects.reference, I = e.rects.popper, q = /* @__PURE__ */ new Map(), W = !0, K = Z[0], B = 0; B < Z.length; B++) {
-      var N = Z[B], s1 = P1(N), H = g5(N) === $5, E = [M1, D1].indexOf(s1) >= 0, w = E ? "width" : "height", L = V2(e, {
+      var N = Z[B], s1 = P1(N), x = g5(N) === $5, E = [M1, D1].indexOf(s1) >= 0, w = E ? "width" : "height", L = V2(e, {
         placement: N,
         boundary: h,
         rootBoundary: $,
         altBoundary: g,
         padding: f
-      }), k = E ? H ? O1 : V1 : H ? D1 : M1;
+      }), k = E ? x ? O1 : V1 : x ? D1 : M1;
       S[w] > I[w] && (k = Q5(k));
-      var x = Q5(k), T = [];
-      if (l && T.push(L[s1] <= 0), a && T.push(L[k] <= 0, L[x] <= 0), T.every(function(i1) {
+      var H = Q5(k), T = [];
+      if (l && T.push(L[s1] <= 0), a && T.push(L[k] <= 0, L[H] <= 0), T.every(function(i1) {
         return i1;
       })) {
         K = N, W = !1;
@@ -10393,14 +10393,14 @@ var w3 = {
     emit: e
   }) {
     const n = t;
-    B3((x) => ({
+    B3((H) => ({
       c81fc0a4: t.zIndex
     }));
     const r = r2(), i = V(null), l = V(null), s = V(null), a = V(!1);
     c1(() => {
-      const x = r.default();
-      if (x && x.length > 1)
-        return console.error(`[Popper]: The <Popper> component expects only one child element at its root. You passed ${x.length} child nodes.`);
+      const H = r.default();
+      if (H && H.length > 1)
+        return console.error(`[Popper]: The <Popper> component expects only one child element at its root. You passed ${H.length} child nodes.`);
     });
     const {
       arrowPadding: u,
@@ -10430,24 +10430,24 @@ var w3 = {
       triggerNode: s
     }), {
       hasContent: q
-    } = Gn(r, l, h), W = y(() => D.value !== null), K = y(() => g.value || !q.value), B = y(() => Z.value && !K.value), N = y(() => !$.value && !W.value), s1 = y(() => v.value ? `border: ${_.value}px solid transparent; margin: -${_.value}px;` : null), H = F0.debounce(S, M.value), E = F0.debounce(I, f.value), w = async () => {
-      K.value || W.value || (E.clear(), H());
+    } = Gn(r, l, h), W = y(() => D.value !== null), K = y(() => g.value || !q.value), B = y(() => Z.value && !K.value), N = y(() => !$.value && !W.value), s1 = y(() => v.value ? `border: ${_.value}px solid transparent; margin: -${_.value}px;` : null), x = F0.debounce(S, M.value), E = F0.debounce(I, f.value), w = async () => {
+      K.value || W.value || (E.clear(), x());
     }, L = async () => {
-      W.value || (H.clear(), E());
+      W.value || (x.clear(), E());
     }, k = () => {
       Z.value ? L() : w();
     };
-    return U([q, g], ([x, T]) => {
-      Z.value && (!x || T) && I();
-    }), U(Z, (x) => {
-      x ? a.value = !0 : F0.debounce(() => {
+    return U([q, g], ([H, T]) => {
+      Z.value && (!H || T) && I();
+    }), U(Z, (H) => {
+      H ? a.value = !0 : F0.debounce(() => {
         a.value = !1;
       }, 200);
     }), q1(() => {
-      W.value && (D.value ? H() : E());
+      W.value && (D.value ? x() : E());
     }), q1(() => {
       N.value && jn(i, L);
-    }), (x, T) => (d(), C("div", {
+    }), (H, T) => (d(), C("div", {
       class: "inline-block",
       style: W1(e5(s1)),
       onMouseleave: T[2] || (T[2] = (O) => t.hover && L()),
@@ -10462,7 +10462,7 @@ var w3 = {
       onClick: k,
       onFocus: w,
       onKeyup: e0(L, ["esc"])
-    }, [Y(x.$slots, "default")], 40, ei), F(V5, {
+    }, [Y(H.$slots, "default")], 40, ei), F(V5, {
       name: "fade"
     }, {
       default: n1(() => [b1(o("div", {
@@ -10471,7 +10471,7 @@ var w3 = {
         ref: (O, Q) => {
           Q.popperNode = O, l.value = O;
         }
-      }, [Y(x.$slots, "content", {
+      }, [Y(H.$slots, "content", {
         close: e5(I),
         isOpen: a.value
       }, () => [$1(J(e5(h)), 1)]), t.arrow ? (d(), a1(Qr, {
@@ -10801,58 +10801,58 @@ const HL = /* @__PURE__ */ c(li, [["render", di]]), ai = J1({
   emits: ["update:modelValue", "update:valueOption", "change", "focus", "blur", "clear"],
   setup(t, { emit: e }) {
     const n = V(!1), r = V(!1), i = V([]), l = V(""), s = V(), a = V(), u = V(t.valueOption), f = V(t.modelValue), h = y(() => t.remote ? r.value : t.loading), $ = y(() => !!t.modelValue), g = y(() => t.isNullWhenEmpty ? null : ""), v = y(() => {
-      let H = [];
+      let x = [];
       if (t.remote)
-        H = i.value || [];
+        x = i.value || [];
       else if (t.options && t.options.length) {
         const [E] = t.options;
-        typeof E != "object" ? H = t.options.map((w) => ({
+        typeof E != "object" ? x = t.options.map((w) => ({
           id: w,
           name: w
-        })) : H = [...t.options];
+        })) : x = [...t.options];
       }
-      return u.value && (H.some(
+      return !x.length && u.value && (x.some(
         (w) => w[t.optionKey] === u.value[t.optionKey]
-      ) || H.unshift(u.value)), H;
-    }), p = y(() => u.value ? u.value[t.optionKey] : void 0), _ = y(() => f.value ? u.value ? u.value[t.optionValue] : l.value : l.value || ""), m = y(() => n.value ? !t.filterable && !t.remote : !0), M = (H) => {
-      u.value = H || null, e("update:valueOption", H);
-    }, b = (H) => {
-      if (i.value = [], !H) {
+      ) || x.unshift(u.value)), x;
+    }), p = y(() => u.value ? u.value[t.optionKey] : void 0), _ = y(() => f.value ? u.value ? u.value[t.optionValue] : l.value : l.value || ""), m = y(() => n.value ? !t.filterable && !t.remote : !0), M = (x) => {
+      u.value = x || null, e("update:valueOption", x);
+    }, b = (x) => {
+      if (i.value = [], !x) {
         f.value = "", M(g.value), e("update:modelValue", g.value), e("change", g.value);
         return;
       }
-      f.value = H[t.optionKey], l.value = H[t.optionValue], M(H), e("update:modelValue", H[t.optionKey]), e("change", H);
+      f.value = x[t.optionKey], l.value = x[t.optionValue], M(x), e("update:modelValue", x[t.optionKey]), e("change", x);
     }, D = () => {
       l.value = "", b(void 0), i.value = [];
-    }, Z = async (H) => {
-      if (!H) {
+    }, Z = async (x) => {
+      if (!x) {
         i.value = [], r.value = !1;
         return;
       }
       try {
-        i.value = await t.remoteMethod(H);
+        i.value = await t.remoteMethod(x);
       } catch {
       }
       r.value = !1;
     }, S = $2(() => {
       Z(l.value);
-    }, 300), I = (H) => {
-      (t.filterable || t.remote) && (f.value ? (D(), H.key.length === 1 && (l.value = H.key)) : l.value = H.target.value, t.remote && typeof S == "function" && (r.value = !0, S()));
+    }, 300), I = (x) => {
+      (t.filterable || t.remote) && (f.value ? (D(), x.key.length === 1 && (l.value = x.key)) : l.value = x.target.value, t.remote && typeof S == "function" && (r.value = !0, S()));
     }, q = () => {
       !t.disabled && !t.readOnly && !t.isVisible && (n.value = !0, e("focus"), s.value && s.value.$el.querySelector("input").focus());
     }, W = () => {
       n.value && (n.value = !1, e("blur"), s.value && s.value.$el.querySelector("input").blur());
     }, K = () => {
       n.value ? W() : q();
-    }, B = (H) => {
-      b(H), l.value = "", W();
-    }, N = (H) => {
-      if (!H.composedPath().includes(a.value)) {
+    }, B = (x) => {
+      b(x), l.value = "", W();
+    }, N = (x) => {
+      if (!x.composedPath().includes(a.value)) {
         const w = typeof f.value == "string" ? f.value.trim() : "";
         w && (v.value.find(
           (k) => {
-            var x;
-            return ((x = k[t.optionValue]) == null ? void 0 : x.toString().toLowerCase()) === w.toLowerCase();
+            var H;
+            return ((H = k[t.optionValue]) == null ? void 0 : H.toString().toLowerCase()) === w.toLowerCase();
           }
         ) || (f.value = "", l.value = "", e("update:modelValue", g.value))), W();
       }
@@ -10861,34 +10861,34 @@ const HL = /* @__PURE__ */ c(li, [["render", di]]), ai = J1({
     };
     return U(
       () => t.valueOption,
-      (H) => {
-        (!H && p.value || H && p.value !== H[t.optionKey]) && (u.value = H);
+      (x) => {
+        (!x && p.value || x && p.value !== x[t.optionKey]) && (u.value = x);
       }
     ), U(
       () => t.modelValue,
-      (H) => {
-        if (H !== f.value && (f.value = H, p.value !== H))
+      (x) => {
+        if (x !== f.value && (f.value = x, p.value !== x))
           if (t.remote)
-            H || M(void 0), r.value = !0, Z(H);
+            x || M(void 0), r.value = !0, Z(x);
           else {
             const E = v.value.find(
-              (w) => w[t.optionKey] === H
+              (w) => w[t.optionKey] === x
             );
             M(E);
           }
       }
     ), U(
-      () => v,
+      () => v.value,
       () => {
         f.value && p.value !== f.value && v.value.length && M(
-          v.value.find((H) => H[t.optionKey] === t.inputValue)
+          v.value.find((x) => x[t.optionKey] === f.value)
         );
       },
       { deep: !0, immediate: !0 }
     ), U(
       () => n.value,
-      (H) => {
-        H ? document.addEventListener("click", N) : document.removeEventListener("click", N);
+      (x) => {
+        x ? document.addEventListener("click", N) : document.removeEventListener("click", N);
       }
     ), U1(() => {
       n.value && document.removeEventListener("click", N);

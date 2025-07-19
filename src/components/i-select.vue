@@ -213,7 +213,7 @@ export default defineComponent({
         }
       }
 
-      if (selectedOption.value) {
+      if (!options.length && selectedOption.value) {
         const isOptionIncluded = options.some(
           (option) => option[props.optionKey] === selectedOption.value[props.optionKey],
         );
@@ -222,7 +222,6 @@ export default defineComponent({
           options.unshift(selectedOption.value);
         }
       }
-
       return options;
     });
 
@@ -400,7 +399,6 @@ export default defineComponent({
               const newSelectedOption = dropdownOptions.value.find(
                 (item) => item[props.optionKey] === newValue,
               );
-
               updateSelectedOption(newSelectedOption);
             }
           }
@@ -409,7 +407,7 @@ export default defineComponent({
     );
 
     watch(
-      () => dropdownOptions,
+      () => dropdownOptions.value,
       () => {
         if (
           inputValue.value &&
@@ -417,7 +415,7 @@ export default defineComponent({
           dropdownOptions.value.length
         ) {
           updateSelectedOption(
-            dropdownOptions.value.find((item) => item[props.optionKey] === props.inputValue),
+            dropdownOptions.value.find((item) => item[props.optionKey] === inputValue.value),
           );
         }
       },
