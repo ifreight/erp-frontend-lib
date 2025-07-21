@@ -443,6 +443,13 @@ export default {
 
     &:focus-within {
       border-color: var(--gray-700);
+      &.append .append-container,
+      &.prepend .prepend-container {
+        .i-input-container {
+          border-top-color: var(--gray-700);
+          border-bottom-color: var(--gray-700);
+        }
+      }
     }
 
     &.disabled {
