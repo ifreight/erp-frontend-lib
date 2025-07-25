@@ -16,7 +16,10 @@
     <template v-if="uploadType == drag">
       <div
         v-if="isShow"
-        :class="dragUploadClass"
+        class="drag-and-drop-area"
+        :class="{
+          'on-drag': isDragging,
+        }"
         @click="clickButton"
         @drop="handleDrop"
         @dragover="handleDragOver"
@@ -124,13 +127,6 @@ export default {
       }
       return props.disabled;
     });
-    const dragUploadClass = computed(() => {
-      const defaultClass = 'drag-and-drop-area';
-      if (isDragging.value) {
-        return 'on-drag';
-      }
-      return defaultClass;
-    });
 
     async function processingFile(file) {
       return new Promise((resolve, reject) => {
@@ -178,6 +174,7 @@ export default {
           const fileExt = file.name.split('.');
           if (!arrExtension.includes(fileExt[fileExt.length - 1].toLowerCase())) {
             emit('invalidFile', file);
+            break;
           }
         }
 
@@ -225,7 +222,7 @@ export default {
       drag,
       isShow,
       isDisabled,
-      dragUploadClass,
+      isDragging,
       selectedFile,
       clickButton,
       inputFile,
@@ -242,8 +239,9 @@ export default {
 
 .drag-and-drop-area {
   @apply tw:border-(--grey-500) tw:border tw:rounded-md tw:border-dashed tw:flex tw:justify-center tw:p-1.5 tw:min-h-[43px] tw:h-[inherit] tw:text-center tw:cursor-pointer;
-}
-.on-drag {
-  @apply tw:border-(--brown-600) tw:border tw:rounded-md tw:border-dashed tw:flex tw:justify-center tw:p-1.5 tw:min-h-[43px] tw:h-[inherit] tw:text-center tw:cursor-pointer;
+
+  &.on-drag {
+    @apply tw:border-(--brown-600);
+  }
 }
 </style>

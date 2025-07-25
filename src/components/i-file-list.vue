@@ -2,33 +2,30 @@
   <div class="i-file-list">
     <transition-group name="list" tag="div">
       <div class="tw:mb-1" v-for="(file, index) in files" :key="index">
-        <slot :file="file" :index="index" :isProgressFinish="isProgressFinish">
+        <slot :file="file" :index="index">
           <template v-if="type === 'progressList'">
             <div class="each-progress-list-wrapper" :class="listClass">
               <p class="tw:text-sm tw:self-center" @click="viewFile(file)">{{ file.name }}</p>
               <i-button
-                v-if="isProgressFinish.includes(`${index}-${file.name}`)"
+                v-if="file.isFinish"
                 :text="true"
                 class="tw:self-center tw:w-fit"
                 @click="remove(index)"
               >
                 <ic-times></ic-times>
               </i-button>
-              <p
-                v-if="file.progressBarValue && !isProgressFinish.includes(`${index}-${file.name}`)"
-                class="tw:self-center"
-              >
+              <p v-if="file.progressBarValue && !file.isFinish" class="tw:self-center">
                 {{ file.progressBarValue }}%
               </p>
               <i-progress-bar
-                class="tw:absolute tw:bottom-0 tw:left-0 progress-border-radius"
                 v-if="showProgressBar"
+                class="tw:absolute tw:bottom-0 tw:left-0 progress-border-radius"
                 :progress="file.progressBarValue"
                 :timeout-value="file.timeoutValue"
                 :color="color"
                 @finish="
                   () => {
-                    finishHandler(`${index}-${file.name}`);
+                    finishHandler(index);
                   }
                 "
               ></i-progress-bar>
@@ -95,8 +92,6 @@ export default {
   },
   emits: ['update:files', 'remove', 'click'],
   setup(props, { emit }) {
-    let isProgressFinish = ref([]);
-
     const remove = (index) => {
       emit('remove', props.files[index]);
       emit('update:files', props.files.slice(0, index).concat(props.files.slice(index + 1)));
@@ -107,11 +102,26 @@ export default {
         emit('click', file);
       }
     };
-    const finishHandler = (data) => {
-      isProgressFinish.value.push(data);
+
+    const finishHandler = (idx) => {
+      emit(
+        'update:files',
+        props.files.map((val, index) => {
+          let isFinish = false;
+          if (val.isFinish) {
+            isFinish = val.isFinish;
+          } else {
+            isFinish = index === idx;
+          }
+          return {
+            ...val,
+            isFinish,
+          };
+        }),
+      );
     };
 
-    return { isProgressFinish, finishHandler, remove, viewFile };
+    return { finishHandler, remove, viewFile };
   },
 };
 </script>

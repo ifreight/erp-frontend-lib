@@ -200,11 +200,14 @@ export default {
 
     const files2WithProgressBarValue = computed({
       get: () => {
-        return files2.value.map((file) => {
+        const x = files2.value.map((file) => {
           return { ...file, progressBarValue: files2progress.value };
         });
+        console.log(x);
+        return x;
       },
       set: (val) => {
+        console.log('set', val);
         files2.value = val;
       },
     });
