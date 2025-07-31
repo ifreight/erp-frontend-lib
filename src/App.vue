@@ -1,6 +1,6 @@
 <template>
   <div class="tw:flex tw:min-h-dvh">
-    <div class="tw:bg-gray-100 tw:min-h-full tw:w-1/5 tw:pl-2">
+    <div class="tw:bg-gray-100 tw:min-h-full tw:w-1/5 tw:pl-2 tw:shrink-0">
       <h2 class="tw:text-center tw:mb-2 tw:font-bold">Menu</h2>
       <div class="tw:flex tw:flex-col">
         <router-link to="/" class="tw:font-bold tw:mb-3">home</router-link>
@@ -32,7 +32,7 @@
         <router-link to="/upload">upload</router-link>
       </div>
     </div>
-    <div class="tw:flex-1 tw:py-5 tw:px-6">
+    <div class="tw:flex-1 tw:py-5 tw:px-6 tw:min-w-0">
       <RouterView />
     </div>
   </div>

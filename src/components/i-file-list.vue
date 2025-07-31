@@ -5,11 +5,19 @@
         <slot :file="file" :index="index">
           <template v-if="type === 'progressList'">
             <div class="each-progress-list-wrapper" :class="listClass">
-              <p class="tw:text-sm tw:self-center" @click="viewFile(file)">{{ file.name }}</p>
+              <p
+                class="tw:text-sm tw:self-center tw:truncate"
+                :class="{
+                  'tw:cursor-pointer': viewable,
+                }"
+                @click="viewFile(file)"
+              >
+                {{ file.name }}
+              </p>
               <i-button
                 v-if="file.isFinish"
                 :text="true"
-                class="tw:self-center tw:w-fit"
+                class="tw:self-center tw:w-fit tw:shrink-0 tw:ml-1"
                 @click="remove(index)"
               >
                 <ic-times></ic-times>
@@ -34,9 +42,10 @@
           <template v-if="type === 'list'">
             <div class="each-file-list-wrapper" :class="listClass">
               <i-button
-                :disabled="!readOnly"
                 :text="true"
-                class="tw:self-center tw:h-fit tw:w-fit"
+                class="tw:self-center tw:h-fit tw:w-fit tw:truncate tw:block tw:justify-start"
+                :disabled="!viewable"
+                :class="{ 'tw:text-gray-900': !viewable }"
                 @click="viewFile(file)"
               >
                 {{ file.name }}
@@ -44,7 +53,7 @@
               <i-button
                 v-if="!readOnly"
                 :text="true"
-                class="tw:self-center tw:w-fit tw:h-fit"
+                class="tw:self-center tw:w-fit tw:h-fit tw:shrink-0 tw:ml-1"
                 @click="remove(index)"
               >
                 <ic-times></ic-times>
@@ -58,7 +67,6 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import IcTimes from '@/icons/ic-times.vue';
 import IProgressBar from '@/components/i-progress-bar.vue';
 import IButton from '@/components/i-button.vue';
@@ -89,6 +97,10 @@ export default {
     readOnly: Boolean,
     showProgressBar: Boolean,
     color: String,
+    viewable: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ['update:files', 'remove', 'click'],
   setup(props, { emit }) {
@@ -98,9 +110,7 @@ export default {
     };
 
     const viewFile = (file) => {
-      if (props.readOnly) {
-        emit('click', file);
-      }
+      emit('click', file);
     };
 
     const finishHandler = (idx) => {

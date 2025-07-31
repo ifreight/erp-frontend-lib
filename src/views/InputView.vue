@@ -1,234 +1,287 @@
 <template>
   <div class="container-input-view">
-    <form @submit.prevent="submitHandler">
-      <div>
-        Normal + clearable + form example
-        <span class="tw:text-red-400 tw:ml-1">
-          v-model:
-          <span v-if="input1 === null">ini null</span>
-          <span v-else>{{ !input1 ? 'empty bkn null' : `${input1}` }}</span>
-        </span>
+    <div class="row">
+      <form class="field" @submit.prevent="submitHandler">
+        <div class="input-label">Normal + clearable + form example</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input1 === null">ini null</span>
+            <span v-else>{{ !input1 ? 'empty bkn null' : `${input1}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input1"
+          input-id="Text1"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          placeholder="max 3"
+        />
+      </form>
+      <div class="field">
+        <div class="input-label">
+          Normal + clearable + height 48px (not null when empty isNullWhenEmpty: false)
+        </div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input10 === null">ini null</span>
+            <span v-else>{{ !input10 ? 'empty bkn null' : `${input10}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input10"
+          input-id="Text10"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          placeholder="max 3"
+          height="48px"
+          :isNullWhenEmpty="false"
+        />
       </div>
-      <i-input
-        v-model="input1"
-        input-id="Text1"
-        name="text"
-        class="tw:flex-1 tw:mb-2"
-        clearable
-        placeholder="max 3"
-      />
-    </form>
-    <div>
-      Normal + clearable + height 48px (not null when empty isNullWhenEmpty: false)
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input10 === null">ini null</span>
-        <span v-else>{{ !input10 ? 'empty bkn null' : `${input10}` }}</span>
-      </span>
     </div>
-    <i-input
-      v-model="input10"
-      input-id="Text10"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      placeholder="max 3"
-      height="48px"
-      :isNullWhenEmpty="false"
-    />
-    <div>
-      Contoh Invalid
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input2 === null">ini null</span>
-        <span v-else>{{ !input2 ? 'empty bkn null' : `${input2}` }}</span>
-      </span>
+    <div class="row">
+      <div class="field">
+        <div class="input-label">Contoh Invalid</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input2 === null">ini null</span>
+            <span v-else>{{ !input2 ? 'empty bkn null' : `${input2}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input2"
+          input-id="Text2"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          :invalid="true"
+          errorMessage="Error Message"
+        />
+      </div>
+      <div class="field">
+        <div class="input-label">Disabled</div>
+        <div class="input-v-model">v-model: {{ input3 }}</div>
+        <i-input
+          v-model="input3"
+          input-id="Text3"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          :disabled="true"
+          placeholder="disabled placholder"
+        />
+      </div>
     </div>
-    <i-input
-      v-model="input2"
-      input-id="Text2"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      :invalid="true"
-      errorMessage="Error Message"
-    />
-    <div>Disabled</div>
-    <span>v-model: {{ input3 }}</span>
-    <i-input
-      v-model="input3"
-      input-id="Text3"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      :disabled="true"
-      placeholder="disabled placholder"
-    />
-    <div>
-      Prepend, append and max length
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input4 === null">ini null</span>
-        <span v-else>{{ !input4 ? 'empty bkn null' : `${input4}` }}</span>
-      </span>
+    <div class="row">
+      <div class="field">
+        <div class="input-label">Prepend, append and max length</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input4 === null">ini null</span>
+            <span v-else>{{ !input4 ? 'empty bkn null' : `${input4}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input4"
+          input-id="Text4"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          :maxlength="3"
+          placeholder="placeholder max 3"
+        >
+          <template #prepend><ic-calendar /></template>
+          <template #append><ic-calendar /></template>
+        </i-input>
+      </div>
+      <div class="field">
+        <div class="input-label">Prepend / append i-select</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input4 === null">ini null</span>
+            <span v-else>{{ !input4 ? 'empty bkn null' : `${input4}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input12"
+          input-id="Text12"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          placeholder="With select Prepend"
+        >
+          <template #prepend>
+            <i-select
+              class="tw:w-[82px]"
+              name="selecta"
+              v-model="selectModel"
+              :options="selOptions"
+            />
+          </template>
+        </i-input>
+        <i-input
+          v-model="input12"
+          input-id="Text123"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          placeholder="With select Prepend"
+          invalid
+        >
+          <template #append>
+            <i-select
+              class="tw:w-[82px]"
+              name="selecta"
+              v-model="selectModel"
+              :options="selOptions"
+            />
+          </template>
+        </i-input>
+      </div>
     </div>
-    <i-input
-      v-model="input4"
-      input-id="Text4"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      :maxlength="3"
-      placeholder="placeholder max 3"
-    >
-      <template #prepend><ic-calendar /></template>
-      <template #append><ic-calendar /></template>
-    </i-input>
-    <div>
-      Prepend / append i-select
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input4 === null">ini null</span>
-        <span v-else>{{ !input4 ? 'empty bkn null' : `${input4}` }}</span>
-      </span>
+    <div class="row">
+      <div class="field">
+        <div class="input-label">Borderless + password type</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input5 === null">ini null</span>
+            <span v-else>{{ !input5 ? 'empty bkn null' : `${input5}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input5"
+          input-id="Text5"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          type="password"
+          borderless
+        />
+      </div>
+      <div class="field">
+        <div class="input-label">
+          Number type + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)
+        </div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input7 === null">ini null</span>
+            <span v-else>{{ !input7 ? 'empty bkn null' : `${input7}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input7"
+          input-id="Text7"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          mask="number"
+          rounded="lg"
+        />
+      </div>
     </div>
-    <i-input
-      v-model="input12"
-      input-id="Text12"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      placeholder="With select Prepend"
-    >
-      <template #prepend>
-        <i-select class="tw:w-[82px]" name="selecta" v-model="selectModel" :options="selOptions" />
-      </template>
-    </i-input>
-    <i-input
-      v-model="input12"
-      input-id="Text123"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      placeholder="With select Prepend"
-      invalid
-    >
-      <template #append>
-        <i-select class="tw:w-[82px]" name="selecta" v-model="selectModel" :options="selOptions" />
-      </template>
-    </i-input>
-    <div>
-      Borderless + password type
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input5 === null">ini null</span>
-        <span v-else>{{ !input5 ? 'empty bkn null' : `${input5}` }}</span>
-      </span>
+    <div class="row">
+      <div class="field">
+        <div class="input-label">Date type + readonly + size sm + height 32px</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input8 === null">ini null</span>
+            <span v-else>{{ !input8 ? 'empty bkn null' : `${input8}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input8"
+          input-id="Text8"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          size="sm"
+          height="32px"
+          clearable
+          readOnly
+        />
+      </div>
+      <div class="field">
+        <div class="input-label">readonly datepicker + dropdown</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input11 === null">ini null</span>
+            <span v-else>{{ !input11 ? 'empty bkn null' : `${input11}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input11"
+          input-id="Text11"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          readOnly
+          clearable
+          rounded="lg"
+          @click="dateVisible = true"
+          @clear="dateExample = []"
+        />
+        <div class="tw:relative">
+          <i-dropdown v-model:visible="dateVisible" :isShowArrow="false" rounded="lg" width="720px">
+            <i-date-range-picker
+              v-model="dateExample"
+              @filled="onDateFilledHandler"
+            ></i-date-range-picker>
+          </i-dropdown>
+        </div>
+      </div>
     </div>
-    <i-input
-      v-model="input5"
-      input-id="Text5"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      type="password"
-      borderless
-    />
-    <div>
-      Decimal type
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input6 === null">ini null</span>
-        <span v-else>{{ !input6 ? 'empty bkn null' : `${input6}` }}</span>
-      </span>
-    </div>
-    <i-input
-      v-model="input6"
-      input-id="Text6"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      mask="decimal"
-    />
-    <div>
-      Number type + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input7 === null">ini null</span>
-        <span v-else>{{ !input7 ? 'empty bkn null' : `${input7}` }}</span>
-      </span>
-    </div>
-    <i-input
-      v-model="input7"
-      input-id="Text7"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      mask="number"
-      rounded="lg"
-    />
-    <div>
-      Date type + readonly + size sm + height 32px
-      <span class="tw:text-red-400 tw:ml-1">
-        v-model:
-        <span v-if="input8 === null">ini null</span>
-        <span v-else>{{ !input8 ? 'empty bkn null' : `${input8}` }}</span>
-      </span>
-    </div>
-    <i-input
-      v-model="input8"
-      input-id="Text8"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      size="sm"
-      height="32px"
-      clearable
-      readOnly
-    />
-
-    <div>Number mask NPWP + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)</div>
-    <span class="tw:text-red-400 tw:ml-1">
-      v-model:
-      <span v-if="input9 === null">ini null</span>
-      <span v-else>{{ !input9 ? 'empty bkn null' : `${input9}` }}</span>
-    </span>
-    <i-input
-      v-model="input9"
-      input-id="Text9"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      clearable
-      mask="npwp"
-      rounded="lg"
-    />
-    <div>readonly datepicker + dropdown</div>
-    <span class="tw:text-red-400 tw:ml-1">
-      v-model:
-      <span v-if="input11 === null">ini null</span>
-      <span v-else>{{ !input11 ? 'empty bkn null' : `${input11}` }}</span>
-    </span>
-    <i-input
-      v-model="input11"
-      input-id="Text11"
-      name="text"
-      class="tw:flex-1 tw:mb-2"
-      readOnly
-      clearable
-      rounded="lg"
-      @click="dateVisible = true"
-      @clear="dateExample = []"
-    />
-    <div class="tw:relative">
-      <i-dropdown v-model:visible="dateVisible" :isShowArrow="false" rounded="lg" width="720px">
-        <i-date-range-picker
-          v-model="dateExample"
-          @filled="onDateFilledHandler"
-        ></i-date-range-picker>
-      </i-dropdown>
+    <div class="row">
+      <div class="field">
+        <div class="input-label">Decimal type</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input6 === null">ini null</span>
+            <span v-else>{{ !input6 ? 'empty bkn null' : `${input6}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input6"
+          input-id="Text6"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          mask="decimal"
+        />
+      </div>
+      <div class="field">
+        <div class="input-label">
+          Number mask NPWP + rounded (default/xs 2px, sm 4px, lg 8px, xl 12px)
+        </div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="input9 === null">ini null</span>
+            <span v-else>{{ !input9 ? 'empty bkn null' : `${input9}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="input9"
+          input-id="Text9"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          mask="npwp"
+          rounded="lg"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import IInput from '@/components/i-input.vue';
 import ISelect from '@/components/i-select.vue';
 import IcCalendar from '@/icons/ic-calendar.vue';
@@ -249,7 +302,7 @@ export default {
     const input3 = ref('999');
     const input4 = ref(undefined);
     const input5 = ref('password');
-    const input6 = ref(Math.round(123.453 * 100) / 100);
+    const input6 = ref(null);
     const input7 = ref(null);
     const input8 = ref(new Date());
     const input9 = ref(null);
@@ -270,6 +323,16 @@ export default {
       input11.value = date;
       dateVisible.value = false;
     };
+
+    onMounted(() => {
+      setTimeout(() => {
+        // input6.value = Math.round(123.453 * 100) / 100;
+        const x = Math.round(123.453 * 100) / 100;
+        console.log(x);
+        input6.value = '12000.50';
+        // input6.value = Number('12000.50');
+      }, 200);
+    });
 
     return {
       input1,
@@ -300,5 +363,17 @@ export default {
 
 .container-input-view {
   @apply tw:h-full;
+  .row {
+    @apply tw:flex tw:gap-5 tw:mb-2;
+  }
+  .field {
+    @apply tw:w-1/2;
+  }
+  .input-label {
+    @apply tw:text-xs;
+  }
+  .input-v-model {
+    @apply tw:text-2xs;
+  }
 }
 </style>

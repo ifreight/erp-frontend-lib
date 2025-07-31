@@ -19,6 +19,7 @@
         class="drag-and-drop-area"
         :class="{
           'on-drag': isDragging,
+          'drag-disabled': disabled,
         }"
         @click="clickButton"
         @drop="handleDrop"
@@ -157,18 +158,24 @@ export default {
     };
 
     const inputFile = async (data) => {
-      // stop function if file is not multiple and not replaceable
-      if (!props.isMultiple && props.modelValue.length == 1) {
+      // stop function if current modelValue is has file, file is not multiple and not replaceable
+      let allFiles = [...props.modelValue]; // all files
+
+      if (!props.isMultiple && props.modelValue.length === 1) {
         if (!props.isReplaceable) {
           return;
         }
-        // empty value if replaceable
-        emit('update:modelValue', []);
+        allFiles = [];
       }
 
+      const inputtedFiles = []; // recent inputted files
       // loop all files
-      const inputtedFiles = [];
       for await (const file of Array.from(data.target.files)) {
+        // Break loop if selected file by drag is multiple and input only accept 1
+        if (!props.isMultiple && allFiles.length === 1) {
+          break;
+        }
+
         if (props.extensions) {
           const arrExtension = props.extensions.split(',');
           const fileExt = file.name.split('.');
@@ -181,20 +188,24 @@ export default {
         const isValidSize = file.size <= props.maxSize * 1024;
         if (isValidSize) {
           const result = await processingFile(file);
-          selectedFile.value.push(result);
+          allFiles.push(result);
           inputtedFiles.push(result);
-          emit('update:modelValue', selectedFile.value);
         } else {
           emit('invalidSize', file);
         }
-
-        // Break loop if selected file by drag is multiple and input only accept 1
-        if (!props.isMultiple && selectedFile.value.length == 1) {
-          break;
-        }
       }
+
+      if (!props.isMultiple && props.modelValue.length == 1 && props.isReplaceable) {
+        if (inputtedFiles.length > 0) {
+          emit('update:modelValue', []);
+          emit('update:modelValue', inputtedFiles);
+        }
+      } else {
+        emit('update:modelValue', allFiles);
+      }
+
       if (inputtedFiles.length > 0) {
-        emit('change', inputtedFiles, selectedFile.value);
+        emit('change', inputtedFiles, allFiles);
       }
       input.value.value = null;
     };
@@ -242,6 +253,10 @@ export default {
 
   &.on-drag {
     @apply tw:border-(--brown-600);
+  }
+
+  &.drag-disabled {
+    @apply tw:cursor-default tw:text-gray-700;
   }
 }
 </style>
