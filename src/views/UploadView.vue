@@ -90,7 +90,9 @@
     </div>
     <div class="tw:flex tw:justify-between tw:gap-2 tw:mb-5">
       <div class="tw:w-[50%]">
-        <p class="tw:font-bold tw:mb-2 tw:text-left">Upload with Button + btnError + btnSize xs</p>
+        <p class="tw:font-bold tw:mb-2 tw:text-left">
+          Upload with Button + btnError + btnSize xs + button prepend icon
+        </p>
         <i-upload
           upload-type="button"
           name="upload3"
@@ -103,6 +105,7 @@
           @invalid-size="displayError"
           @invalid-file="displayErrorFile"
         >
+          <template #buttonPrepend><ic-add /></template>
           multiple true
         </i-upload>
         <i-file-list
@@ -216,6 +219,7 @@ export default {
       {
         documentId: 60,
         fileName: 'dummies.pdf',
+        name: 'dummies.pdf', // name is a must for i-file-list
         filePath: 'blob:http://localhost:9000/15f3e5bf-c53c-44a6-9909-570b8d76f2ef',
       },
     ]);
@@ -224,6 +228,7 @@ export default {
       {
         documentId: 60,
         fileName: 'dummies.pdf',
+        name: 'dummies.pdf', // name is a must for i-file-list
         filePath: 'blob:http://localhost:9000/15f3e5bf-c53c-44a6-9909-570b8d76f2ef',
       },
     ]);
@@ -239,13 +244,7 @@ export default {
     ]);
     let files5 = ref([]);
     let files6 = ref([]);
-    let files7 = ref([
-      {
-        documentId: 60,
-        fileName: 'dummies.pdf',
-        filePath: 'blob:http://localhost:9000/15f3e5bf-c53c-44a6-9909-570b8d76f2ef',
-      },
-    ]);
+    let files7 = ref([]);
     let files2progress = ref(100);
 
     const files4WithTimeoutVal = computed({

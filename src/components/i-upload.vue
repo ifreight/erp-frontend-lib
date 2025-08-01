@@ -9,7 +9,9 @@
         :size="btnSize"
         @click="clickButton"
       >
-        <template #prepend><ic-add /></template>
+        <template v-if="$slots.buttonPrepend" #prepend>
+          <slot name="buttonPrepend"><ic-add /></slot>
+        </template>
         <slot>Upload</slot>
       </i-button>
     </template>
