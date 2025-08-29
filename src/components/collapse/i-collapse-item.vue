@@ -1,21 +1,20 @@
 <template>
-  <div
-    class="i-collapse-item"
-    :class="{
-      active: isActive,
-      before: beforeActiveItem,
-      after: afterActiveItem,
-    }"
-  >
-    <div class="i-collapse-item-header" @click.stop="clickHandler">
-      <slot name="header" />
-      <ic-chevron-down
-        class="i-collapse-item-header-icon"
-        :class="isActive ? 'tw:rotate-180' : ''"
-      />
+  <div class="i-collapse-item" :class="collapseItemClass">
+    <div
+      class="i-collapse-item-header"
+      :class="collapseItemHeaderClass"
+      @click="!useChevronToExpand ? clickHandler() : null"
+    >
+      <div @click.stop>
+        <slot name="header" />
+      </div>
+      <div class="i-collapse-item-icon" @click="useChevronToExpand ? clickHandler() : null">
+        <ic-chevron-down :class="isActive ? 'tw:rotate-180' : ''" />
+      </div>
     </div>
+    <div v-if="isActive" class="i-collapse-item-line" />
     <Transition name="slide">
-      <div v-if="isActive">
+      <div v-if="isActive" class="i-collapse-item-content">
         <slot />
       </div>
     </Transition>
@@ -23,7 +22,7 @@
 </template>
 
 <script>
-import { computed, inject, onBeforeMount, onBeforeUnmount, onUpdated } from 'vue';
+import { computed, inject, onBeforeMount, onBeforeUnmount, onUpdated, ref } from 'vue';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
 
 export default {
@@ -34,11 +33,30 @@ export default {
   props: {
     name: {
       type: [String, Number],
-      default: () => Math.floor(Math.random() * 10000),
+      required: true,
     },
     index: {
       type: Number,
       default: 0,
+    },
+    useChevronToExpand: {
+      type: Boolean,
+      default: false,
+    },
+    size: {
+      type: String,
+      default: 'base',
+      validator(value) {
+        return ['base', 'lg'].includes(value);
+      },
+    },
+    rounded: {
+      type: Boolean,
+      default: false,
+    },
+    hasGap: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['click'],
@@ -51,18 +69,35 @@ export default {
       collapse.handleClickEvent(props.name);
     };
 
-    const currentActiveIndex = computed(() => {
-      const activeIndex = [];
-      collapse.activeName.value.forEach((item) => {
-        const i = collapse.itemList.value.indexOf(item);
-        activeIndex.push(i);
-      });
-
-      return activeIndex;
-    });
     const itemIndex = computed(() => Number(collapse.itemList.value.indexOf(props.name)));
-    const beforeActiveItem = computed(() => currentActiveIndex.value.includes(itemIndex.value + 1));
-    const afterActiveItem = computed(() => currentActiveIndex.value.includes(itemIndex.value - 1));
+
+    const collapseItemClass = computed(() => {
+      const classes = ref([]);
+
+      if (isActive.value) {
+        classes.value.push('active');
+      }
+      if (props.rounded) {
+        classes.value.push('rounded');
+      }
+      if (props.hasGap) {
+        classes.value.push('has-gap');
+      }
+
+      return classes.value;
+    });
+
+    const collapseItemHeaderClass = computed(() => {
+      const classes = ref([]);
+
+      if (props.useChevronToExpand) {
+        classes.value.push('use-chevron-to-expand');
+      }
+
+      classes.value.push(props.size);
+
+      return classes.value;
+    });
 
     onBeforeMount(() => {
       if (collapse !== undefined) {
@@ -82,10 +117,9 @@ export default {
 
     return {
       isActive,
-      beforeActiveItem,
-      afterActiveItem,
+      collapseItemClass,
+      collapseItemHeaderClass,
       clickHandler,
-      collapse,
     };
   },
 };
@@ -95,16 +129,15 @@ export default {
 @reference '@/assets/global.css';
 
 .i-collapse-item {
-  @apply tw:border tw:border-gray-500 tw:rounded-lg;
+  @apply tw:border-x tw:border-b tw:border-x-gray-500 tw:border-b-gray-500;
 
-  .slide-enter-active,
-  .slide-leave-active {
+  .slide-enter-active {
     transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   .slide-enter-from,
   .slide-leave-to {
-    transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -20%, 0);
     opacity: 0;
   }
 
@@ -115,11 +148,73 @@ export default {
   }
 
   .i-collapse-item-header {
-    @apply tw:flex tw:justify-between tw:items-center tw:p-5 tw:cursor-pointer;
+    @apply tw:flex tw:justify-between tw:items-center tw:px-5;
 
-    .i-collapse-item-header {
-      @apply tw:w-6 tw:h-6;
+    &.base {
+      @apply tw:py-3.5;
     }
+
+    &.lg {
+      @apply tw:py-5;
+    }
+
+    &:not(.use-chevron-to-expand) {
+      @apply tw:cursor-pointer;
+    }
+
+    .i-collapse-item-icon {
+      @apply tw:w-6 tw:flex tw:justify-end tw:shrink-0;
+    }
+
+    &.use-chevron-to-expand {
+      .i-collapse-item-icon {
+        @apply tw:cursor-pointer;
+      }
+    }
+  }
+
+  .i-collapse-item-line {
+    @apply tw:border-t tw:border-t-gray-500;
+  }
+
+  .i-collapse-item-content {
+    @apply tw:px-5 tw:min-h-[90px];
+  }
+
+  &:first-child {
+    @apply tw:border-t tw:border-t-gray-500;
+
+    &.rounded {
+      @apply tw:rounded-tl-lg tw:rounded-tr-lg;
+    }
+
+    &:not(.has-gap) {
+      @apply tw:rounded-b-none;
+    }
+  }
+
+  &:last-child {
+    @apply tw:border-b tw:border-b-gray-500;
+
+    &.rounded {
+      @apply tw:rounded-bl-lg tw:rounded-br-lg;
+    }
+
+    &.has-gap {
+      @apply tw:-mb-3;
+    }
+  }
+
+  &.rounded {
+    @apply tw:rounded-lg;
+  }
+
+  &.has-gap {
+    @apply tw:mb-3 tw:border-t tw:border-t-gray-500;
+  }
+
+  &:not(.has-gap) {
+    @apply tw:rounded-none;
   }
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
   <div class="i-collapse">
-    <slot />
+    <div v-if="invalid" class="i-collapse-error-message">
+      {{ errorMessage }}
+    </div>
+    <div>
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -17,6 +22,14 @@ export default {
     multiple: {
       type: Boolean,
       default: false,
+    },
+    invalid: {
+      type: Boolean,
+      default: false,
+    },
+    errorMessage: {
+      type: String,
+      default: '',
     },
   },
   emits: ['update:modelValue', 'change'],
@@ -76,3 +89,13 @@ export default {
   },
 };
 </script>
+
+<style>
+@reference '@/assets/global.css';
+
+.i-collapse {
+  .i-collapse-error-message {
+    @apply tw:text-red-300 tw:text-xs tw:mb-2.5;
+  }
+}
+</style>
