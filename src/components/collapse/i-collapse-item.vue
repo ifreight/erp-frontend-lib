@@ -1,5 +1,9 @@
 <template>
-  <div class="i-collapse-item" :class="collapseItemClass">
+  <div
+    class="i-collapse-item"
+    :class="collapseItemClass"
+    :style="{ 'margin-bottom': gap !== '' ? `${gap} !important` : '' }"
+  >
     <div
       class="i-collapse-item-header"
       :class="collapseItemHeaderClass"
@@ -54,9 +58,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    hasGap: {
-      type: Boolean,
-      default: false,
+    gap: {
+      type: String,
+      default: '',
     },
   },
   emits: ['click'],
@@ -72,31 +76,15 @@ export default {
     const itemIndex = computed(() => Number(collapse.itemList.value.indexOf(props.name)));
 
     const collapseItemClass = computed(() => {
-      const classes = ref([]);
-
-      if (isActive.value) {
-        classes.value.push('active');
-      }
-      if (props.rounded) {
-        classes.value.push('rounded');
-      }
-      if (props.hasGap) {
-        classes.value.push('has-gap');
-      }
-
-      return classes.value;
+      return {
+        active: isActive.value,
+        rounded: props.rounded,
+        'has-gap': props.gap,
+      };
     });
 
     const collapseItemHeaderClass = computed(() => {
-      const classes = ref([]);
-
-      if (props.useChevronToExpand) {
-        classes.value.push('use-chevron-to-expand');
-      }
-
-      classes.value.push(props.size);
-
-      return classes.value;
+      return [props.size, { 'use-chevron-to-expand': props.useChevronToExpand }];
     });
 
     onBeforeMount(() => {
@@ -129,7 +117,7 @@ export default {
 @reference '@/assets/global.css';
 
 .i-collapse-item {
-  @apply tw:border-x tw:border-b tw:border-x-gray-500 tw:border-b-gray-500;
+  @apply tw:border tw:border-gray-500;
 
   .slide-enter-active {
     transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -201,7 +189,11 @@ export default {
     }
 
     &.has-gap {
-      @apply tw:-mb-3;
+      @apply tw:mb-0;
+    }
+
+    &:not(.has-gap) {
+      @apply tw:border-b tw:border-b-gray-500;
     }
   }
 
@@ -210,11 +202,11 @@ export default {
   }
 
   &.has-gap {
-    @apply tw:mb-3 tw:border-t tw:border-t-gray-500;
+    @apply tw:border-t tw:border-t-gray-500;
   }
 
   &:not(.has-gap) {
-    @apply tw:rounded-none;
+    @apply tw:rounded-none tw:border-b-0;
   }
 }
 </style>

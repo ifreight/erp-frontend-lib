@@ -8,7 +8,7 @@
       <i-collapse v-model="activeCollapse" class="tw:mt-6">
         <i-collapse-item :name="'basic'" use-rounded>
           <template #header>
-            <span class="tw:text-sm tw:font-semibold" @click="actionBasicHandler">
+            <div class="tw:text-sm tw:font-semibold" @click="actionBasicHandler">
               <span class="tw:italic">
                 This is the title with font size 14px and 600 font weight.
               </span>
@@ -18,7 +18,7 @@
               dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
               mollit anim id est laborum.
-            </span>
+            </div>
           </template>
 
           <template #default>
@@ -52,9 +52,9 @@
           :name="`item-${item.name}`"
           :index="index"
           size="lg"
+          gap="20px"
           use-chevron-to-expand
           rounded
-          has-gap
         >
           <template #header>
             {{ item.name }}
