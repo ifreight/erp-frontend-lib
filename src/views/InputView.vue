@@ -117,7 +117,8 @@
           <template #prepend>
             <i-select
               class="tw:w-[82px]"
-              name="selecta"
+              input-id="Select1"
+              name="select1"
               v-model="selectModel"
               :options="selOptions"
             />
@@ -135,7 +136,8 @@
           <template #append>
             <i-select
               class="tw:w-[82px]"
-              name="selecta"
+              input-id="Select2"
+              name="select2"
               v-model="selectModel"
               :options="selOptions"
             />

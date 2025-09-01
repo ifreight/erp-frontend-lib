@@ -8,6 +8,7 @@
         <router-link to="/button">button</router-link>
         <router-link to="/checkbox">checkbox</router-link>
         <router-link to="/chip">chip</router-link>
+        <router-link to="/collapse">collapse</router-link>
         <router-link to="/datepicker">date picker</router-link>
         <router-link to="/dialog">dialog</router-link>
         <router-link to="/drawer">drawer</router-link>

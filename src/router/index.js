@@ -26,6 +26,7 @@ import IconsView from '../views/IconsView.vue';
 import DatePickerView from '../views/DatepickerView.vue';
 import SortCaretView from '../views/SortCaretView.vue';
 import DrawerView from '../views/DrawerView.vue';
+import CollapseView from '../views/CollapseView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -164,6 +165,11 @@ const router = createRouter({
       path: '/drawer',
       name: 'drawer',
       component: DrawerView,
+    },
+    {
+      path: '/collapse',
+      name: 'collapse',
+      component: CollapseView,
     },
   ],
 });
