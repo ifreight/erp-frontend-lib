@@ -174,72 +174,84 @@
       <div class="tw:mb-4 tw:relative">
         <span class="tw:text-red-600 tw:text-xs">v-model: {{ select16 }}</span>
         <div class="tw:text-xs">selectedOptions: {{ selectedOptions11 }}</div>
-        <div class="tw:flex">
-          <div class="tw:border tw:rounded-md tw:w-[275px]">
-            <i-select-multiple
-              v-model="select16"
-              v-model:value-option="selectedOptions11"
-              inputId="Select-11"
-              name="select-11"
-              size="sm"
-              rounded="lg"
-              checkbox-color="gray-500"
-              placeholder="Cari tipe transaksi..."
-              disabled
-              dropdown-max-height="128px"
-              :deactivate-wrapper-event="deactivateWrapperEvent"
-              :options="selectStaticOptions3"
-              :filterable="true"
-            >
-              <template #prepend><ic-search class="tw:text-gray-700" /></template>
-              <template #options="{ option }">
-                <div class="tw:flex tw:justify-between tw:items-center tw:pointer-events-auto">
-                  <span>{{ option.name }}</span>
-                </div>
-              </template>
 
-              <template #optionsAppend="{ option }">
-                <div
-                  class="btn-hover"
-                  :class="activeChildOption?.id === option.id ? 'btn-active' : ''"
-                  @click.stop="openChildSelect(option)"
-                >
-                  <span class="tw:bg-yellow-800 tw:rounded-full tw:text-[8px] tw:font-semibold tw:w-3.5 tw:h-3.5 tw:flex tw:items-center tw:justify-center">
-                    {{ option.count }}
-                  </span>
-                  <ic-chevron-left
-                    v-if="activeChildOption?.id === option.id"
-                    class="tw:w-2.5 tw:h-2.5"
-                  />
-                  <ic-chevron-right
-                    v-else
-                    class="tw:w-2.5 tw:h-2.5"
-                  />
-                </div>
-              </template>
-            </i-select-multiple>
-          </div>
-          <div
-            v-if="activeChildOption"
-            class="tw:border tw:rounded-md tw:w-[275px]"
-          >
-            <i-select-multiple
-              v-model="select17"
-              v-model:value-option="selectedRef"
-              inputId="child-select"
-              name="child-select"
-              size="sm"
-              rounded="lg"
-              checkbox-color="gray-500"
-              placeholder="Cari tipe referensi..."
-              dropdown-max-height="128px"
-              :options="activeChildOption.subOptions"
-              :filterable="true"
+        <i-button
+          class="tw:w-[275px]"
+          @click="dropdownVisible4 = !dropdownVisible4"
+        >Click Me</i-button>
+        <i-dropdown
+          :visible="dropdownVisible4"
+          :isShowArrow="false"
+          rounded="lg"
+          padding="none"
+        >
+          <div class="tw:flex">
+            <div class="tw:border tw:rounded-md tw:w-[275px]">
+              <i-select-multiple
+                v-model="select16"
+                v-model:value-option="selectedOptions11"
+                inputId="Select-11"
+                name="select-11"
+                size="sm"
+                rounded="lg"
+                checkbox-color="gray-500"
+                placeholder="Cari tipe transaksi..."
+                disabled
+                dropdown-max-height="128px"
+                :deactivate-wrapper-event="deactivateWrapperEvent"
+                :options="selectStaticOptions3"
+                :filterable="true"
+              >
+                <template #prepend><ic-search class="tw:text-gray-700" /></template>
+                <template #options="{ option }">
+                  <div class="tw:flex tw:justify-between tw:items-center tw:pointer-events-auto">
+                    <span>{{ option.name }}</span>
+                  </div>
+                </template>
+
+                <template #optionsAppend="{ option }">
+                  <div
+                    class="btn-hover"
+                    :class="activeChildOption?.id === option.id ? 'btn-active' : ''"
+                    @click.stop="openChildSelect(option)"
+                  >
+                    <span class="tw:bg-yellow-800 tw:rounded-full tw:text-[8px] tw:font-semibold tw:w-3.5 tw:h-3.5 tw:flex tw:items-center tw:justify-center">
+                      {{ option.count }}
+                    </span>
+                    <ic-chevron-left
+                      v-if="activeChildOption?.id === option.id"
+                      class="tw:w-2.5 tw:h-2.5"
+                    />
+                    <ic-chevron-right
+                      v-else
+                      class="tw:w-2.5 tw:h-2.5"
+                    />
+                  </div>
+                </template>
+              </i-select-multiple>
+            </div>
+            <div
+              v-if="activeChildOption"
+              class="tw:border tw:rounded-md tw:w-[275px]"
             >
-              <template #prepend><ic-search class="tw:text-gray-700" /></template>
-            </i-select-multiple>
+              <i-select-multiple
+                v-model="select17"
+                v-model:value-option="selectedRef"
+                inputId="child-select"
+                name="child-select"
+                size="sm"
+                rounded="lg"
+                checkbox-color="gray-500"
+                placeholder="Cari tipe referensi..."
+                dropdown-max-height="128px"
+                :options="activeChildOption.subOptions"
+                :filterable="true"
+              >
+                <template #prepend><ic-search class="tw:text-gray-700" /></template>
+              </i-select-multiple>
+            </div>
           </div>
-        </div>
+        </i-dropdown>
       </div>
     </div>
   </div>
@@ -289,6 +301,7 @@ export default {
     const deactivateWrapperEvent = ref(true);
     const dropdownVisible2 = ref(false);
     const dropdownVisible3 = ref(false);
+    const dropdownVisible4 = ref(false);
 
     const selectStaticOptions = computed(() => {
       return ['Asia', 'America', 'Europe', 'Indonesia', 'India', 'Japan', 'Korea', 'Others'];
@@ -407,6 +420,7 @@ export default {
       deactivateWrapperEvent,
       dropdownVisible2,
       dropdownVisible3,
+      dropdownVisible4,
       changeHandler,
       openChildSelect,
       selectRemoteMethod,
