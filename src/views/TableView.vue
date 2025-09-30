@@ -2,7 +2,10 @@
   <div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">Simple table example</p>
-      <i-table :data="shuffleData(data)" :headers="header1"></i-table>
+      <i-table
+        :data="shuffleData(data)"
+        :headers="header1"
+      ></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">
@@ -11,9 +14,16 @@
       </p>
       <br />
       <span class="tw:bg-red-400 tw:text-white">selected id : {{ selectedRow }}</span>
-      <i-table :data="shuffleData(data)" :headers="header2">
+      <i-table
+        :data="shuffleData(data)"
+        :headers="header2"
+      >
         <template v-slot:header-no>
-          <div><i-checkbox name="selectAll" v-model="checkAll" @change="checkAllHandler" /></div>
+          <div><i-checkbox
+              name="selectAll"
+              v-model="checkAll"
+              @change="checkAllHandler"
+            /></div>
         </template>
         <template v-slot:no="{ row }">
           <div :class="selectedRow.includes(row.id) ? 'selected' : ''">
@@ -40,11 +50,17 @@
       <p class="tw:mb-1 tw:mt-1">
         Example with column width (if width 0 or unknown column width will be auto) table example
       </p>
-      <i-table :data="shuffleData(data)" :headers="header3">
+      <i-table
+        :data="shuffleData(data)"
+        :headers="header3"
+      >
         <template #header-name>
           <div class="tw:flex tw:gap-1 tw:justify-start tw:align-middle">
             <span class="tw:self-center">Name</span>
-            <span class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer" @click="sortAction">
+            <span
+              class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer"
+              @click="sortAction"
+            >
               <ic-chevrons-vertical-up-down class="tw:w-fit"></ic-chevrons-vertical-up-down>
             </span>
             <div class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer tw:relative">
@@ -59,13 +75,29 @@
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table example</p>
-      <i-table :data="[]" :headers="header3"></i-table>
+      <i-table
+        :data="[]"
+        :headers="header3"
+      ></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table with custom slot example</p>
-      <i-table :data="[]" :headers="header3">
+      <i-table
+        :data="[]"
+        :headers="header3"
+      >
         <template #no-data> Data tidak ditemukan </template>
       </i-table>
+    </div>
+    <div class="tw:mt-8 tw:mb-2">
+      <p class="tw:mb-1 tw:mt-1">Table with sticky header</p>
+      <div class="tw:h-[450px] tw:overflow-y-auto">
+        <i-table
+          :data="shuffleData(data)"
+          :headers="header1"
+          :sticky-header="true"
+        ></i-table>
+      </div>
     </div>
   </div>
 </template>
@@ -84,6 +116,8 @@ export default {
   components: { ITable, ICheckbox, IButton, IDropdown, IcChevronsVerticalUpDown, IcFilterBars },
   setup() {
     const visibleDropdown = ref(false);
+    const isSticky = ref(false);
+
     const data = ref([
       {
         id: 1,
@@ -278,6 +312,7 @@ export default {
       selectedRow.value = data.value.filter((a) => a.isChecked).map((y) => y.id);
     });
     return {
+      isSticky,
       visibleDropdown,
       data,
       header1,

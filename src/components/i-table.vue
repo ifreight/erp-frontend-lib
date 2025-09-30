@@ -1,5 +1,8 @@
 <template>
-  <table class="i-table">
+  <table
+    :class="stickyHeader ? 'sticky-header' : ''"
+    class="i-table"
+  >
     <thead>
       <tr>
         <th
@@ -7,26 +10,43 @@
           :key="index"
           :style="{ width: header.width ? `${header.width}%` : '' }"
         >
-          <slot :name="`header-${header.key}`" :header="header"> {{ header.label }} </slot>
+          <slot
+            :name="`header-${header.key}`"
+            :header="header"
+          > {{ header.label }} </slot>
         </th>
       </tr>
     </thead>
     <tbody>
       <template v-if="data.length <= 0">
         <tr>
-          <td :colspan="headers.length" class="tw:text-center">
+          <td
+            :colspan="headers.length"
+            class="tw:text-center"
+          >
             <slot name="no-data">No Data Found</slot>
           </td>
         </tr>
       </template>
       <template v-else>
-        <tr v-for="(d, index) in data" :key="index">
-          <template v-for="(header, i) in headers" :key="i">
+        <tr
+          v-for="(d, index) in data"
+          :key="index"
+        >
+          <template
+            v-for="(header, i) in headers"
+            :key="i"
+          >
             <td>
               <template v-if="!hasNamedSlot(header.key)">
                 {{ d[header.key] }}
               </template>
-              <slot v-else :name="header.key" :row="d" :index="index"></slot>
+              <slot
+                v-else
+                :name="header.key"
+                :row="d"
+                :index="index"
+              ></slot>
             </td>
           </template>
         </tr>
@@ -41,6 +61,7 @@ import { useSlots } from 'vue';
 export default {
   name: 'ITable',
   props: {
+    stickyHeader: Boolean,
     data: Array,
     headers: {
       type: Array,
@@ -87,6 +108,16 @@ export default {
 
   tbody tr:last-child td {
     @apply tw:border-b-0;
+  }
+}
+
+.sticky-header {
+  thead th {
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick to the top of the scrollable container */
+    z-index: 1; /* Ensure the header stays above other content during scrolling */
+    background-color: #f1f1f1;
+    border-bottom: 1px solid black;
   }
 }
 </style>

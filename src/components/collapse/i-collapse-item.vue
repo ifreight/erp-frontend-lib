@@ -12,13 +12,22 @@
       <div @click.stop>
         <slot name="header" />
       </div>
-      <div class="i-collapse-item-icon" @click="useChevronToExpand ? clickHandler() : null">
+      <div
+        class="i-collapse-item-icon"
+        @click="useChevronToExpand ? clickHandler() : null"
+      >
         <ic-chevron-down :class="isActive ? 'tw:rotate-180' : ''" />
       </div>
     </div>
-    <div v-if="isActive" class="i-collapse-item-line" />
+    <div
+      v-if="isActive"
+      class="i-collapse-item-line"
+    />
     <Transition name="slide">
-      <div v-if="isActive" class="i-collapse-item-content">
+      <div
+        v-if="isActive"
+        class="i-collapse-item-content"
+      >
         <slot />
       </div>
     </Transition>
@@ -26,7 +35,7 @@
 </template>
 
 <script>
-import { computed, inject, onBeforeMount, onBeforeUnmount, onUpdated, ref } from 'vue';
+import { computed, inject, onBeforeMount, onBeforeUnmount, onUpdated } from 'vue';
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
 
 export default {

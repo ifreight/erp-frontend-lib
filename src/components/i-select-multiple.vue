@@ -29,7 +29,10 @@
           :height="height"
           @keyup="onInputKeyup"
         >
-          <template v-if="$slots.prepend" #prepend>
+          <template
+            v-if="$slots.prepend"
+            #prepend
+          >
             <slot name="prepend" />
           </template>
           <template #append>
@@ -61,12 +64,19 @@
         :is-show-arrow="isNormalSelectMode"
         :borderless="!isNormalSelectMode"
         :relative-box="!isNormalSelectMode"
+        :deactivate-wrapper-event="deactivateWrapperEvent"
         :padding="isNormalSelectMode ? 'base' : 'none'"
         :width="dropdownWidth"
         @selectedValue="handleSelected"
       >
-        <template v-if="!remote" #header>
-          <div class="select-header" :class="{ 'tw:pt-0': !isNormalSelectMode && !filterable }">
+        <template
+          v-if="!remote"
+          #header
+        >
+          <div
+            class="select-header"
+            :class="{ 'tw:pt-0': !isNormalSelectMode && !filterable }"
+          >
             <i-checkbox
               v-model="modelCheckAll"
               :checkbox-rounded="checkboxRounded"
@@ -95,7 +105,7 @@
           </div>
         </template>
         <template #optionsPrepend="{ option }">
-          <div class="tw:relative tw:w-5 tw:h-5 tw:ml-[9px] tw:mr-3">
+          <div class="tw:relative tw:w-5 tw:h-5 tw:ml-[9px] tw:mr-3 tw:pointer-events-auto">
             <i-checkbox
               :modelValue="listValue(option)"
               :name="`list-${option.id}`"
@@ -109,9 +119,27 @@
           </div>
         </template>
 
-        <template v-if="$slots.options" #options="{ option, makeBold }">
-          <slot name="options" :option="option" :make-bold="makeBold"></slot>
+        <template
+          v-if="$slots.options"
+          #options="{ option, makeBold }"
+        >
+          <slot
+            name="options"
+            :option="option"
+            :make-bold="makeBold"
+          ></slot>
         </template>
+
+        <template
+          v-if="$slots.options"
+          #optionsAppend="{ option }"
+        >
+          <slot
+            name="optionsAppend"
+            :option="option"
+          ></slot>
+        </template>
+
         <template #optionsPlaceholder>
           <div class="tw:px-2">
             <template v-if="isLoading"> Loading </template>
@@ -125,7 +153,10 @@
         </template>
       </i-dropdown-options>
     </div>
-    <div v-if="errorMessage" class="i-error-message">
+    <div
+      v-if="errorMessage"
+      class="i-error-message"
+    >
       {{ errorMessage }}
     </div>
   </div>
@@ -154,6 +185,7 @@ export default defineComponent({
     IcTimes,
   },
   props: {
+    deactivateWrapperEvent: Boolean,
     modelValue: {
       type: Array,
       default: () => [],
@@ -527,6 +559,12 @@ export default defineComponent({
       selectedOptionValue,
       isInputReadOnly,
       allOptionIds,
+      isLoading,
+      selectedOption,
+      inputTextValue,
+      filled,
+      onInputKeyup,
+
       handleQuery,
       handleSelected,
       normalizeOptions,
@@ -536,11 +574,6 @@ export default defineComponent({
       showDropdown,
       hideDropdown,
       toggleDropdown,
-      isLoading,
-      selectedOption,
-      onInputKeyup,
-      inputTextValue,
-      filled,
     };
   },
 });

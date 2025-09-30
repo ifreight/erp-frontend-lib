@@ -36,7 +36,11 @@
           <div class="tw:text-xs">selectedOptions: {{ selectedOptions11 }}</div>
 
           <i-button @click="dropdownVisible2 = !dropdownVisible2">Click Me</i-button>
-          <i-dropdown :visible="dropdownVisible2" :isShowArrow="false" rounded="lg">
+          <i-dropdown
+            :visible="dropdownVisible2"
+            :isShowArrow="false"
+            rounded="lg"
+          >
             <i-select-multiple
               v-model="select11"
               v-model:value-option="selectedOptions11"
@@ -61,7 +65,12 @@
           <div class="tw:text-xs">selectedOptions: {{ selectedOptions15 }}</div>
 
           <i-button @click="dropdownVisible3 = !dropdownVisible3">Click Me</i-button>
-          <i-dropdown :visible="dropdownVisible3" :isShowArrow="false" rounded="lg" padding="none">
+          <i-dropdown
+            :visible="dropdownVisible3"
+            :isShowArrow="false"
+            rounded="lg"
+            padding="none"
+          >
             <i-select-multiple
               v-model="select15"
               v-model:value-option="selectedOptions15"
@@ -76,7 +85,11 @@
             >
               <template #prepend><ic-search class="tw:text-gray-700" /></template>
               <template #options="{ option }">
-                <i-chip :showDot="false" :text="option.name" :status="option.status" />
+                <i-chip
+                  :showDot="false"
+                  :text="option.name"
+                  :status="option.status"
+                />
               </template>
             </i-select-multiple>
           </i-dropdown>
@@ -156,21 +169,97 @@
         </div>
       </div>
     </div>
+    <div>
+      <div>Show New Dropdown</div>
+      <div class="tw:mb-4 tw:relative">
+        <span class="tw:text-red-600 tw:text-xs">v-model: {{ select16 }}</span>
+        <div class="tw:text-xs">selectedOptions: {{ selectedOptions11 }}</div>
+        <div class="tw:flex">
+          <div class="tw:border tw:rounded-md tw:w-[275px]">
+            <i-select-multiple
+              v-model="select16"
+              v-model:value-option="selectedOptions11"
+              inputId="Select-11"
+              name="select-11"
+              size="sm"
+              rounded="lg"
+              checkbox-color="gray-500"
+              placeholder="Cari tipe transaksi..."
+              disabled
+              dropdown-max-height="128px"
+              :deactivate-wrapper-event="deactivateWrapperEvent"
+              :options="selectStaticOptions3"
+              :filterable="true"
+            >
+              <template #prepend><ic-search class="tw:text-gray-700" /></template>
+              <template #options="{ option }">
+                <div class="tw:flex tw:justify-between tw:items-center tw:pointer-events-auto">
+                  <span>{{ option.name }}</span>
+                </div>
+              </template>
+
+              <template #optionsAppend="{ option }">
+                <div
+                  class="btn-hover"
+                  :class="activeChildOption?.id === option.id ? 'btn-active' : ''"
+                  @click.stop="openChildSelect(option)"
+                >
+                  <span class="tw:bg-yellow-800 tw:rounded-full tw:text-[8px] tw:font-semibold tw:w-3.5 tw:h-3.5 tw:flex tw:items-center tw:justify-center">
+                    {{ option.count }}
+                  </span>
+                  <ic-chevron-left
+                    v-if="activeChildOption?.id === option.id"
+                    class="tw:w-2.5 tw:h-2.5"
+                  />
+                  <ic-chevron-right
+                    v-else
+                    class="tw:w-2.5 tw:h-2.5"
+                  />
+                </div>
+              </template>
+            </i-select-multiple>
+          </div>
+          <div
+            v-if="activeChildOption"
+            class="tw:border tw:rounded-md tw:w-[275px]"
+          >
+            <i-select-multiple
+              v-model="select17"
+              v-model:value-option="selectedRef"
+              inputId="child-select"
+              name="child-select"
+              size="sm"
+              rounded="lg"
+              checkbox-color="gray-500"
+              placeholder="Cari tipe referensi..."
+              dropdown-max-height="128px"
+              :options="activeChildOption.subOptions"
+              :filterable="true"
+            >
+              <template #prepend><ic-search class="tw:text-gray-700" /></template>
+            </i-select-multiple>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue';
+import IcChevronLeft from '@/icons/ic-chevron-left.vue';
+import IcChevronRight from '@/icons/ic-chevron-right.vue';
 import IcSearch from '@/icons/ic-search.vue';
 
 import IButton from '@/components/i-button.vue';
 import IDropdown from '@/components/dropdown/i-dropdown.vue';
-
 import IChip from '@/components/i-chip.vue';
 import ISelectMultiple from '@/components/i-select-multiple.vue';
 
 export default {
   components: {
+    IcChevronLeft,
+    IcChevronRight,
     IcSearch,
     IButton,
     IDropdown,
@@ -184,6 +273,8 @@ export default {
     const select13 = ref([]);
     const select14 = ref([1, 2, 3, 4]);
     const select15 = ref([]);
+    const select16 = ref([]);
+    const select17 = ref([]);
 
     const selectedOptions10 = ref([]);
     const selectedOptions11 = ref([]);
@@ -191,7 +282,11 @@ export default {
     const selectedOptions13 = ref([]);
     const selectedOptions14 = ref([]);
     const selectedOptions15 = ref([]);
+    const selectedRef = ref([]);
 
+    const activeChildOption = ref(null);
+
+    const deactivateWrapperEvent = ref(true);
     const dropdownVisible2 = ref(false);
     const dropdownVisible3 = ref(false);
 
@@ -244,6 +339,29 @@ export default {
       ];
     });
 
+    const selectStaticOptions3 = computed(() => {
+      return [
+        {
+          id: 1,
+          name: 'Uang Masuk',
+          count: 10,
+          subOptions: [
+            { id: "masuk-1", name: "Transfer Bank" },
+            { id: "masuk-2", name: "Tunai" }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Uang Keluar',
+          count: 0,
+          subOptions: [
+            { id: "masuk-1", name: "XXXXXX" },
+            { id: "masuk-2", name: "YYYYYY" }
+          ]
+        },
+      ];
+    });
+
     const selectRemoteMethod = async () => {
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -261,26 +379,50 @@ export default {
       alert('handle change', e);
     };
 
+    const openChildSelect = (option) => {
+      activeChildOption.value =
+        activeChildOption.value?.id === option.id ? null : option;
+    };
+
     return {
+      activeChildOption,
       select10,
       select11,
       select12,
       select13,
       select14,
       select15,
+      select16,
+      select17,
       selectedOptions10,
       selectedOptions11,
       selectedOptions12,
       selectedOptions13,
       selectedOptions14,
       selectedOptions15,
-      selectRemoteMethod,
+      selectedRef,
       selectStaticOptions,
       selectStaticOptions2,
+      selectStaticOptions3,
+      deactivateWrapperEvent,
       dropdownVisible2,
       dropdownVisible3,
       changeHandler,
+      openChildSelect,
+      selectRemoteMethod,
     };
   },
 };
 </script>
+
+<style>
+@reference "@/assets/global.css";
+
+.btn-hover {
+  @apply tw:hover:bg-yellow-200 tw:flex tw:items-center tw:gap-1 tw:pointer-events-auto tw:p-0.5 tw:rounded-lg tw:ml-auto;
+
+  &.btn-active {
+    @apply tw:bg-yellow-200 tw:p-0.5 tw:rounded-lg;
+  }
+}
+</style>
