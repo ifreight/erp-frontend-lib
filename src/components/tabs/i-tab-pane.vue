@@ -1,5 +1,8 @@
 <template>
-  <div class="i-tab-pane">
+  <div
+    class="i-tab-pane"
+    :class="{ active: isActive }"
+  >
     <slot v-if="isActive" />
   </div>
 </template>
@@ -20,8 +23,8 @@ export default {
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup(props) {
     const tab = inject('rootTab');
@@ -31,8 +34,20 @@ export default {
 
     return {
       tab,
-      isActive
-    }
+      isActive,
+    };
   },
-}
+};
 </script>
+
+<style>
+@reference "@/assets/global.css";
+
+.i-tab-pane {
+  @apply tw:hidden;
+
+  &.active {
+    @apply tw:block;
+  }
+}
+</style>
