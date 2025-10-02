@@ -32,7 +32,6 @@
           disabled: option.disabled,
           'deactive-event' : deactivateWrapperEvent
         }"
-        class="new-mode"
         @click="onSelectHandler(option)"
       >
         <slot
@@ -52,10 +51,15 @@
             v-html="makeBold(option[optionValue])"
           />
         </slot>
-        <slot
-          name="optionsAppend"
-          :option="option"
-        />
+        <span
+          class="tw:ml-auto"
+          @click.stop
+        >
+          <slot
+            name="optionsAppend"
+            :option="option"
+          />
+        </span>
       </li>
     </ul>
     <div

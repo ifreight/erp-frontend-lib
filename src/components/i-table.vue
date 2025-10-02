@@ -1,58 +1,60 @@
 <template>
-  <table
-    :class="stickyHeader ? 'sticky-header' : ''"
-    class="i-table"
+  <div
+    :class="stickyHeader ? 'sticky-header ' : ''"
+    :style="{ maxHeight: height }"
   >
-    <thead>
-      <tr>
-        <th
-          v-for="(header, index) in headers"
-          :key="index"
-          :style="{ width: header.width ? `${header.width}%` : '' }"
-        >
-          <slot
-            :name="`header-${header.key}`"
-            :header="header"
-          > {{ header.label }} </slot>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <template v-if="data.length <= 0">
+    <table class="i-table i-table-header">
+      <thead>
         <tr>
-          <td
-            :colspan="headers.length"
-            class="tw:text-center"
+          <th
+            v-for="(header, index) in headers"
+            :key="index"
+            :style="{ width: header.width ? `${header.width}%` : '' }"
           >
-            <slot name="no-data">No Data Found</slot>
-          </td>
+            <slot
+              :name="`header-${header.key}`"
+              :header="header"
+            > {{ header.label }} </slot>
+          </th>
         </tr>
-      </template>
-      <template v-else>
-        <tr
-          v-for="(d, index) in data"
-          :key="index"
-        >
-          <template
-            v-for="(header, i) in headers"
-            :key="i"
-          >
-            <td>
-              <template v-if="!hasNamedSlot(header.key)">
-                {{ d[header.key] }}
-              </template>
-              <slot
-                v-else
-                :name="header.key"
-                :row="d"
-                :index="index"
-              ></slot>
+      </thead>
+      <tbody>
+        <template v-if="data.length <= 0">
+          <tr>
+            <td
+              :colspan="headers.length"
+              class="tw:text-center"
+            >
+              <slot name="no-data">No Data Found</slot>
             </td>
-          </template>
-        </tr>
-      </template>
-    </tbody>
-  </table>
+          </tr>
+        </template>
+        <template v-else>
+          <tr
+            v-for="(d, index) in data"
+            :key="index"
+          >
+            <template
+              v-for="(header, i) in headers"
+              :key="i"
+            >
+              <td>
+                <template v-if="!hasNamedSlot(header.key)">
+                  {{ d[header.key] }}
+                </template>
+                <slot
+                  v-else
+                  :name="header.key"
+                  :row="d"
+                  :index="index"
+                ></slot>
+              </td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -62,6 +64,10 @@ export default {
   name: 'ITable',
   props: {
     stickyHeader: Boolean,
+    height: {
+      type: String,
+      default: ""
+    },
     data: Array,
     headers: {
       type: Array,
@@ -112,12 +118,26 @@ export default {
 }
 
 .sticky-header {
+  overflow-y: auto;
+  border: 1px solid var(--gray-500);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none !important;
+  }
+
   thead th {
-    position: sticky; /* Make the header sticky */
-    top: 0; /* Stick to the top of the scrollable container */
-    z-index: 1; /* Ensure the header stays above other content during scrolling */
-    background-color: #f1f1f1;
-    border-bottom: 1px solid black;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: white;
+    border-bottom: 1px solid var(--gray-500);
+  }
+
+  tbody td {
+    padding: 8px;
+    border-bottom: 1px solid var(--gray-500);
   }
 }
 </style>

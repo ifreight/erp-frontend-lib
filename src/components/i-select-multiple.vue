@@ -137,7 +137,7 @@
           <slot
             name="optionsAppend"
             :option="option"
-          ></slot>
+          />
         </template>
 
         <template #optionsPlaceholder>
