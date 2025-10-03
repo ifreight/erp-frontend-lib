@@ -1,7 +1,7 @@
 <template>
   <table
-    :class="{'fixed-header': fixedHeader}"
     class="i-table"
+    :class="{'fixed-header': fixedHeader}"
   >
     <thead>
       <tr>
