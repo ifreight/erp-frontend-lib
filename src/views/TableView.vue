@@ -90,15 +90,13 @@
       </i-table>
     </div>
     <div class="tw:mt-8 tw:mb-2">
-      <p class="tw:mb-1 tw:mt-1">Table with sticky header</p>
-      <div>
-        <i-table
-          :data="shuffleData(data)"
-          :headers="header1"
-          :sticky-header="true"
-          :height="'200px'"
-        ></i-table>
-      </div>
+      <p class="tw:mb-1 tw:mt-1">Table with fixed header</p>
+      <i-table
+        :data="shuffleData(data)"
+        :headers="header1"
+        :fixed-header="true"
+        :max-height="'200px'"
+      ></i-table>
     </div>
   </div>
 </template>

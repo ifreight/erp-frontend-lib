@@ -1,5 +1,5 @@
 <template>
-  <div :class="stickyHeader ? 'sticky-header ' : ''">
+  <div :class="fixedHeader ? 'fixed-header' : ''">
     <table class="i-table">
       <thead>
         <tr>
@@ -15,7 +15,7 @@
           </th>
         </tr>
       </thead>
-      <tbody :style="{ maxHeight: height }">
+      <tbody :style="{ maxHeight: maxHeight }">
         <template v-if="data.length <= 0">
           <tr>
             <td
@@ -60,8 +60,8 @@ import { useSlots } from 'vue';
 export default {
   name: 'ITable',
   props: {
-    stickyHeader: Boolean,
-    height: {
+    fixedHeader: Boolean,
+    maxHeight: {
       type: String,
       default: ""
     },
@@ -114,25 +114,7 @@ export default {
   }
 }
 
-.sticky-header {
-  /* overflow-y: auto; */
-  border: 1px solid var(--gray-500);
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    border: none !important;
-    table-layout: fixed;
-  }
-
-  thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: white;
-    border-bottom: 1px solid var(--gray-500);
-  }
-
+.fixed-header {
   tbody {
     display: block;
     overflow-y: auto;
