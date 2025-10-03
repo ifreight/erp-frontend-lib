@@ -1,9 +1,6 @@
 <template>
-  <div
-    :class="stickyHeader ? 'sticky-header ' : ''"
-    :style="{ maxHeight: height }"
-  >
-    <table class="i-table i-table-header">
+  <div :class="stickyHeader ? 'sticky-header ' : ''">
+    <table class="i-table">
       <thead>
         <tr>
           <th
@@ -18,7 +15,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody :style="{ maxHeight: height }">
         <template v-if="data.length <= 0">
           <tr>
             <td
@@ -118,13 +115,14 @@ export default {
 }
 
 .sticky-header {
-  overflow-y: auto;
+  /* overflow-y: auto; */
   border: 1px solid var(--gray-500);
 
   table {
     width: 100%;
     border-collapse: collapse;
     border: none !important;
+    table-layout: fixed;
   }
 
   thead th {
@@ -135,9 +133,17 @@ export default {
     border-bottom: 1px solid var(--gray-500);
   }
 
-  tbody td {
-    padding: 8px;
-    border-bottom: 1px solid var(--gray-500);
+  tbody {
+    display: block;
+    overflow-y: auto;
+    width: 100%;
+  }
+
+  thead,
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
   }
 }
 </style>
