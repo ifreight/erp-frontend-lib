@@ -59,7 +59,7 @@ export default {
     IcChevronLeft,
     IcChevronRight,
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'tabChange'],
   setup(props, { emit }) {
     const activeTab = ref(props.modelValue);
     const panes = ref([]);
@@ -118,6 +118,7 @@ export default {
     const changeActiveTab = (pane) => {
       if (!pane.disabled) {
         emit('update:modelValue', pane.name);
+        emit('tabChange', pane.name);
       }
     }
 

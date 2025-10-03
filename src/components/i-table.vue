@@ -1,5 +1,8 @@
 <template>
-  <table class="i-table">
+  <table
+    class="i-table"
+    :class="{'fixed-header': fixedHeader}"
+  >
     <thead>
       <tr>
         <th
@@ -7,26 +10,43 @@
           :key="index"
           :style="{ width: header.width ? `${header.width}%` : '' }"
         >
-          <slot :name="`header-${header.key}`" :header="header"> {{ header.label }} </slot>
+          <slot
+            :name="`header-${header.key}`"
+            :header="header"
+          > {{ header.label }} </slot>
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody :style="{ maxHeight: maxHeight }">
       <template v-if="data.length <= 0">
         <tr>
-          <td :colspan="headers.length" class="tw:text-center">
+          <td
+            :colspan="headers.length"
+            class="tw:text-center"
+          >
             <slot name="no-data">No Data Found</slot>
           </td>
         </tr>
       </template>
       <template v-else>
-        <tr v-for="(d, index) in data" :key="index">
-          <template v-for="(header, i) in headers" :key="i">
+        <tr
+          v-for="(d, index) in data"
+          :key="index"
+        >
+          <template
+            v-for="(header, i) in headers"
+            :key="i"
+          >
             <td>
               <template v-if="!hasNamedSlot(header.key)">
                 {{ d[header.key] }}
               </template>
-              <slot v-else :name="header.key" :row="d" :index="index"></slot>
+              <slot
+                v-else
+                :name="header.key"
+                :row="d"
+                :index="index"
+              ></slot>
             </td>
           </template>
         </tr>
@@ -41,6 +61,11 @@ import { useSlots } from 'vue';
 export default {
   name: 'ITable',
   props: {
+    fixedHeader: Boolean,
+    maxHeight: {
+      type: String,
+      default: ""
+    },
     data: Array,
     headers: {
       type: Array,
@@ -69,6 +94,21 @@ export default {
 .i-table {
   @apply tw:w-full tw:border-separate tw:border-spacing-0 tw:border tw:border-(--gray-500) tw:rounded-[8px];
   table-layout: fixed;
+
+  &.fixed-header {
+    tbody {
+      display: block;
+      overflow-y: auto;
+      width: 100%;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+  }
 
   tbody tr:hover,
   tbody tr:has(> td .selected) {

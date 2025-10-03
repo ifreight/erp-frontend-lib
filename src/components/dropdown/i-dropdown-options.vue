@@ -9,7 +9,10 @@
     :relative-box="relativeBox"
     :padding="padding"
   >
-    <div v-if="$slots.header" class="i-dropdown-options-header">
+    <div
+      v-if="$slots.header"
+      class="i-dropdown-options-header"
+    >
       <slot name="header" />
     </div>
 
@@ -27,19 +30,42 @@
         :class="{
           selected: currentValue === option[optionKey],
           disabled: option.disabled,
+          'deactive-event' : deactivateWrapperEvent
         }"
         @click="onSelectHandler(option)"
       >
-        <slot name="optionsPrepend" :option="option" />
-        <slot name="options" :option="option" :make-bold="makeBold">
+        <slot
+          name="optionsPrepend"
+          :option="option"
+        />
+        <slot
+          name="options"
+          :option="option"
+          :make-bold="makeBold"
+        >
           <span v-if="currentValue === option[optionKey]">
             {{ option[optionValue] }}
           </span>
-          <span v-else v-html="makeBold(option[optionValue])" />
+          <span
+            v-else
+            v-html="makeBold(option[optionValue])"
+          />
         </slot>
+        <span
+          class="tw:ml-auto"
+          @click.stop
+        >
+          <slot
+            name="optionsAppend"
+            :option="option"
+          />
+        </span>
       </li>
     </ul>
-    <div v-else class="i-dropdown-options-placeholder">
+    <div
+      v-else
+      class="i-dropdown-options-placeholder"
+    >
       <slot name="optionsPlaceholder">
         <template v-if="loading"> Loading </template>
         <template v-else-if="remote">
@@ -64,6 +90,7 @@ export default defineComponent({
   },
   props: {
     visible: Boolean,
+    deactivateWrapperEvent: Boolean,
     width: {
       type: String,
       default: '100%',
@@ -251,6 +278,15 @@ export default defineComponent({
       border: none;
       border-radius: 20px;
     }
+
+    .deactive-event {
+      pointer-events: none;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
     li {
       display: flex;
       align-items: center;
