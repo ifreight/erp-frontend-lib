@@ -4828,11 +4828,15 @@ const kL = /* @__PURE__ */ c(Pe, [["render", je], ["__scopeId", "data-v-139c06b1
       validator(t) {
         return ["none", "base", "lg"].includes(t);
       }
+    },
+    preferenceXPosition: {
+      type: String,
+      default: "left"
     }
   },
   emits: ["update:visible"],
   setup(t, { emit: e }) {
-    const n = V(t.visible), r = V("below"), i = V("left"), l = V(), s = V(), d = (f) => {
+    const n = V(t.visible), r = V("below"), i = V(t.preferenceXPosition), l = V(), s = V(), d = (f) => {
       f.composedPath().includes(s.value) || e("update:visible", !1);
     };
     U(
@@ -4842,7 +4846,7 @@ const kL = /* @__PURE__ */ c(Pe, [["render", je], ["__scopeId", "data-v-139c06b1
           window.innerWidth - s.value.getBoundingClientRect().right < 0 && (i.value = "right"), window.innerHeight - l.value.getBoundingClientRect().bottom > 250 ? r.value = "below" : r.value = "above", requestAnimationFrame(() => {
             document.addEventListener("click", d), n.value = !0;
           });
-        }, 10) : (i.value = "left", document.removeEventListener("click", d), n.value = !1);
+        }, 10) : (document.removeEventListener("click", d), n.value = !1);
       }
     ), F1(() => {
       t.visible && document.removeEventListener("click", d);

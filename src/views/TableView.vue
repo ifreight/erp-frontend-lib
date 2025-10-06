@@ -2,10 +2,7 @@
   <div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">Simple table example</p>
-      <i-table
-        :data="shuffleData(data)"
-        :headers="header1"
-      ></i-table>
+      <i-table :data="shuffleData(data)" :headers="header1"></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">
@@ -14,16 +11,9 @@
       </p>
       <br />
       <span class="tw:bg-red-400 tw:text-white">selected id : {{ selectedRow }}</span>
-      <i-table
-        :data="shuffleData(data)"
-        :headers="header2"
-      >
+      <i-table :data="shuffleData(data)" :headers="header2">
         <template v-slot:header-no>
-          <div><i-checkbox
-              name="selectAll"
-              v-model="checkAll"
-              @change="checkAllHandler"
-            /></div>
+          <div><i-checkbox name="selectAll" v-model="checkAll" @change="checkAllHandler" /></div>
         </template>
         <template v-slot:no="{ row }">
           <div :class="selectedRow.includes(row.id) ? 'selected' : ''">
@@ -50,22 +40,22 @@
       <p class="tw:mb-1 tw:mt-1">
         Example with column width (if width 0 or unknown column width will be auto) table example
       </p>
-      <i-table
-        :data="shuffleData(data)"
-        :headers="header3"
-      >
+      <i-table :data="shuffleData(data)" :headers="header3">
         <template #header-name>
           <div class="tw:flex tw:gap-1 tw:justify-start tw:align-middle">
             <span class="tw:self-center">Name</span>
-            <span
-              class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer"
-              @click="sortAction"
-            >
+            <span class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer" @click="sortAction">
               <ic-chevrons-vertical-up-down class="tw:w-fit"></ic-chevrons-vertical-up-down>
             </span>
             <div class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer tw:relative">
               <ic-filter-bars @click="visibleDropdown = !visibleDropdown" />
-              <i-dropdown v-model:visible="visibleDropdown">halo</i-dropdown>
+              <i-dropdown
+                v-model:visible="visibleDropdown"
+                width="200px"
+                preferenceXPosition="right"
+              >
+                <div class="tw:w-[200px]">halo</div>
+              </i-dropdown>
             </div>
           </div>
         </template>
@@ -75,17 +65,11 @@
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table example</p>
-      <i-table
-        :data="[]"
-        :headers="header3"
-      ></i-table>
+      <i-table :data="[]" :headers="header3"></i-table>
     </div>
     <div class="tw:mb-2">
       <p class="tw:mb-1 tw:mt-1">No Data table with custom slot example</p>
-      <i-table
-        :data="[]"
-        :headers="header3"
-      >
+      <i-table :data="[]" :headers="header3">
         <template #no-data> Data tidak ditemukan </template>
       </i-table>
     </div>

@@ -55,12 +55,16 @@ export default {
         return ['none', 'base', 'lg'].includes(value);
       },
     },
+    preferenceXPosition: {
+      type: String,
+      default: 'left',
+    },
   },
   emits: ['update:visible'],
   setup(props, { emit }) {
     const show = ref(props.visible);
     const openDirection = ref('below');
-    const xPosition = ref('left');
+    const xPosition = ref(props.preferenceXPosition);
     const reference = ref();
     const dropdownRef = ref();
 
@@ -93,7 +97,6 @@ export default {
             });
           }, 10);
         } else {
-          xPosition.value = 'left';
           document.removeEventListener('click', handleClickOutside);
           show.value = false;
         }
