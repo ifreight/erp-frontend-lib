@@ -4831,7 +4831,10 @@ const kL = /* @__PURE__ */ c(Pe, [["render", je], ["__scopeId", "data-v-139c06b1
     },
     preferenceXPosition: {
       type: String,
-      default: "left"
+      default: "left",
+      validator(t) {
+        return ["left", "right"].includes(t);
+      }
     }
   },
   emits: ["update:visible"],
@@ -4843,7 +4846,7 @@ const kL = /* @__PURE__ */ c(Pe, [["render", je], ["__scopeId", "data-v-139c06b1
       () => t.visible,
       async (f) => {
         f && l.value ? setTimeout(() => {
-          window.innerWidth - s.value.getBoundingClientRect().right < 0 && (i.value = "right"), window.innerHeight - l.value.getBoundingClientRect().bottom > 250 ? r.value = "below" : r.value = "above", requestAnimationFrame(() => {
+          t.preferenceXPosition === "left" ? window.innerWidth - s.value.getBoundingClientRect().right < 0 && (i.value = "right") : s.value.getBoundingClientRect().left < 0 && (i.value = "left"), window.innerHeight - l.value.getBoundingClientRect().bottom > 250 ? r.value = "below" : r.value = "above", requestAnimationFrame(() => {
             document.addEventListener("click", d), n.value = !0;
           });
         }, 10) : (document.removeEventListener("click", d), n.value = !1);

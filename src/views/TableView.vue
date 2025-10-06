@@ -49,11 +49,7 @@
             </span>
             <div class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer tw:relative">
               <ic-filter-bars @click="visibleDropdown = !visibleDropdown" />
-              <i-dropdown
-                v-model:visible="visibleDropdown"
-                width="200px"
-                preferenceXPosition="right"
-              >
+              <i-dropdown v-model:visible="visibleDropdown" width="200px">
                 <div class="tw:w-[200px]">halo</div>
               </i-dropdown>
             </div>

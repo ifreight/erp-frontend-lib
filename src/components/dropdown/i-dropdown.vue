@@ -58,6 +58,9 @@ export default {
     preferenceXPosition: {
       type: String,
       default: 'left',
+      validator(value) {
+        return ['left', 'right'].includes(value);
+      },
     },
   },
   emits: ['update:visible'],
@@ -80,9 +83,17 @@ export default {
       async (value) => {
         if (value && reference.value) {
           setTimeout(() => {
-            const spaceRight = window.innerWidth - dropdownRef.value.getBoundingClientRect().right;
-            if (spaceRight < 0) {
-              xPosition.value = 'right';
+            if (props.preferenceXPosition === 'left') {
+              const spaceRight =
+                window.innerWidth - dropdownRef.value.getBoundingClientRect().right;
+              if (spaceRight < 0) {
+                xPosition.value = 'right';
+              }
+            } else {
+              const spaceLeft = dropdownRef.value.getBoundingClientRect().left;
+              if (spaceLeft < 0) {
+                xPosition.value = 'left';
+              }
             }
 
             const spaceBelow = window.innerHeight - reference.value.getBoundingClientRect().bottom;
@@ -145,7 +156,7 @@ export default {
 
   .i-dropdown-arrow {
     position: absolute;
-    width: 100%;
+    width: 10px;
     z-index: 4;
   }
 
@@ -201,7 +212,7 @@ export default {
       right: 0;
     }
     .i-dropdown-arrow {
-      left: 85%;
+      right: 15%;
     }
   }
   &.below {
