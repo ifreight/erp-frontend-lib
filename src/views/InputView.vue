@@ -307,7 +307,7 @@
           class="tw:flex-1 tw:mb-2"
           clearable
           placeholder="max 3"
-          :is-uppercase=true
+          :is-uppercase="true"
         />
       </form>
     </div>
