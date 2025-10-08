@@ -292,7 +292,7 @@
         class="field"
         @submit.prevent="submitHandler"
       >
-        <div class="input-label">Uppercase Input</div>
+        <div class="input-label">Uppercase Input (isUppercase = true) String only</div>
         <div class="input-v-model">
           <span class="tw:text-red-400 tw:ml-1">
             v-model:
