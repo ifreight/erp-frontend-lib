@@ -1,7 +1,14 @@
 <template>
   <div class="i-input">
-    <div class="i-input-container" :class="classes" :style="heightStyle">
-      <div v-if="$slots.prepend" class="prepend-container">
+    <div
+      class="i-input-container"
+      :class="classes"
+      :style="heightStyle"
+    >
+      <div
+        v-if="$slots.prepend"
+        class="prepend-container"
+      >
         <slot name="prepend" />
       </div>
       <component
@@ -27,15 +34,29 @@
         @keydown.enter.exact="onEnterKeyHandler"
       />
 
-      <div v-if="isShowClearable" @click.stop v-show="filled" class="append-container">
-        <ic-times class="icon-clear" @click="onClear" />
+      <div
+        v-if="isShowClearable"
+        @click.stop
+        v-show="filled"
+        class="append-container"
+      >
+        <ic-times
+          class="icon-clear"
+          @click="onClear"
+        />
       </div>
-      <div v-if="!!$slots.append" class="append-container">
+      <div
+        v-if="!!$slots.append"
+        class="append-container"
+      >
         <slot name="append" />
       </div>
     </div>
 
-    <div v-if="errorMessage" class="i-error-message">
+    <div
+      v-if="errorMessage"
+      class="i-error-message"
+    >
       {{ errorMessage }}
     </div>
   </div>
@@ -89,6 +110,10 @@ export default {
       default: 'off',
     },
     currency: {
+      type: Boolean,
+      default: false,
+    },
+    isUppercase: {
       type: Boolean,
       default: false,
     },
@@ -186,6 +211,9 @@ export default {
         }
         return props.modelValue.toLocaleString('id-ID');
       }
+      if (typeof props.modelValue === 'string' && props.isUppercase) {
+        return props.modelValue.toUpperCase();
+      }
       return props.modelValue || '';
     });
     const maskAttributes = computed(() => {
@@ -240,9 +268,14 @@ export default {
 
     const onInput = (event) => {
       if (!props.mask) {
+        let val = event.target.value;
+        if (props.isUppercase && typeof val === 'string') {
+          val = val.toUpperCase();
+          event.target.value = val;
+        }
         emit(
           'update:modelValue',
-          event.target.value.length > 0 ? event.target.value : emptyVal.value,
+          val.length > 0 ? val : emptyVal.value,
         );
       }
     };

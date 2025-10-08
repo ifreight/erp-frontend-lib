@@ -1,7 +1,10 @@
 <template>
   <div class="container-input-view">
     <div class="row">
-      <form class="field" @submit.prevent="submitHandler">
+      <form
+        class="field"
+        @submit.prevent="submitHandler"
+      >
         <div class="input-label">Normal + clearable + form example</div>
         <div class="input-v-model">
           <span class="tw:text-red-400 tw:ml-1">
@@ -229,7 +232,12 @@
           @clear="dateExample = []"
         />
         <div class="tw:relative">
-          <i-dropdown v-model:visible="dateVisible" :isShowArrow="false" rounded="lg" width="720px">
+          <i-dropdown
+            v-model:visible="dateVisible"
+            :isShowArrow="false"
+            rounded="lg"
+            width="720px"
+          >
             <i-date-range-picker
               v-model="dateExample"
               @filled="onDateFilledHandler"
@@ -279,6 +287,30 @@
         />
       </div>
     </div>
+    <div class="row">
+      <form
+        class="field"
+        @submit.prevent="submitHandler"
+      >
+        <div class="input-label">Uppercase Input</div>
+        <div class="input-v-model">
+          <span class="tw:text-red-400 tw:ml-1">
+            v-model:
+            <span v-if="uppercaseInput === null">ini null</span>
+            <span v-else>{{ !uppercaseInput ? 'empty bkn null' : `${uppercaseInput}` }}</span>
+          </span>
+        </div>
+        <i-input
+          v-model="uppercaseInput"
+          input-id="Text1"
+          name="text"
+          class="tw:flex-1 tw:mb-2"
+          clearable
+          placeholder="max 3"
+          :is-uppercase=true
+        />
+      </form>
+    </div>
   </div>
 </template>
 
@@ -311,6 +343,7 @@ export default {
     const input10 = ref('');
     const input11 = ref('');
     const input12 = ref(null);
+    const uppercaseInput = ref(null);
 
     const dateVisible = ref(false);
     const dateExample = ref([]);
@@ -349,6 +382,7 @@ export default {
       input10,
       input11,
       input12,
+      uppercaseInput,
       dateVisible,
       dateExample,
       submitHandler,
