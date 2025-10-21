@@ -263,6 +263,8 @@ export default defineComponent({
       inputValue.value = option[props.optionKey];
       query.value = option[props.optionValue];
       updateSelectedOption(option);
+      console.log('change 1', props.optionKey);
+      console.log('change 2', option[props.optionKey]);
       emit('update:modelValue', option[props.optionKey]);
       emit('change', option);
     };
@@ -345,21 +347,6 @@ export default defineComponent({
     const handleClickOutside = (event) => {
       const isClickInside = event.composedPath().includes(selectRef.value);
       if (!isClickInside) {
-        const typedValue = typeof inputValue.value === 'string' ? inputValue.value.trim() : '';
-
-        if (typedValue) {
-          const matchingOption = dropdownOptions.value.find(
-            (option) =>
-              option[props.optionValue]?.toString().toLowerCase() === typedValue.toLowerCase(),
-          );
-
-          if (!matchingOption) {
-            inputValue.value = '';
-            query.value = '';
-            emit('update:modelValue', emptyVal.value);
-          }
-        }
-
         hideDropdown();
       }
     };
