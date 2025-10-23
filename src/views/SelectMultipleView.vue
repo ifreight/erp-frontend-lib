@@ -389,8 +389,9 @@ export default {
       });
     };
 
-    const changeHandler = (e) => {
+    const changeHandler = (e, f, g) => {
       alert('handle change', e);
+      console.log('tersisa', e, 'yg ter-click', f, 'ischecked', g)
     };
 
     const openChildSelect = (option) => {

@@ -414,7 +414,7 @@ export default defineComponent({
 
       emit('update:modelValue', [...inputValue.value]);
       emit('update:valueOption', [...selectedOption.value]);
-      emit('change', [...selectedOption.value]);
+      emit('change', [...selectedOption.value], option, index < 0);
     };
 
     const debouncedQuery = debounce(() => handleQuery(query.value), 300);
@@ -483,11 +483,20 @@ export default defineComponent({
 
     watch(
       () => props.modelValue,
-      (newVal) => {
+      async (newVal) => {
         inputValue.value = Array.isArray(newVal) ? [...newVal] : [];
         selectedOption.value = dropdownOptions.value.filter((opt) =>
           inputValue.value.includes(opt[props.optionKey]),
         );
+
+        await nextTick();
+        if (!props.remote) {
+          const rawOptions = props.options;
+          const allOptions = normalizeOptions(rawOptions);
+          const allOptionIds = allOptions.map((opt) => opt[props.optionKey]);
+
+          modelCheckAll.value = allOptionIds.every((id) => inputValue.value.includes(id));
+        }
       },
       { immediate: true },
     );
@@ -526,15 +535,6 @@ export default defineComponent({
       if (inputValue.value.length > 0) {
         if (props.valueOption.length === 0) {
           emit('update:valueOption', [...selectedOption.value]);
-        }
-        if (!props.remote) {
-          const inputVal = selectedOption.value.map((opt) => opt[props.optionKey]);
-
-          const rawOptions = props.options;
-          const allOptions = normalizeOptions(rawOptions);
-          const allOptionIds = allOptions.map((opt) => opt[props.optionKey]);
-
-          modelCheckAll.value = allOptionIds.every((id) => inputVal.includes(id));
         }
       }
     });
