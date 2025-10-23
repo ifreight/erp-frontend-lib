@@ -1,8 +1,5 @@
 <template>
-  <table
-    class="i-table"
-    :class="{'fixed-header': fixedHeader}"
-  >
+  <table class="i-table" :class="{ 'fixed-header': fixedHeader }">
     <thead>
       <tr>
         <th
@@ -10,43 +7,26 @@
           :key="index"
           :style="{ width: header.width ? `${header.width}%` : '' }"
         >
-          <slot
-            :name="`header-${header.key}`"
-            :header="header"
-          > {{ header.label }} </slot>
+          <slot :name="`header-${header.key}`" :header="header"> {{ header.label }} </slot>
         </th>
       </tr>
     </thead>
     <tbody :style="{ maxHeight: maxHeight }">
       <template v-if="data.length <= 0">
         <tr>
-          <td
-            :colspan="headers.length"
-            class="tw:text-center"
-          >
+          <td :colspan="headers.length" class="tw:text-center">
             <slot name="no-data">No Data Found</slot>
           </td>
         </tr>
       </template>
       <template v-else>
-        <tr
-          v-for="(d, index) in data"
-          :key="index"
-        >
-          <template
-            v-for="(header, i) in headers"
-            :key="i"
-          >
-            <td>
+        <tr v-for="(d, index) in data" :key="index">
+          <template v-for="(header, i) in headers" :key="i">
+            <td :style="{ width: header.width ? `${header.width}%` : '' }">
               <template v-if="!hasNamedSlot(header.key)">
                 {{ d[header.key] }}
               </template>
-              <slot
-                v-else
-                :name="header.key"
-                :row="d"
-                :index="index"
-              ></slot>
+              <slot v-else :name="header.key" :row="d" :index="index"></slot>
             </td>
           </template>
         </tr>
@@ -64,7 +44,7 @@ export default {
     fixedHeader: Boolean,
     maxHeight: {
       type: String,
-      default: ""
+      default: '',
     },
     data: Array,
     headers: {

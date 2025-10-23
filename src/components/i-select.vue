@@ -263,8 +263,6 @@ export default defineComponent({
       inputValue.value = option[props.optionKey];
       query.value = option[props.optionValue];
       updateSelectedOption(option);
-      console.log('change 1', props.optionKey);
-      console.log('change 2', option[props.optionKey]);
       emit('update:modelValue', option[props.optionKey]);
       emit('change', option);
     };
