@@ -1,35 +1,6 @@
 <template>
   <div class="i-suggestion-wrapper">
-    <div ref="suggestionRef" class="i-suggestion">
-      <div tabindex="0" class="suggestion-container" :class="isVisible ? 'visible' : ''">
-        <i-input
-          ref="inputRef"
-          class="suggestion-input"
-          type="text"
-          :model-value="modelValue"
-          :input-id="inputId"
-          :name="name"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          :read-only="readOnly"
-          :invalid="invalid"
-          :dark="dark"
-          :borderless="borderless"
-          :size="size"
-          :clearable="clearable"
-          :rounded="rounded"
-          :isNullWhenEmpty="isNullWhenEmpty"
-          :height="height"
-          @clear="resetInputValue"
-          @update:modelValue="(val) => onInputKeyup(val)"
-          @focus="toggleDropdown"
-          @blur="isFocus = false"
-        >
-          <template v-if="$slots.prepend" #prepend>
-            <slot name="prepend" />
-          </template>
-        </i-input>
-      </div>
+    <div class="i-suggestion">
       <i-dropdown-options
         ref="dropdownRef"
         v-model:visible="isVisible"
@@ -45,9 +16,45 @@
         :no-data-text="noDataText"
         :loading="isLoading"
         :rounded="rounded"
+        :append-to-body="appendOptionToBody"
+        :box-on-bottom="boxOnBottom"
         filterable
         @selectedValue="handleSelected"
       >
+        <div
+          ref="suggestionRef"
+          tabindex="0"
+          class="suggestion-container"
+          :class="isVisible ? 'visible' : ''"
+        >
+          <i-input
+            ref="inputRef"
+            class="suggestion-input"
+            type="text"
+            :model-value="modelValue"
+            :input-id="inputId"
+            :name="name"
+            :placeholder="placeholder"
+            :disabled="disabled"
+            :read-only="readOnly"
+            :invalid="invalid"
+            :dark="dark"
+            :borderless="borderless"
+            :size="size"
+            :clearable="clearable"
+            :rounded="rounded"
+            :isNullWhenEmpty="isNullWhenEmpty"
+            :height="height"
+            @clear="resetInputValue"
+            @update:modelValue="(val) => onInputKeyup(val)"
+            @focus="toggleDropdown"
+            @blur="isFocus = false"
+          >
+            <template v-if="$slots.prepend" #prepend>
+              <slot name="prepend" />
+            </template>
+          </i-input>
+        </div>
         <template v-if="$slots.dropdownHeader" #header>
           <slot name="dropdownHeader" />
         </template>
@@ -158,6 +165,14 @@ export default defineComponent({
     height: {
       type: [String, Number],
       default: '41px',
+    },
+    appendOptionToBody: {
+      type: Boolean,
+      default: false,
+    },
+    boxOnBottom: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['update:modelValue', 'blur', 'change', 'focus', 'input'],
@@ -330,8 +345,6 @@ export default defineComponent({
 <style>
 .i-suggestion-wrapper {
   .i-suggestion {
-    position: relative;
-
     .suggestion-container,
     .suggestion-input {
       cursor: pointer;

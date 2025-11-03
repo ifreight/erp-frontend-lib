@@ -47,10 +47,10 @@
             <span class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer" @click="sortAction">
               <ic-chevrons-vertical-up-down class="tw:w-fit"></ic-chevrons-vertical-up-down>
             </span>
-            <div class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer tw:relative">
-              <ic-filter-bars @click="visibleDropdown = !visibleDropdown" />
+            <div class="tw:self-center tw:flex tw:flex-col tw:cursor-pointer">
               <i-dropdown v-model:visible="visibleDropdown" width="200px">
-                <div class="tw:w-[200px]">halo</div>
+                <ic-filter-bars @click="visibleDropdown = !visibleDropdown" />
+                <template #dropdown><div class="tw:w-[200px]">halo</div></template>
               </i-dropdown>
             </div>
           </div>

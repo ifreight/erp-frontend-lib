@@ -1,10 +1,7 @@
 <template>
   <div class="container-input-view">
     <div class="row">
-      <form
-        class="field"
-        @submit.prevent="submitHandler"
-      >
+      <form class="field" @submit.prevent="submitHandler">
         <div class="input-label">Normal + clearable + form example</div>
         <div class="input-v-model">
           <span class="tw:text-red-400 tw:ml-1">
@@ -232,12 +229,7 @@
           @clear="dateExample = []"
         />
         <div class="tw:relative">
-          <i-dropdown
-            v-model:visible="dateVisible"
-            :isShowArrow="false"
-            rounded="lg"
-            width="720px"
-          >
+          <i-dropdown v-model:visible="dateVisible" :isShowArrow="false" rounded="lg" width="720px">
             <i-date-range-picker
               v-model="dateExample"
               @filled="onDateFilledHandler"
@@ -288,10 +280,7 @@
       </div>
     </div>
     <div class="row">
-      <form
-        class="field"
-        @submit.prevent="submitHandler"
-      >
+      <form class="field" @submit.prevent="submitHandler">
         <div class="input-label">Uppercase Input (isUppercase = true) String only</div>
         <div class="input-v-model">
           <span class="tw:text-red-400 tw:ml-1">
@@ -361,11 +350,7 @@ export default {
 
     onMounted(() => {
       setTimeout(() => {
-        // input6.value = Math.round(123.453 * 100) / 100;
-        const x = Math.round(123.453 * 100) / 100;
-        console.log(x);
-        input6.value = '12000.50';
-        // input6.value = Number('12000.50');
+        input6.value = Math.round(123.453 * 100) / 100;
       }, 200);
     });
 

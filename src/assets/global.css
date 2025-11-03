@@ -58,3 +58,8 @@
   line-height: var(--size-sm);
   color: var(--red-300);
 }
+
+@import './i-select.css';
+@import './i-dropdown-options.css';
+@import './i-input-tel.css';
+@import './i-options.css';

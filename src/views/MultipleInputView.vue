@@ -106,12 +106,12 @@
       <div class="tw:mt-6">
         <i-multiple-input>
           <template #default="{ focused }">
-            <i-button text class="tw:w-1/3" @click="modelDropdown = !modelDropdown">
-              Show dropdown!
-            </i-button>
-            <i-dropdown :visible="modelDropdown">
-              <div>halo 1</div>
-              <div>halo 2</div>
+            <i-dropdown class="tw:w-1/3" :visible="modelDropdown">
+              <i-button text @click="modelDropdown = !modelDropdown"> Show dropdown! </i-button>
+              <template #dropdown>
+                <div>halo 1</div>
+                <div>halo 2</div>
+              </template>
             </i-dropdown>
 
             <div
@@ -135,7 +135,7 @@
     </div>
 
     <!-- Select + Input text without divider -->
-    <div class="tw:mb-12">
+    <div class="tw:mb-12 tw:pb-30">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl">
         Select + Input text without divider
       </div>
@@ -150,11 +150,23 @@
             filterable
             :options="selectOptions"
             class="tw:w-1/4"
+            :is-show-arrow="false"
+            :append-to-body="true"
           />
 
-          <i-input borderless name="text" placeholder="Search..." class="tw:w-3/4">
-            <template #prepend><ic-search class="tw:text-gray-700" /></template>
-          </i-input>
+          <i-select
+            v-model="modelSelect"
+            input-id="select"
+            name="select"
+            label="Select"
+            placeholder="Select..."
+            filterable
+            :options="selectOptions"
+            class="tw:flex-1"
+            borderless
+            dropdownClass="i-select-custom-class"
+            :is-show-arrow="false"
+          />
         </i-multiple-input>
       </div>
     </div>
@@ -212,3 +224,19 @@ export default {
   },
 };
 </script>
+
+<style>
+.i-select-custom-class {
+  background: red;
+  &.above {
+    .i-dropdown-box {
+      top: -9px !important;
+    }
+  }
+  &.below {
+    .i-dropdown-box {
+      top: 9px !important;
+    }
+  }
+}
+</style>

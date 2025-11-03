@@ -34,14 +34,19 @@
       <i-input-tel v-model="input3" readOnly />
     </div>
     <div class="tw:mt-2">
-      <div>Invalid</div>
+      <div>Invalid + append option to body</div>
       <span class="tw:text-red-600">
         v-model:
         <span v-if="input4 === null">ini null</span>
         <span v-else>{{ !input4 ? 'empty bkn null' : `${input4}` }}</span>
       </span>
 
-      <i-input-tel v-model="input4" v-model:valid="is4Valid" :invalid="!is4Valid" />
+      <i-input-tel
+        v-model="input4"
+        v-model:valid="is4Valid"
+        :invalid="!is4Valid"
+        :appendOptionToBody="true"
+      />
     </div>
   </div>
 </template>

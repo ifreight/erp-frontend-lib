@@ -1,65 +1,68 @@
 <template>
   <div class="i-input-tel-wrapper">
-    <div class="i-input-tel" :class="classes">
-      <div
-        ref="selectCountry"
-        class="i-input-tel-country-wrapper"
-        tabindex="0"
-        @blur="closeCountryDropdown"
-      >
-        <div class="i-input-tel-country">
-          <div
-            class="i-input-tel-country-select"
-            :class="countryDropdownOpen && 'open'"
-            @click="toggleCountryDropdown"
-          >
-            <div class="i-input-tel-country-flag">
-              <span :class="activeCountryFlagClass" />
-            </div>
+    <div class="i-input-tel">
+      <div class="i-input-tel-input-container" :class="classes">
+        <div ref="selectCountry" class="i-input-tel-country-wrapper" tabindex="0">
+          <div class="i-input-tel-country">
+            <div
+              class="i-input-tel-country-select"
+              :class="countryDropdownOpen && 'open'"
+              @click="toggleCountryDropdown"
+            >
+              <div class="i-input-tel-country-flag">
+                <span :class="activeCountryFlagClass" />
+              </div>
 
-            <div class="i-input-tel-country-code">
-              {{ activeCountry && activeCountry.phoneCode }}
-            </div>
+              <div class="i-input-tel-country-code">
+                {{ activeCountry && activeCountry.phoneCode }}
+              </div>
 
-            <div>
-              <ic-chevron-up v-if="countryDropdownOpen" class="tw:text-gray-700" />
-              <ic-chevron-down v-else class="tw:text-gray-700" />
+              <div>
+                <ic-chevron-up v-if="countryDropdownOpen" class="tw:text-gray-700" />
+                <ic-chevron-down v-else class="tw:text-gray-700" />
+              </div>
             </div>
           </div>
         </div>
-        <i-dropdown-options
-          :visible="countryDropdownOpen"
-          :options="countryList"
-          option-key="countryCode"
-          option-value="name"
-          :current-value="activeCountry && activeCountry.countryCode"
-          @selectedValue="onSelectCountry"
-        >
-          <template #options="{ option }">
-            <span
-              :class="`fi fi-${option.countryCode.toLowerCase()}`"
-              class="i-input-tel-country-icon"
-            />
-            {{ option.name }}
-            ({{ option.phoneCode }})
-          </template>
-        </i-dropdown-options>
-      </div>
-      <div class="i-input-tel-input-wrapper">
-        <input-tel
-          v-model="phone"
-          v-model:country="countryCode"
-          :name="name"
-          :placeholder="placeholder"
-          :auto-complete="autoComplete"
-          :disabled="disabled"
-          :read-only="readOnly"
-          @validate="onValidate"
-        />
-        <div v-if="clearable && (!disabled || !readOnly)" v-show="filled" class="append-container">
-          <ic-times class="icon-clear" @click.once="onClear" />
+        <div class="i-input-tel-input-wrapper">
+          <input-tel
+            v-model="phone"
+            v-model:country="countryCode"
+            :name="name"
+            :placeholder="placeholder"
+            :auto-complete="autoComplete"
+            :disabled="disabled"
+            :read-only="readOnly"
+            @validate="onValidate"
+          />
+          <div
+            v-if="clearable && (!disabled || !readOnly)"
+            v-show="filled"
+            class="append-container"
+          >
+            <ic-times class="icon-clear" @click.once="onClear" />
+          </div>
         </div>
       </div>
+      <i-dropdown-options
+        :visible="countryDropdownOpen"
+        :options="countryList"
+        option-key="countryCode"
+        option-value="name"
+        :current-value="activeCountry && activeCountry.countryCode"
+        :append-to-body="appendOptionToBody"
+        :box-on-bottom="true"
+        @selectedValue="onSelectCountry"
+      >
+        <template #options="{ option }">
+          <span
+            :class="`fi fi-${option.countryCode.toLowerCase()}`"
+            class="i-input-tel-country-icon"
+          />
+          {{ option.name }}
+          ({{ option.phoneCode }})
+        </template>
+      </i-dropdown-options>
     </div>
     <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
@@ -126,6 +129,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    appendOptionToBody: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update:modelValue', 'update:valid', 'clear'],
   setup(props, { emit }) {
@@ -186,6 +193,7 @@ export default {
 
     const onSelectCountry = (country) => {
       countryCode.value = country.countryCode;
+      countryDropdownOpen.value = false;
       selectCountry.value.blur();
     };
 
@@ -235,15 +243,15 @@ export default {
 <style>
 @reference "@/assets/global.css";
 .i-input-tel-wrapper {
-  .i-input-tel {
+  .i-input-tel-input-container {
     display: flex;
     border: 1px solid var(--gray-500);
     height: 41px;
     align-items: center;
-    position: relative;
 
     .i-input-tel-country-wrapper {
       height: 100%;
+
       .i-input-tel-country {
         padding: 12px;
         border-right: 1px solid var(--gray-500);
@@ -315,14 +323,6 @@ export default {
         border-color: var(--gray-700);
       }
     }
-  }
-
-  .i-input-tel-country-icon {
-    @apply tw:flex tw:items-center tw:overflow-hidden;
-    margin-right: 4px;
-    font-size: 14px;
-    box-shadow: 0 0 1px 0 var(--gray-700);
-    border-radius: 2px;
   }
 }
 </style>

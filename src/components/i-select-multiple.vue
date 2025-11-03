@@ -5,52 +5,85 @@
       class="i-select-multiple"
       :class="!isNormalSelectMode ? 'fixed-options-select' : ''"
     >
-      <span v-if="!isNormalSelectMode && !filterable"></span>
-      <div
-        v-else
-        class="i-select-container"
-        :class="isVisible ? 'visible' : ''"
-        @click="toggleDropdown"
-      >
-        <i-input
-          ref="inputRef"
-          class="i-select-input"
-          type="text"
-          :model-value="inputTextValue"
-          :input-id="inputId"
-          :name="name"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          :read-only="isInputReadOnly"
-          :invalid="invalid"
-          :dark="dark"
-          :rounded="rounded"
-          :size="size"
-          :height="height"
-          @keyup="onInputKeyup"
+      <template v-if="!isNormalSelectMode">
+        <i-options
+          :options="dropdownOptions"
+          :option-key="optionKey"
+          :option-value="optionValue"
+          :current-value="selectedOptionValue"
+          :query="query"
+          :max-height="dropdownMaxHeight"
+          :filterable="filterable"
+          :remote="remote"
+          :deactivateWrapperEvent="deactivateWrapperEvent"
+          @selectedValue="handleSelected"
         >
-          <template
-            v-if="$slots.prepend"
-            #prepend
-          >
-            <slot name="prepend" />
-          </template>
-          <template #append>
-            <slot name="append">
-              <div class="i-select-arrow-container">
-                <ic-times
-                  v-if="isNormalSelectMode && clearable && filled && (!disabled || !readOnly)"
-                  v-show="!isVisible"
-                  class="icon-clear tw:w-2.5 tw:h-2.5"
-                  @click.stop="clearSelection"
-                />
-                <ic-chevron-down v-else-if="!filterable && !remote" />
+          <template v-if="!remote" #header>
+            <div class="i-select-multiple-header" :class="{ 'tw:pt-0': !filterable }">
+              <i-checkbox
+                v-model="modelCheckAll"
+                :checkbox-rounded="checkboxRounded"
+                :checkbox-border-color="checkboxBorderColor"
+                name="modelCheckAll"
+                label="Pilih Semua"
+                size="lg"
+                light="light"
+                @change="toggleSelectAll"
+              />
+              <div class="selected-count">
+                <div class="tw:w-full tw:text-brown-600">
+                  {{ selectedOptionValue.length }} dipilih
+                </div>
+                <span class="tw:text-gray-900 tw:mx-1">•</span>
+                <i-button
+                  text
+                  size="xs"
+                  class="btn-clear"
+                  :disabled="selectedOptionValue.length < 1"
+                  @click="clearSelection"
+                >
+                  Kosongkan
+                </i-button>
               </div>
-            </slot>
+            </div>
           </template>
-        </i-input>
-      </div>
+          <template #optionsPrepend="{ option }">
+            <div class="tw:relative tw:w-5 tw:h-5 tw:ml-[9px] tw:mr-3 tw:pointer-events-auto">
+              <i-checkbox
+                :modelValue="listValue(option)"
+                :name="`list-${option.id}`"
+                :checkbox-rounded="checkboxRounded"
+                :checkbox-border-color="checkboxBorderColor"
+                size="lg"
+                light="light"
+                class="tw:h-full"
+              />
+              <div class="tw:absolute tw:z-2 tw:w-full tw:h-full tw:top-0"></div>
+            </div>
+          </template>
+          <template v-if="$slots.options" #options="{ option, makeBold }">
+            <slot name="options" :option="option" :make-bold="makeBold"></slot>
+          </template>
+
+          <template v-if="$slots.options" #optionsAppend="{ option }">
+            <slot name="optionsAppend" :option="option" />
+          </template>
+
+          <template #optionsPlaceholder>
+            <div class="tw:px-2">
+              <template v-if="isLoading"> Loading </template>
+              <template v-else-if="remote">
+                {{ query ? noDataText : remoteText }}
+              </template>
+              <template v-else>
+                {{ noDataText }}
+              </template>
+            </div>
+          </template>
+        </i-options>
+      </template>
       <i-dropdown-options
+        v-else
         :visible="isVisible"
         :options="dropdownOptions"
         :option-key="optionKey"
@@ -61,22 +94,50 @@
         :filterable="filterable"
         :remote="remote"
         :rounded="rounded"
-        :is-show-arrow="isNormalSelectMode"
-        :borderless="!isNormalSelectMode"
-        :relative-box="!isNormalSelectMode"
+        :is-show-arrow="isShowArrow"
         :deactivate-wrapper-event="deactivateWrapperEvent"
-        :padding="isNormalSelectMode ? 'base' : 'none'"
+        :padding="padding"
         :width="dropdownWidth"
         @selectedValue="handleSelected"
       >
-        <template
-          v-if="!remote"
-          #header
-        >
-          <div
-            class="select-header"
-            :class="{ 'tw:pt-0': !isNormalSelectMode && !filterable }"
+        <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
+          <i-input
+            ref="inputRef"
+            class="i-select-input"
+            type="text"
+            :model-value="inputTextValue"
+            :input-id="inputId"
+            :name="name"
+            :placeholder="placeholder"
+            :disabled="disabled"
+            :read-only="isInputReadOnly"
+            :invalid="invalid"
+            :dark="dark"
+            :rounded="rounded"
+            :size="size"
+            :height="height"
+            @keyup="onInputKeyup"
           >
+            <template v-if="$slots.prepend" #prepend>
+              <slot name="prepend" />
+            </template>
+            <template #append>
+              <slot name="append">
+                <div class="i-select-arrow-container">
+                  <ic-times
+                    v-if="clearable && filled && (!disabled || !readOnly)"
+                    v-show="!isVisible"
+                    class="icon-clear tw:w-2.5 tw:h-2.5"
+                    @click.stop="clearSelection"
+                  />
+                  <ic-chevron-down v-else-if="!filterable && !remote" />
+                </div>
+              </slot>
+            </template>
+          </i-input>
+        </div>
+        <template v-if="!remote" #header>
+          <div class="i-select-multiple-header" :class="{ 'tw:pt-0': !filterable }">
             <i-checkbox
               v-model="modelCheckAll"
               :checkbox-rounded="checkboxRounded"
@@ -119,25 +180,12 @@
           </div>
         </template>
 
-        <template
-          v-if="$slots.options"
-          #options="{ option, makeBold }"
-        >
-          <slot
-            name="options"
-            :option="option"
-            :make-bold="makeBold"
-          ></slot>
+        <template v-if="$slots.options" #options="{ option, makeBold }">
+          <slot name="options" :option="option" :make-bold="makeBold"></slot>
         </template>
 
-        <template
-          v-if="$slots.options"
-          #optionsAppend="{ option }"
-        >
-          <slot
-            name="optionsAppend"
-            :option="option"
-          />
+        <template v-if="$slots.options" #optionsAppend="{ option }">
+          <slot name="optionsAppend" :option="option" />
         </template>
 
         <template #optionsPlaceholder>
@@ -153,10 +201,7 @@
         </template>
       </i-dropdown-options>
     </div>
-    <div
-      v-if="errorMessage"
-      class="i-error-message"
-    >
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
@@ -170,6 +215,7 @@ import IButton from '@/components/i-button.vue';
 import ICheckbox from '@/components/checkbox/i-checkbox.vue';
 import IDropdownOptions from './dropdown/i-dropdown-options.vue';
 import IInput from './i-input.vue';
+import IOptions from '@/components/dropdown/i-options.vue';
 
 import IcChevronDown from '@/icons/ic-chevron-down.vue';
 import IcTimes from '@/icons/ic-times.vue';
@@ -181,11 +227,13 @@ export default defineComponent({
     ICheckbox,
     IDropdownOptions,
     IInput,
+    IOptions,
     IcChevronDown,
     IcTimes,
   },
   props: {
     deactivateWrapperEvent: Boolean,
+    isShowArrow: Boolean,
     modelValue: {
       type: Array,
       default: () => [],
@@ -282,6 +330,13 @@ export default defineComponent({
     height: {
       type: [String, Number],
       default: '41px',
+    },
+    padding: {
+      type: String,
+      default: 'base',
+      validator(value) {
+        return ['none', 'base', 'lg'].includes(value);
+      },
     },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur'],
@@ -583,8 +638,6 @@ export default defineComponent({
 @reference "@/assets/global.css";
 .i-select-multiple-wrapper {
   .i-select-multiple {
-    @apply tw:relative;
-
     &.fixed-options-select {
       @apply tw:pt-2 tw:pb-2;
 
@@ -592,9 +645,9 @@ export default defineComponent({
         @apply tw:px-2;
       }
     }
-    .select-header {
+    .i-select-multiple-header {
       padding: 10px 16px 0px !important;
-      @apply tw:flex tw:justify-between;
+      @apply tw:flex tw:justify-between tw:text-xs;
     }
 
     .selected-count {
@@ -603,14 +656,6 @@ export default defineComponent({
 
     .btn-clear {
       @apply tw:text-brown-600 tw:h-fit tw:font-normal;
-    }
-
-    &.inside {
-      position: relative;
-
-      .i-select-container {
-        position: relative;
-      }
     }
 
     .i-select-slot-selected {

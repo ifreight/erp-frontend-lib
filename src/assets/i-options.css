@@ -1,0 +1,71 @@
+.i-options .i-options-header {
+	 padding: 4px 0 12px;
+	 margin-bottom: 12px;
+	 border-bottom: 1px solid var(--gray-500);
+}
+ .i-options .i-options-body {
+	 max-height: 264px;
+	 padding: 0;
+	 margin: 0;
+	 overflow: scroll;
+	 overflow-x: hidden;
+	 overflow-y: overlay;
+	 list-style: none;
+	 scrollbar-width: thin;
+	 scrollbar-color: var(--gray-500) transparent;
+}
+ .i-options .i-options-body::-webkit-scrollbar {
+	 width: 6px;
+}
+ .i-options .i-options-body::-webkit-scrollbar-track {
+	 background: transparent;
+}
+ .i-options .i-options-body::-webkit-scrollbar-thumb {
+	 background-color: var(--gray-500);
+	 border: none;
+	 border-radius: 20px;
+}
+ .i-options .i-options-body .deactive-event {
+	 pointer-events: none;
+}
+ .i-options .i-options-body .deactive-event:hover {
+	 background-color: transparent;
+}
+ .i-options .i-options-body li {
+	 display: flex;
+	 align-items: center;
+	 padding: 8px 6px;
+	 font-size: 12px;
+	 line-height: normal;
+	 color: var(--gray-900);
+	 cursor: pointer;
+}
+ .i-options .i-options-body li.selected {
+	 font-weight: 600;
+	 background-color: var(--yellow-200);
+}
+ .i-options .i-options-body li:hover {
+	 background-color: var(--yellow-200);
+}
+ .i-options .i-options-body li.disabled {
+	 color: var(--gray-700);
+	 cursor: not-allowed;
+}
+ .i-options .i-options-body.rounded-xs li {
+	 border-radius: 2px;
+}
+ .i-options .i-options-body.rounded-sm li {
+	 border-radius: 4px;
+}
+ .i-options .i-options-body.rounded-lg li {
+	 border-radius: 8px;
+}
+ .i-options .i-options-body.rounded-xl li {
+	 border-radius: 12px;
+}
+ .i-options .i-options-placeholder {
+	 font-size: 12px;
+	 line-height: normal;
+	 color: var(--gray-700);
+	 padding: 8px 6px;
+}
