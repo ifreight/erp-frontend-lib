@@ -1,44 +1,79 @@
 <template>
   <div class="container-dropdown-view">
-    <div class="tw:relative tw:w-fit">
-      <ic-filter-bars @click="dropdownVisible = !dropdownVisible" class="tw:cursor-pointer" />
-      <i-dropdown v-model:visible="dropdownVisible" width="200px">
+    <i-dropdown
+      v-model:visible="newDropdownVisible"
+      width="200px"
+      preferenceXPosition="right"
+      triggerDisplay="inline-block"
+    >
+      <ic-filter-bars @click="newDropdownVisible = !newDropdownVisible" class="tw:cursor-pointer" />
+      <template #dropdown>
         <div>halo 1</div>
         <div>halo 2</div>
         <div>halo 3</div>
+      </template>
+    </i-dropdown>
+    <div class="tw:fixed tw:bottom-2">
+      <i-dropdown
+        v-model:visible="dropdownVisible2"
+        width="200px"
+        :isShowArrow="false"
+        rounded="lg"
+        :appendToBody="true"
+      >
+        <i-button @click="dropdownVisible2 = !dropdownVisible2" class="tw:w-[400px]">
+          Show Dropdown Top + hide when click outside + :isShowArrow="false" + append to body
+        </i-button>
+        <template #dropdown>
+          <div>halo 1</div>
+          <div>halo 2</div>
+          <div>halo 3</div>
+        </template>
       </i-dropdown>
     </div>
-    <div class="tw:fixed tw:bottom-2">
-      <div class="tw:relative">
-        <i-button @click="dropdownVisible2 = !dropdownVisible2" class="tw:w-[400px]">
-          Show Dropdown Top + hide when click outside + :isShowArrow="false"
+    <div class="tw:fixed tw:bottom-2 tw:right-0">
+      <i-dropdown
+        v-model:visible="newDropdownVisible4"
+        width="200px"
+        rounded="lg"
+        borderless
+        :appendToBody="true"
+        preferenceXPosition="right"
+      >
+        <i-button @click="newDropdownVisible4 = !newDropdownVisible4" class="tw:w-[400px]">
+          Borderless + Show Dropdown Top + hide when click outside + append to body
         </i-button>
-        <i-dropdown v-model:visible="dropdownVisible2" :isShowArrow="false">
+        <template #dropdown>
           <div>halo 1</div>
           <div>halo 2</div>
           <div>halo 3</div>
-        </i-dropdown>
-      </div>
+        </template>
+      </i-dropdown>
     </div>
-    <div class="tw:flex tw:justify-between">
-      <div class="tw:relative tw:mt-5">
-        <i-button @click="dropdownVisible3 = !dropdownVisible3" class="tw:w-[220px]">
-          Dropdown custom width
-        </i-button>
-        <i-dropdown :visible="dropdownVisible3" width="400px">
-          <div>halo 1</div>
-          <div>halo 2</div>
-          <div>halo 3</div>
+
+    <div class="tw:flex tw:justify-between tw:mt-4">
+      <div>
+        <i-dropdown :visible="newDropdownVisible3" width="400px" :isShowArrow="false">
+          <i-button @click="newDropdownVisible3 = !newDropdownVisible3" class="tw:w-[220px]">
+            Dropdown custom width : arrow false
+          </i-button>
+          <template #dropdown>
+            <div>halo 1</div>
+            <div>halo 2</div>
+            <div>halo 3</div>
+          </template>
         </i-dropdown>
       </div>
-      <div class="tw:relative tw:mt-5">
-        <i-button @click="dropdownVisible4 = !dropdownVisible4" class="tw:w-[250px]">
-          Dropdown + right space 0 + custom width
-        </i-button>
-        <i-dropdown :visible="dropdownVisible4" width="400px">
-          <div>halo 1</div>
-          <div>halo 2</div>
-          <div>halo 3</div>
+      <div>
+        <i-dropdown v-model:visible="newDropdownVisible2" width="400px">
+          <i-button @click="newDropdownVisible2 = !newDropdownVisible2" class="tw:w-[250px]">
+            NEW Dropdown + right space 0 + custom width
+          </i-button>
+          <template #dropdown>
+            <div>halo 1</div>
+            <div>halo 2</div>
+            <div>halo 3</div>
+          </template>
         </i-dropdown>
       </div>
     </div>
@@ -48,14 +83,15 @@
 <script>
 import { ref } from 'vue';
 import IButton from '@/components/i-button.vue';
-import IDropdown from '@/components/dropdown/i-dropdown.vue';
 import IcFilterBars from '@/icons/ic-filter-bars.vue';
+import IDropdown from '@/components/dropdown/i-dropdown.vue';
 
 export default {
   components: {
     IButton,
-    IDropdown,
     IcFilterBars,
+
+    IDropdown,
   },
   setup() {
     const dropdownVisible = ref(false);
@@ -63,11 +99,21 @@ export default {
     const dropdownVisible3 = ref(false);
     const dropdownVisible4 = ref(false);
 
+    const newDropdownVisible = ref(false);
+    const newDropdownVisible2 = ref(false);
+    const newDropdownVisible3 = ref(false);
+    const newDropdownVisible4 = ref(false);
+
     return {
       dropdownVisible,
       dropdownVisible2,
       dropdownVisible3,
       dropdownVisible4,
+
+      newDropdownVisible,
+      newDropdownVisible2,
+      newDropdownVisible3,
+      newDropdownVisible4,
     };
   },
 };

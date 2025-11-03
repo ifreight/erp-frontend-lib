@@ -1,14 +1,7 @@
 <template>
   <div class="i-input">
-    <div
-      class="i-input-container"
-      :class="classes"
-      :style="heightStyle"
-    >
-      <div
-        v-if="$slots.prepend"
-        class="prepend-container"
-      >
+    <div class="i-input-container" :class="classes" :style="heightStyle">
+      <div v-if="$slots.prepend" class="prepend-container">
         <slot name="prepend" />
       </div>
       <component
@@ -34,29 +27,15 @@
         @keydown.enter.exact="onEnterKeyHandler"
       />
 
-      <div
-        v-if="isShowClearable"
-        @click.stop
-        v-show="filled"
-        class="append-container"
-      >
-        <ic-times
-          class="icon-clear"
-          @click="onClear"
-        />
+      <div v-if="isShowClearable" @click.stop v-show="filled" class="append-container">
+        <ic-times class="icon-clear" @click="onClear" />
       </div>
-      <div
-        v-if="!!$slots.append"
-        class="append-container"
-      >
+      <div v-if="!!$slots.append" class="append-container">
         <slot name="append" />
       </div>
     </div>
 
-    <div
-      v-if="errorMessage"
-      class="i-error-message"
-    >
+    <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
     </div>
   </div>
@@ -114,6 +93,10 @@ export default {
       default: false,
     },
     isUppercase: {
+      type: Boolean,
+      default: false,
+    },
+    isTextNumberOnly: {
       type: Boolean,
       default: false,
     },
@@ -273,10 +256,11 @@ export default {
           val = val.toUpperCase();
           event.target.value = val;
         }
-        emit(
-          'update:modelValue',
-          val.length > 0 ? val : emptyVal.value,
-        );
+        if (props.isTextNumberOnly && props.type === 'text') {
+          val = event.target.value.replace(/[^0-9]/g, '');
+          event.target.value = val;
+        }
+        emit('update:modelValue', val.length > 0 ? val : emptyVal.value);
       }
     };
 

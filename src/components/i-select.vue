@@ -1,67 +1,77 @@
 <template>
-  <div class="i-select-wrapper">
-    <div ref="selectRef" class="i-select" :class="{ invalid: invalid }">
-      <div class="i-select-container" :class="isVisible ? 'visible' : ''" @click="toggleDropdown">
-        <i-input
-          ref="inputRef"
-          class="i-select-input"
-          type="text"
-          :model-value="inputTextValue"
-          :input-id="inputId"
-          :name="name"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          :read-only="isInputReadOnly"
-          :invalid="invalid"
-          :dark="dark"
-          :rounded="rounded"
-          :borderless="borderless"
-          :size="size"
-          :height="height"
-          @keyup="onInputKeyup"
-        >
-          <template v-if="$slots.prepend" #prepend>
-            <slot name="prepend" />
-          </template>
-          <template #append>
-            <slot name="append">
-              <div class="i-select-append-icon" :class="appendIconClass">
-                <ic-times
-                  v-if="clearable && (!disabled || !readOnly)"
-                  v-show="filled"
-                  class="icon-clear"
-                  @click.stop="onClear"
-                />
-                <ic-chevron-down v-else-if="!filterable && !remote" />
-              </div>
-            </slot>
-          </template>
-        </i-input>
+  <div>
+    <i-dropdown-options
+      :visible="isVisible"
+      :options="dropdownOptions"
+      :option-key="optionKey"
+      :option-value="optionValue"
+      :current-value="selectedOptionValue"
+      :query="query"
+      :max-height="dropdownMaxHeight"
+      :filterable="filterable"
+      :remote="remote"
+      :rounded="rounded"
+      :is-show-arrow="isShowArrow"
+      :remote-text="remoteText"
+      :no-data-text="noDataText"
+      :loading="isLoading"
+      :width="dropdownWidth"
+      :dropdown-class="dropdownClass"
+      :append-to-body="appendOptionToBody"
+      :box-on-bottom="boxOnBottom"
+      @selectedValue="handleSelected"
+    >
+      <div class="i-select-wrapper">
+        <div ref="selectRef" class="i-select" :class="{ invalid: invalid }">
+          <div
+            class="i-select-container"
+            :class="isVisible ? 'visible' : ''"
+            @click="toggleDropdown"
+          >
+            <i-input
+              ref="inputRef"
+              class="i-select-input"
+              type="text"
+              :model-value="inputTextValue"
+              :input-id="inputId"
+              :name="name"
+              :placeholder="placeholder"
+              :disabled="disabled"
+              :read-only="isInputReadOnly"
+              :invalid="invalid"
+              :dark="dark"
+              :rounded="rounded"
+              :borderless="borderless"
+              :size="size"
+              :height="height"
+              :isTextNumberOnly="isInputNumber"
+              @keyup="onInputKeyup"
+            >
+              <template v-if="$slots.prepend" #prepend>
+                <slot name="prepend" />
+              </template>
+              <template #append>
+                <slot name="append">
+                  <div class="i-select-append-icon" :class="appendIconClass">
+                    <ic-times
+                      v-if="clearable && (!disabled || !readOnly)"
+                      v-show="filled"
+                      class="icon-clear"
+                      @click.stop="onClear"
+                    />
+                    <ic-chevron-down v-else-if="!filterable && !remote" />
+                  </div>
+                </slot>
+              </template>
+            </i-input>
+          </div>
+        </div>
       </div>
 
-      <i-dropdown-options
-        :visible="isVisible"
-        :options="dropdownOptions"
-        :option-key="optionKey"
-        :option-value="optionValue"
-        :current-value="selectedOptionValue"
-        :query="query"
-        :max-height="dropdownMaxHeight"
-        :filterable="filterable"
-        :remote="remote"
-        :rounded="rounded"
-        :is-show-arrow="isShowArrow"
-        :remote-text="remoteText"
-        :no-data-text="noDataText"
-        :loading="isLoading"
-        :width="dropdownWidth"
-        @selectedValue="handleSelected"
-      >
-        <template v-if="$slots.dropdownHeader" #header>
-          <slot name="dropdownHeader" />
-        </template>
-      </i-dropdown-options>
-    </div>
+      <template v-if="$slots.dropdownHeader" #header>
+        <slot name="dropdownHeader" />
+      </template>
+    </i-dropdown-options>
 
     <div v-if="errorMessage" class="i-error-message">
       {{ errorMessage }}
@@ -178,6 +188,22 @@ export default defineComponent({
     appendIconClass: {
       type: String,
       default: '',
+    },
+    isInputNumber: {
+      type: Boolean,
+      default: false,
+    },
+    dropdownClass: {
+      type: String,
+      default: null,
+    },
+    appendOptionToBody: {
+      type: Boolean,
+      default: false,
+    },
+    boxOnBottom: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['update:modelValue', 'update:valueOption', 'change', 'focus', 'blur', 'clear'],
@@ -450,49 +476,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-@reference "@/assets/global.css";
-.i-select-wrapper {
-  .i-select {
-    position: relative;
-
-    &.inside {
-      position: relative;
-
-      .i-select-container {
-        position: relative;
-      }
-    }
-
-    .i-select-slot-selected {
-      height: 68px;
-      padding-right: 16px;
-      padding-left: 16px;
-      border: 1px solid var(--gray-400);
-      border-radius: 10px;
-
-      &.sm {
-        height: 60px;
-      }
-
-      &.dark {
-        color: var(--white);
-        background-color: var(--gray-900);
-        border-color: var(--white);
-      }
-    }
-
-    .i-select-append-icon {
-      padding: 4px;
-      cursor: pointer;
-      color: var(--gray-700);
-    }
-    &.invalid {
-      .i-select-append-icon {
-        color: var(--red-300);
-      }
-    }
-  }
-}
-</style>

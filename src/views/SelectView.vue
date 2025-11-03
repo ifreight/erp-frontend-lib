@@ -40,7 +40,11 @@
         :options="selectStaticOptions"
         no-data-text="contoh custom no data text"
         :isNullWhenEmpty="false"
-      />
+      >
+        <template #dropdownHeader>
+          <div class="tw:text-gray-500">this is header</div>
+        </template>
+      </i-select>
     </div>
 
     <div>select + init value + borderless</div>
@@ -83,11 +87,11 @@
         v-model="select5"
         input-id="Select-5"
         name="select-5"
-        filterable
         :options="selectStaticOptions"
         :invalid="true"
         error-message="Error message"
-      />
+      >
+      </i-select>
     </div>
 
     <div>select + remote method + isNullWhenEmpty false</div>
@@ -182,6 +186,20 @@
         :options="selectStaticOptions2"
       />
     </div>
+    <div>input number only (inputType="number")</div>
+    <div class="tw:mb-4 tw:w-[350px]">
+      <i-select
+        v-model="select12"
+        v-model:value-option="selectedSelect12"
+        input-id="Select-12"
+        name="select-12"
+        size="sm"
+        rounded="lg"
+        remote
+        :isInputNumber="true"
+        :remote-method="selectRemoteMethod2"
+      />
+    </div>
   </div>
 </template>
 
@@ -207,10 +225,12 @@ export default {
     const select9 = ref(null);
     const select10 = ref(undefined);
     const select11 = ref(null);
+    const select12 = ref(null);
 
     const selectRemote = ref(null);
     const selectRemote2 = ref(null);
     const selectOptNonRemote = ref(null);
+    const selectedSelect12 = ref(null);
 
     const selectStaticOptions = computed(() => {
       return ['Asia', 'America', 'Europe', 'Others'];
@@ -237,6 +257,19 @@ export default {
         }, 1000);
       });
     };
+
+    const selectRemoteMethod2 = async () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([
+            { id: 1, name: 'Asia 112', disabled: false },
+            { id: 2, name: 'America 221', disabled: true },
+            { id: 3, name: 'Europe 321', disabled: false },
+            { id: 4, name: 'Others 444', disabled: false },
+          ]);
+        }, 1000);
+      });
+    };
     onMounted(() => {
       select10.value = 1;
       selectRemote2.value = { id: 1, name: 'Asia', disabled: false };
@@ -256,12 +289,15 @@ export default {
       select9,
       select10,
       select11,
+      select12,
       selectRemote,
       selectRemote2,
       selectStaticOptions,
       selectStaticOptions2,
       selectOptNonRemote,
+      selectedSelect12,
       selectRemoteMethod,
+      selectRemoteMethod2,
     };
   },
 };

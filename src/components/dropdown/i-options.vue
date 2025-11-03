@@ -1,85 +1,60 @@
 <template>
-  <i-dropdown
-    :visible="visible"
-    :width="width"
-    :dropdown-class="['i-dropdown-options', dropdownClass]"
-    :rounded="rounded"
-    :is-show-arrow="isShowArrow"
-    :borderless="borderless"
-    :relative-box="relativeBox"
-    :padding="padding"
-    :triggerDisplay="triggerDisplay"
-    :appendToBody="appendToBody"
-    :box-on-bottom="boxOnBottom"
-  >
-    <slot />
-    <template #dropdown>
-      <div v-if="$slots.header" class="i-dropdown-options-header">
-        <slot name="header" />
-      </div>
+  <div class="i-options">
+    <div v-if="$slots.header" class="i-options-header">
+      <slot name="header" />
+    </div>
 
-      <ul
-        v-if="filteredOptions.length > 0"
-        class="i-dropdown-options-body"
-        :class="bodyClasses"
-        :style="{
-          'max-height': maxHeight,
+    <ul
+      v-if="filteredOptions.length > 0"
+      class="i-options-body"
+      :style="{
+        'max-height': maxHeight,
+      }"
+    >
+      <li
+        v-for="(option, idx) in filteredOptions"
+        :key="`option-${idx}`"
+        :class="{
+          selected: currentValue === option[optionKey],
+          disabled: option.disabled,
+          'deactive-event': deactivateWrapperEvent,
         }"
+        class="tw:min-h-[31px]"
+        @click="onSelectHandler(option)"
       >
-        <li
-          v-for="(option, idx) in filteredOptions"
-          :key="`option-${idx}`"
-          :class="{
-            selected: currentValue === option[optionKey],
-            disabled: option.disabled,
-            'deactive-event': deactivateWrapperEvent,
-          }"
-          class="tw:min-h-[31px]"
-          @click="onSelectHandler(option)"
-        >
-          <slot name="optionsPrepend" :option="option" />
-          <slot name="options" :option="option" :make-bold="makeBold">
-            <span v-if="currentValue === option[optionKey]">
-              {{ option[optionValue] }}
-            </span>
-            <span v-else v-html="makeBold(option[optionValue])" />
-          </slot>
-          <span class="tw:ml-auto" @click.stop>
-            <slot name="optionsAppend" :option="option" />
+        <slot name="optionsPrepend" :option="option" />
+        <slot name="options" :option="option" :make-bold="makeBold">
+          <span v-if="currentValue === option[optionKey]">
+            {{ option[optionValue] }}
           </span>
-        </li>
-      </ul>
-      <div v-else class="i-dropdown-options-placeholder">
-        <slot name="optionsPlaceholder">
-          <template v-if="loading"> Loading </template>
-          <template v-else-if="remote">
-            {{ query ? noDataText : remoteText }}
-          </template>
-          <template v-else>
-            {{ noDataText }}
-          </template>
+          <span v-else v-html="makeBold(option[optionValue])" />
         </slot>
-      </div>
-    </template>
-  </i-dropdown>
+        <span class="tw:ml-auto" @click.stop>
+          <slot name="optionsAppend" :option="option" />
+        </span>
+      </li>
+    </ul>
+    <div v-else class="i-options-placeholder">
+      <slot name="optionsPlaceholder">
+        <template v-if="loading"> Loading </template>
+        <template v-else-if="remote">
+          {{ query ? noDataText : remoteText }}
+        </template>
+        <template v-else>
+          {{ noDataText }}
+        </template>
+      </slot>
+    </div>
+  </div>
 </template>
 
 <script>
 import { computed, defineComponent, watch } from 'vue';
-import IDropdown from './i-dropdown.vue';
 
 export default defineComponent({
-  name: 'IDropdownOptions',
-  components: {
-    IDropdown,
-  },
+  name: 'IOptions',
   props: {
-    visible: Boolean,
     deactivateWrapperEvent: Boolean,
-    width: {
-      type: String,
-      default: '100%',
-    },
     options: {
       type: Array,
       default: () => [],
@@ -115,58 +90,15 @@ export default defineComponent({
       type: String,
       default: '264px',
     },
-    rounded: {
-      type: String,
-      default: 'xs',
-    },
-    isShowArrow: {
-      type: Boolean,
-      default: true,
-    },
-    relativeBox: {
-      type: Boolean,
-      default: false,
-    },
-    borderless: {
-      type: Boolean,
-      default: false,
-    },
-    padding: {
-      type: String,
-      default: 'base',
-      validator(value) {
-        return ['none', 'base', 'lg'].includes(value);
-      },
-    },
     isHideOnEmptyOptions: {
-      type: Boolean,
-      default: false,
-    },
-    dropdownClass: {
-      typs: String,
-      default: null,
-    },
-    triggerDisplay: {
-      type: String,
-      default: 'block',
-    },
-    appendToBody: {
-      type: Boolean,
-      default: false,
-    },
-    boxOnBottom: {
       type: Boolean,
       default: false,
     },
   },
   emits: ['update:visible', 'selectedValue'],
   setup(props, { emit }) {
-    const bodyClasses = computed(() => {
-      return [`rounded-${props.rounded}`];
-    });
-
     const filteredOptions = computed(() => {
-      const dropdownOptions = props.options.map((option) => {
+      const optionsData = props.options.map((option) => {
         if (typeof option !== 'object') {
           return {
             id: option,
@@ -176,9 +108,9 @@ export default defineComponent({
         return option;
       });
       if (!props.filterable || !props.query) {
-        return dropdownOptions;
+        return optionsData;
       }
-      const filtered = dropdownOptions.filter((option) => {
+      const filtered = optionsData.filter((option) => {
         const query = props.query !== null && props.query.toLowerCase();
         const label = option[props.optionValue].toLowerCase();
         return label.includes(query);
@@ -238,7 +170,6 @@ export default defineComponent({
     );
 
     return {
-      bodyClasses,
       filteredOptions,
       makeBold,
       onSelectHandler,

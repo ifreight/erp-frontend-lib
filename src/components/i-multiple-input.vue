@@ -70,7 +70,7 @@ export default {
 
 .i-multiple-input {
   .i-multiple-input-content {
-    @apply tw:relative tw:flex tw:items-center tw:w-auto tw:h-12 tw:bg-white tw:border tw:border-gray-500 tw:rounded-lg tw:px-3 tw:py-2;
+    @apply tw:flex tw:items-center tw:w-auto tw:h-12 tw:bg-white tw:border tw:border-gray-500 tw:rounded-lg tw:px-3 tw:py-2;
 
     &.disabled {
       @apply tw:bg-gray-300;

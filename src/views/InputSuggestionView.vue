@@ -114,7 +114,7 @@
     </div>
     <div class="tw:mb-4">
       <div class="tw:font-bold tw:bg-yellow-800 tw:text-xl tw:mb-2">
-        remote + rounded lg
+        remote + rounded lg + append option to body
         <span class="tw:text-red-600">
           v-model:
           <span v-if="suggestion5 === null">ini null</span>
@@ -132,6 +132,7 @@
         rounded="lg"
         :remote-method="remoteMethod"
         :remote-text="'Contoh Remote Text Custom'"
+        :appendOptionToBody="true"
       >
       </i-input-suggestion>
     </div>

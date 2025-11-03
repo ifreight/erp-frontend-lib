@@ -1,0 +1,11 @@
+.i-select-wrapper .i-select {
+	 position: relative;
+}
+ .i-select-wrapper .i-select .i-select-append-icon {
+	 padding: 4px;
+	 cursor: pointer;
+	 color: var(--gray-700);
+}
+ .i-select-wrapper .i-select.invalid .i-select-append-icon {
+	 color: var(--red-300);
+}
