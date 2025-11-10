@@ -177,16 +177,17 @@ export default {
     const pressKeyEnter = () => emit('pressEnter');
     const pressKeyEnterShift = () => emit('pressEnterShift');
 
-    watch(
+     watch(
       () => props.modelValue,
       (newValue) => {
         if (!isInternalUpdate.value) {
           localModel.value = newValue || null;
+        } else {
+          isInternalUpdate.value = false;
         }
-        isInternalUpdate.value = false;
       },
-      { immediate: true },
     );
+
     return {
       filled,
       classes,
