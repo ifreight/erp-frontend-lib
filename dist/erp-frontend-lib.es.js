@@ -12012,9 +12012,8 @@ const ny = /* @__PURE__ */ c(ti, [["render", ni]]), ri = {
     return U(
       () => t.modelValue,
       (I) => {
-        v.value || (m.value = I || null), v.value = !1;
-      },
-      { immediate: !0 }
+        v.value ? v.value = !1 : m.value = I || null;
+      }
     ), {
       filled: p,
       classes: g,
