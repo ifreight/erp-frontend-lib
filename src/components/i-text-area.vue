@@ -117,8 +117,7 @@ export default {
     } = toRefs(props);
 
     // using localModel to make trim process at onInput and onBlur works properly
-    const localModel = ref(props.modelValue || null);
-    const isInternalUpdate = ref(false);
+    const localModel = ref();
 
     const filled = computed(() => props.modelValue != null && props.modelValue !== '');
 
@@ -155,36 +154,27 @@ export default {
       if (val.length > 0) {
         val = event.target.value.trimStart();
       }
-      isInternalUpdate.value = true;
-
       emit('update:modelValue', val.length > 0 ? val : emptyVal.value);
-
-      if (event.target.value.length > 0) {
-        localModel.value = event.target.value.trimStart();
-      }
     };
 
     const onFocus = () => emit('focus');
     const onBlur = () => {
       if (props.modelValue) {
-        isInternalUpdate.value = true;
-
         emit('update:modelValue', props.modelValue.trim());
-        localModel.value = localModel.value.trim();
       }
       emit('blur');
     };
     const pressKeyEnter = () => emit('pressEnter');
-    const pressKeyEnterShift = () => emit('pressEnterShift');
+    const pressKeyEnterShift = () => {
+      let val = props.modelValue;
+      emit('update:modelValue', val ? (val += '\n') : '\n');
+      emit('pressEnterShift');
+    };
 
-     watch(
+    watch(
       () => props.modelValue,
       (newValue) => {
-        if (!isInternalUpdate.value) {
-          localModel.value = newValue || null;
-        } else {
-          isInternalUpdate.value = false;
-        }
+        localModel.value = newValue || emptyVal.value;
       },
     );
 

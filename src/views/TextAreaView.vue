@@ -17,6 +17,7 @@
         placeholder="Placeholder"
         class="chat-textarea"
       />
+      <span @click="textArea1 = null" class="tw:cursor-pointer">kosongin</span>
     </div>
 
     <div class="tw:mb-4">
@@ -68,6 +69,27 @@
         :show-text-limit="true"
       />
     </div>
+
+    <div class="tw:mb-4">
+      <div>
+        Prevent press enter & shit + enter to add new space
+        <span class="tw:text-red-400 tw:ml-1">
+          v-model:
+          <span v-if="textArea4 === null">ini null</span>
+          <span v-else>{{ !textArea4 ? 'empty bkn null' : `${textArea4}` }}</span>
+        </span>
+      </div>
+      <i-text-area
+        v-model="textArea4"
+        input-id="TextArea4"
+        name="message"
+        placeholder="Placeholder"
+        class="chat-textarea"
+        :prevent-enter-key="true"
+        @pressEnter="pressEnterHandler"
+      />
+      <span @click="textArea4 = null" class="tw:cursor-pointer">kosongin</span>
+    </div>
   </div>
 </template>
 
@@ -80,20 +102,28 @@ export default {
     ITextArea,
   },
   setup() {
-    const textArea1 = ref('test isi text area');
+    const textArea1 = ref(null);
     const textArea2 = ref('');
     const textArea3 = ref(null);
+    const textArea4 = ref(null);
     const valueDisabled = ref('text3 disabled');
+
+    const pressEnterHandler = () => {
+      window.alert('press enter');
+    };
 
     onMounted(async () => {
       await nextTick();
       textArea2.value = 'zzzz';
     });
+
     return {
       textArea1,
       textArea2,
       textArea3,
+      textArea4,
       valueDisabled,
+      pressEnterHandler,
     };
   },
 };
