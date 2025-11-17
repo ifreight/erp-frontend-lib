@@ -12018,7 +12018,8 @@ const ny = /* @__PURE__ */ c(ti, [["render", ni]]), ri = {
       () => t.modelValue,
       (G) => {
         m.value = G || M.value;
-      }
+      },
+      { immediate: !0 }
     ), {
       filled: v,
       classes: p,

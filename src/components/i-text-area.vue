@@ -176,6 +176,7 @@ export default {
       (newValue) => {
         localModel.value = newValue || emptyVal.value;
       },
+      { immediate: true },
     );
 
     return {
