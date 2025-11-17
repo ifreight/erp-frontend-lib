@@ -174,8 +174,10 @@ export default {
     watch(
       () => props.modelValue,
       (newValue) => {
+        console.log(newValue);
         localModel.value = newValue || emptyVal.value;
       },
+      { immediate: true },
     );
 
     return {
