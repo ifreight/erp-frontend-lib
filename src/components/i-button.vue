@@ -66,7 +66,7 @@ export default {
   @apply tw:relative tw:font-semibold tw:text-base tw:text-gray-900 tw:flex tw:justify-center tw:items-center;
 
   &.disabled {
-    @apply tw:bg-gray-200 tw:text-gray-400 tw:border-gray-200 tw:pointer-events-none;
+    @apply tw:bg-gray-500 tw:text-gray-700 tw:border-gray-500 tw:pointer-events-none;
   }
 
   &.error {
